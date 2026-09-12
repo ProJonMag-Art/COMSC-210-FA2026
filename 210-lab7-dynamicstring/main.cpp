@@ -9,7 +9,11 @@
 
 using namespace std;
 
-// Takes string pointer array of arrSize and
+// Takes string pointer array of arrSize
+// Saves a temporary string equal to the current indexed string
+// Loops until arrSize/2 and swaps the position of *(arrSize + i) with *(arrSize + i - 1)
+// Assigns *(arrSize + i - 1) = tempStr (swaps positions)
+// I'm not sure if this works for even sized arrays or not
 void reverseArray(string*& strArr, int arrSize);
 
 // Takes string pointer array of arrSize
@@ -25,16 +29,34 @@ const int arrSize = 5;
 
 int main()
 {
+    // Allocate Dynamic Memory
     string* namesArr = new string[arrSize];
-    namesArr = { "Janet", "Jeffe", "Jin", "Joe", "Junio" };
+
+    *(namesArr) = "Janet";
+    *(namesArr + 1) = "Jeffe";
+    *(namesArr + 2) = "Jin";
+    *(namesArr + 3) = "Joe";
+    *(namesArr + 4) = "Junio";
+
     displayArray(namesArr, arrSize);
 
+    // Free Dynamic Memory
+    delete [] namesArr;
     return 0;
 }
 
 void reverseArray(string*& strArr, int arrSize)
 {
+    string tempStr = "";
+    for(int i = 0; i < arrSize/2; i++)
+    {
+        // Temp = current str
+        tempStr = *(strArr + i);
 
+        // Temp = i indices away from the last array element
+        *(strArr + i) = *(strArr + arrSize - i - 1);
+        *(strArr + arrSize - i - 1) = tempStr;
+    }
 }
 
 void outputArrayContents(string* strArr, int arrSize)
