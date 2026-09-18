@@ -2,7 +2,7 @@
 // COMSC-210 | Lab 7 | Jonvianney Maglasang
 
 // Started September 17, 2026 at 5:17pm
-// Finished September 17, 2026 at
+// Finished September 17, 2026 at 6:41pm
 
 #include <iostream>
 #include <iomanip>
@@ -31,7 +31,7 @@ int main()
 
     readData("data.txt", gradeData);
     outputData(gradeData);
-    
+
     return 0;
 }
 
@@ -73,16 +73,16 @@ float getAverage(array<float, arrSize> dataArr)
 void outputData(array<float, arrSize> dataArr)
 {
     int arrSize = dataArr.max_size();
-    float average = getAverage(dataArr);
 
     cout << "\nGrade Points:" << endl;
     cout << "------------" << endl;
     for(int i = 0; i < arrSize; i++)
     {
-        cout << setw(6) << endl;
+        cout << setw(6) << dataArr.at(i) << endl;
     }
 
-    cout << "\nData First Value: " << dataArr.front() << endl;
-    cout << "\nData Middle Value: " << dataArr.at(arrSize/2) << endl;
-    cout << "\nData End Value: " << dataArr.back() << endl;
+    cout << "\nAverage (GPA): " << getAverage(dataArr) << endl;
+    cout << "Data First Value: " << dataArr.front() << endl;
+    cout << "Data Middle Value: " << dataArr.at(arrSize/2) << endl;
+    cout << "Data End Value: " << dataArr.back() << endl;
 }
