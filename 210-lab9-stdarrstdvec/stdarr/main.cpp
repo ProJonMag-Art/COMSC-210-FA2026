@@ -15,9 +15,14 @@ const int arrSize = 30;
 
 // Takes string filename as input to read data into an std::array through a loop going through its array size
 void readData(string fileName, array<float, 30>& dataArr);
-float getAverage(array<float, 30> dataArr);
-array<float, 3> getDataCheckpoints(array<float, 30> dataArr);
-void outputData(array<float, 30> dataArr);
+
+// Takes loat array as input, loops through its elements. If a negative 1 in the elements means it was uninitialized and the loop stops
+// Uses the loop count to get the average of initialized data in the array.
+float getAverage(array<float, arrSize> dataArr);
+
+
+array<float, 3> getDataCheckpoints(array<float, arrSize> dataArr);
+void outputData(array<float, arrSize> dataArr);
 
 int main()
 {
@@ -29,7 +34,7 @@ int main()
     return 0;
 }
 
-void readData(string fileName, array<float, 30>& dataArr)
+void readData(string fileName, array<float, arrSize>& dataArr)
 {
     ifstream readFile(fileName);
     int readSize = dataArr.size();
@@ -42,9 +47,10 @@ void readData(string fileName, array<float, 30>& dataArr)
     readFile.close();
 }
 
-float getAverage(array<float, 30> dataArr)
+float getAverage(array<float, arrSize> dataArr)
 {
     int arrSize = dataArr.size();
+    int loopCount = 0;
     float sum = 0;
 
     for(int i = 0; i < arrSize; i++)
@@ -52,6 +58,24 @@ float getAverage(array<float, 30> dataArr)
         if(dataArr.at(i) != -1)
         {
             sum += dataArr.at(i);
+            loopCount = i + 1;
+        } else
+        {
+            break;
         }
     }
+
+    return sum/loopCount;
+}
+
+array<float, 3> getDataCheckpoints(array<float, arrSize> dataArr)
+{
+    int arrSize = dataArr.max_size();
+    
+    return {dataArr.front(), dataArr.at(arrSize/2), dataArr.back()};
+}
+
+void outputData()
+{
+    
 }
