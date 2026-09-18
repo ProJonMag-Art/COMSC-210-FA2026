@@ -5,6 +5,7 @@
 // Finished September 17, 2026 at
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <array>
 #include <string>
@@ -75,7 +76,8 @@ array<float, 3> getDataCheckpoints(array<float, arrSize> dataArr)
     return {dataArr.front(), dataArr.at(arrSize/2), dataArr.back()};
 }
 
-void outputData()
+void outputData(array<float, arrSize> dataArr)
 {
-    
+    cout << "\nGrade Points:" << endl;
+    cout << "------------";
 }
