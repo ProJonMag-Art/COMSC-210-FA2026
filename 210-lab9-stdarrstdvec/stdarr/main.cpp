@@ -17,12 +17,11 @@ const int arrSize = 30;
 // Takes string filename as input to read data into an std::array through a loop going through its array size
 void readData(string fileName, array<float, 30>& dataArr);
 
-// Takes loat array as input, loops through its elements. If a negative 1 in the elements means it was uninitialized and the loop stops
+// Takes float array as input, loops through its elements. If a negative 1 in the elements means it was uninitialized and the loop stops
 // Uses the loop count to get the average of initialized data in the array.
 float getAverage(array<float, arrSize> dataArr);
 
-
-array<float, 3> getDataCheckpoints(array<float, arrSize> dataArr);
+// Takes float array as input, runs get average, and then outputs data elements in a formatted way. Then outputs the first value, middle value, and end value.
 void outputData(array<float, arrSize> dataArr);
 
 int main()
@@ -31,7 +30,8 @@ int main()
     gradeData.fill(-1);
 
     readData("data.txt", gradeData);
-
+    outputData(gradeData);
+    
     return 0;
 }
 
@@ -56,6 +56,7 @@ float getAverage(array<float, arrSize> dataArr)
 
     for(int i = 0; i < arrSize; i++)
     {
+        // If a data element is -1, it is considered uninitialized and ends the loop
         if(dataArr.at(i) != -1)
         {
             sum += dataArr.at(i);
@@ -69,15 +70,19 @@ float getAverage(array<float, arrSize> dataArr)
     return sum/loopCount;
 }
 
-array<float, 3> getDataCheckpoints(array<float, arrSize> dataArr)
-{
-    int arrSize = dataArr.max_size();
-    
-    return {dataArr.front(), dataArr.at(arrSize/2), dataArr.back()};
-}
-
 void outputData(array<float, arrSize> dataArr)
 {
+    int arrSize = dataArr.max_size();
+    float average = getAverage(dataArr);
+
     cout << "\nGrade Points:" << endl;
-    cout << "------------";
+    cout << "------------" << endl;
+    for(int i = 0; i < arrSize; i++)
+    {
+        cout << setw(6) << endl;
+    }
+
+    cout << "\nData First Value: " << dataArr.front() << endl;
+    cout << "\nData Middle Value: " << dataArr.at(arrSize/2) << endl;
+    cout << "\nData End Value: " << dataArr.back() << endl;
 }
