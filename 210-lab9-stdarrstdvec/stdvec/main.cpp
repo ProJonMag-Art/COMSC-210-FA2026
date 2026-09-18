@@ -1,54 +1,54 @@
 
 // COMSC-210 | Lab 7 | Jonvianney Maglasang
 
-// Started September 17, 2026 at 5:17pm
+// Started September 18, 2026 at 11:45am
 // Finished September 17, 2026 at 6:41pm
 
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <array>
+#include <vector>
 #include <string>
 
 using namespace std;
 
 const int arrSize = 30;
 
-// Takes string filename as input to read data into an std::array through a loop going through its array size
-void readData(string fileName, array<float, 30>& dataArr);
+// Takes string filename as input to read data into an std::vector through a loop going through its vector size
+void readData(string fileName, vector<float>& dataArr, int arrSize);
 
-// Takes float array as input, loops through its elements. If a negative 1 in the elements means it was uninitialized and the loop stops
-// Uses the loop count to get the average of initialized data in the array.
-float getAverage(array<float, arrSize> dataArr);
+// Takes float vector as input, loops through its elements. If a negative 1 in the elements means it was uninitialized and the loop stops
+// Uses the loop count to get the average of initialized data in the vector.
+float getAverage(vector<float> dataArr);
 
-// Takes float array as input, runs get average, and then outputs data elements in a formatted way. Then outputs the first value, middle value, and end value.
-void outputData(array<float, arrSize> dataArr);
+// Takes float vector as input, runs get average, and then outputs data elements in a formatted way. Then outputs the first value, middle value, and end value.
+void outputData(vector<float> dataArr);
 
 int main()
 {
-    array<float, arrSize> gradeData;
-    gradeData.fill(-1);
+    vector<float> gradeData;
 
-    readData("data.txt", gradeData);
+    readData("data.txt", gradeData, arrSize);
     outputData(gradeData);
 
     return 0;
 }
 
-void readData(string fileName, array<float, arrSize>& dataArr)
+void readData(string fileName, vector<float>& dataArr, int arrSize)
 {
     ifstream readFile(fileName);
-    int readSize = dataArr.size();
 
-    for(int i = 0; i < readSize; i++)
+    float temp = 0;
+    for(int i = 0; i < arrSize; i++)
     {
-        readFile >> dataArr[i];
+        readFile >> temp;
+        dataArr.push_back(temp);
     }
 
     readFile.close();
 }
 
-float getAverage(array<float, arrSize> dataArr)
+float getAverage(vector<float> dataArr)
 {
     int arrSize = dataArr.size();
     int loopCount = 0;
@@ -70,9 +70,9 @@ float getAverage(array<float, arrSize> dataArr)
     return sum/loopCount;
 }
 
-void outputData(array<float, arrSize> dataArr)
+void outputData(vector<float> dataArr)
 {
-    int arrSize = dataArr.max_size();
+    int arrSize = dataArr.size();
 
     cout << "\nGrade Points:" << endl;
     cout << "------------" << endl;
