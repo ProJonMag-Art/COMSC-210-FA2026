@@ -9,6 +9,8 @@
 
 using namespace std;
 
+
+// Stores
 struct Date
 {
     int month;
@@ -20,11 +22,17 @@ struct Date
         this->day = day;
         this->year = year;
     }
+
+    // Default Constructor makes items have 0 values, but will be updates in the future
+    Date()
+    {
+        this->month = 0;
+        this->day = 0;
+        this->year = 0;
+    }
 };
 
-// Stores the name of the item, when the item was first listed, it's price, and a dynamic array containing any the full record or prices (stores the date of the update, and the new price)
-// Date format is M/D/Y
-
+// Stores the name of the item, when the item was first listed, it's price, and a dynamic array containing any the full record of prices (stores the date of new and old prices)
 struct Item
 {
     string name;
@@ -37,6 +45,22 @@ struct Item
         this->date = date;
         this->price = price;
         this->priceRecord = priceRecord;
+    }
+
+    // Default Constructor sets values to 0, but allows updates in the future
+    Item()
+    {
+        this->name = " ";
+        this->date = Date();
+        this->price = 0;
+        this->priceRecord = nullptr;
+    }
+
+    // Destructor should delete the priceRecord ptr object and assign it to null ptr when Item object is destroyed or out of scope
+    ~Item()
+    {
+        delete [] this->priceRecord;
+        this->priceRecord = nullptr;
     }
 };
 
