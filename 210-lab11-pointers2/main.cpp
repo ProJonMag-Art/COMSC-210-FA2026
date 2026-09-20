@@ -70,6 +70,27 @@ struct Item
         delete [] this->priceRecord;
         this->priceRecord = nullptr;
     }
+
+    // Prints name, date, and price
+    void printItemData()
+    {
+        cout << this->name << " ";
+        this->date.printDate();
+        cout << " " << this->price << endl;
+    }
+
+    // Prints name, date, and price of whichever Item* priceRecord for its entire size
+    // All priceRecord children point to nullptr by default, stopping infinite recursion
+    void printRecordData(int recordSize)
+    {
+        if(this->priceRecord != nullptr)
+        {
+            for(int i = 0; i < recordSize; i++)
+            {
+                this->priceRecord[i].printItemData();
+            }
+        }
+    }
 };
 
 // Global Variables
@@ -85,10 +106,12 @@ int main()
     Item* pRecord = new Item[ItemRSize];
     Item* sRecord = new Item[ItemRSize];
     Item* vRecord = new Item[ItemRSize];
+
+    
     
     catalogue[0] = Item("Pasta", {9, 20, 2026}, 5.22, pRecord);
-    catalogue[1] = Item("Steak", {9, 20, 2026}, 5.22, sRecord);
-    catalogue[2] = Item("Frozen Veggies", {9, 20, 2026}, 5.22, vRecord);
+    catalogue[1] = Item("Steak", {9, 20, 2026}, 12.36, sRecord);
+    catalogue[2] = Item("Frozen Veggies", {9, 20, 2026}, 3.25, vRecord);
 
     return 0;
 }
