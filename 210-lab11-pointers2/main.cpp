@@ -10,7 +10,7 @@
 
 using namespace std;
 
-// Stores
+// Stores M/D/Y
 struct Date
 {
     int month;
@@ -38,7 +38,7 @@ struct Date
     }
 };
 
-// Struct Declarations
+// Struct Declarations and Definitions
 // Stores the name of the item, when the item was first listed, it's price, and a dynamic array containing any the full record of prices (stores the date of new and old prices)
 struct Item
 {
@@ -58,7 +58,7 @@ struct Item
     // Default Constructor sets values to 0, but allows updates in the future
     Item()
     {
-        this->name = " ";
+        this->name = "";
         this->date = Date();
         this->price = 0;
         this->priceRecord = nullptr;
@@ -97,21 +97,42 @@ struct Item
 const int CatalogueSize = 3;
 const int ItemRSize = 2;
 
-// Function Declarations
-void printItemArr(Item item);
-
 int main()
 {
+    // Allocated Memory
     Item* catalogue = new Item[CatalogueSize];
     Item* pRecord = new Item[ItemRSize];
     Item* sRecord = new Item[ItemRSize];
     Item* vRecord = new Item[ItemRSize];
 
+    // Assign values to Item* record vars
+    for(int i = 0; i < ItemRSize; i++)
+    {
+        // priceRecord children are kept nameless and pointed to nullptr because they belong to a named item already
+        // (i + 1) just makes sure the date is different from the current record
+        // ((i + 1) * 0.25) just makes sure that the difference in price is interesting
+        pRecord[i] = Item("", {9, 20 - (i + 1), 2026}, 5.22 - ((i + 1) * 0.25), nullptr);
+        sRecord[i] = Item("", {9, 20 - (i + 1), 2026}, 5.22 - ((i + 1) * 0.25), nullptr);
+        vRecord[i] = Item("", {9, 20 - (i + 1), 2026}, 5.22 - ((i + 1) * 0.25), nullptr);
+    }
     
-    
+    // Define catalogue entries;
     catalogue[0] = Item("Pasta", {9, 20, 2026}, 5.22, pRecord);
     catalogue[1] = Item("Steak", {9, 20, 2026}, 12.36, sRecord);
     catalogue[2] = Item("Frozen Veggies", {9, 20, 2026}, 3.25, vRecord);
+
+    // Should print Item first, then all record contents for the entire catalogue array
+    for(int i = 0; i < CatalogueSize; i++)
+    {
+        catalogue[i].printItemData();
+        catalogue[i].printRecordData(ItemRSize);
+    }
+
+    // Free Memory
+    delete [] catalogue;
+    delete [] pRecord;
+    delete [] sRecord;
+    delete [] vRecord;
 
     return 0;
 }
