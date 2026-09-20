@@ -104,6 +104,11 @@ int main()
     Item* pRecord = new Item[ItemRSize];
     Item* sRecord = new Item[ItemRSize];
     Item* vRecord = new Item[ItemRSize];
+    
+    // Define catalogue entries;
+    catalogue[0] = Item("Pasta", {9, 20, 2026}, 5.22, nullptr);
+    catalogue[1] = Item("Steak", {9, 20, 2026}, 12.36, nullptr);
+    catalogue[2] = Item("Frozen Veggies", {9, 20, 2026}, 3.25, nullptr);
 
     // Assign values to Item* record vars
     for(int i = 0; i < ItemRSize; i++)
@@ -111,15 +116,15 @@ int main()
         // priceRecord children are kept nameless and pointed to nullptr because they belong to a named item already
         // (i + 1) just makes sure the date is different from the current record
         // ((i + 1) * 0.25) just makes sure that the difference in price is interesting
-        pRecord[i] = Item("", {9, 20 - (i + 1), 2026}, 5.22 - ((i + 1) * 0.25), nullptr);
-        sRecord[i] = Item("", {9, 20 - (i + 1), 2026}, 5.22 - ((i + 1) * 0.25), nullptr);
-        vRecord[i] = Item("", {9, 20 - (i + 1), 2026}, 5.22 - ((i + 1) * 0.25), nullptr);
+        pRecord[i] = Item("", {catalogue[0].date.month, catalogue[0].date.day - (i + 1), catalogue[0].date.year}, catalogue[0].price - ((i + 1) * 0.25), nullptr);
+        sRecord[i] = Item("", {catalogue[1].date.month, catalogue[1].date.day - (i + 1), catalogue[1].date.year}, catalogue[1].price - ((i + 1) * 0.25), nullptr);
+        vRecord[i] = Item("", {catalogue[2].date.month, catalogue[2].date.day - (i + 1), catalogue[2].date.year}, catalogue[2].price - ((i + 1) * 0.25), nullptr);
     }
-    
-    // Define catalogue entries;
-    catalogue[0] = Item("Pasta", {9, 20, 2026}, 5.22, pRecord);
-    catalogue[1] = Item("Steak", {9, 20, 2026}, 12.36, sRecord);
-    catalogue[2] = Item("Frozen Veggies", {9, 20, 2026}, 3.25, vRecord);
+
+    // Copies record arrays into catalogue array
+    catalogue[0].priceRecord = pRecord;
+    catalogue[1].priceRecord = sRecord;
+    catalogue[2].priceRecord = vRecord;
 
     // Should print Item first, then all record contents for the entire catalogue array
     for(int i = 0; i < CatalogueSize; i++)
