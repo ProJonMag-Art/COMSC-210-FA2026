@@ -39,6 +39,7 @@ struct Item
     Date date;
     float price;
     Item* priceRecord;
+
     Item(string name, Date date, float price, Item* priceRecord)
     {
         this->name = name;
@@ -64,8 +65,15 @@ struct Item
     }
 };
 
+const int arrSize = 10;
+
 int main()
 {
+    Item* itemArr = new Item[arrSize];
+    for(int i = 0; i < arrSize; i++)
+    {
+        itemArr[i] = Item();
+    }
 
     return 0;
 }
