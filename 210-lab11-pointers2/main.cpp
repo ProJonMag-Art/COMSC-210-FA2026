@@ -76,7 +76,7 @@ struct Item
     {
         cout << this->name << " ";
         this->date.printDate();
-        cout << " " << this->price << endl;
+        cout << "    " << this->price << endl;
     }
 
     // Prints name, date, and price of whichever Item* priceRecord for its entire size
@@ -132,11 +132,6 @@ int main()
 
     // Should print Item first, then all record contents for the entire catalogue array
     formatOutput(catalogue, CatalogueSize, ItemRSize);
-    /*for(int i = 0; i < CatalogueSize; i++)
-    {
-        catalogue[i].printItemData();
-        catalogue[i].printRecordData(ItemRSize);
-    }*/
 
     // Free Memory
     delete [] catalogue;
@@ -149,13 +144,18 @@ int main()
 
 void formatOutput(Item* catalogue, int catalogueSize, int recordSize)
 {
-    int spaceSize = 5;
+    int spaceSize = 8;
     for(int i = 0; i < catalogueSize; i++)
     {
         cout << "Item: " << catalogue[i].name << endl;
-        cout << "Date: ";
+        cout << "---------------------" << endl;
+
+        cout << " Date: " << setw((1.5 * spaceSize)) << "     Price:" << endl;
+        cout << " ---------" << setw(spaceSize) << "   ------" << endl;
+        cout << " ";
         catalogue[i].date.printDate();
-        cout << " Price: " << catalogue[i].price;
+        cout << setw(spaceSize) << catalogue[i].price << endl;
         catalogue[i].printRecordData(recordSize); 
+        cout << endl;
      }
 }
