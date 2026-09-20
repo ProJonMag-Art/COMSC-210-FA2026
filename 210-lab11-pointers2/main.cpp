@@ -97,6 +97,10 @@ struct Item
 const int CatalogueSize = 3;
 const int ItemRSize = 2;
 
+// Function Definitions
+// Prints everything in catalogue in a formatted way using loops
+void formatOutput(Item* catalogue, int catalogueSize, int recordSize);
+
 int main()
 {
     // Allocated Memory
@@ -127,11 +131,12 @@ int main()
     catalogue[2].priceRecord = vRecord;
 
     // Should print Item first, then all record contents for the entire catalogue array
-    for(int i = 0; i < CatalogueSize; i++)
+    formatOutput(catalogue, CatalogueSize, ItemRSize);
+    /*for(int i = 0; i < CatalogueSize; i++)
     {
         catalogue[i].printItemData();
         catalogue[i].printRecordData(ItemRSize);
-    }
+    }*/
 
     // Free Memory
     delete [] catalogue;
@@ -142,13 +147,15 @@ int main()
     return 0;
 }
 
-void formatOutput(Item* catalogue, int catalogueSize)
+void formatOutput(Item* catalogue, int catalogueSize, int recordSize)
 {
     int spaceSize = 5;
     for(int i = 0; i < catalogueSize; i++)
     {
-        cout << setw(spaceSize) << "Item: " << catalogue[i].name << setw(spaceSize) << "Date: ";
+        cout << "Item: " << catalogue[i].name << endl;
+        cout << "Date: ";
         catalogue[i].date.printDate();
-        cout << setw(spaceSize) << "Price: " << catalogue[i].price;
-    }
+        cout << " Price: " << catalogue[i].price;
+        catalogue[i].printRecordData(recordSize); 
+     }
 }
