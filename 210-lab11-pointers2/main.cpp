@@ -106,9 +106,9 @@ int main()
     Item* vRecord = new Item[ItemRSize];
     
     // Define catalogue entries;
-    catalogue[0] = Item("Pasta", {9, 20, 2026}, 5.22, nullptr);
-    catalogue[1] = Item("Steak", {9, 20, 2026}, 12.36, nullptr);
-    catalogue[2] = Item("Frozen Veggies", {9, 20, 2026}, 3.25, nullptr);
+    catalogue[0] = Item("Pasta", {9, 18, 2026}, 5.22, nullptr);
+    catalogue[1] = Item("Steak", {9, 18, 2026}, 12.36, nullptr);
+    catalogue[2] = Item("Frozen Veggies", {9, 18, 2026}, 3.25, nullptr);
 
     // Assign values to Item* record vars
     for(int i = 0; i < ItemRSize; i++)
@@ -116,9 +116,9 @@ int main()
         // priceRecord children are kept nameless and pointed to nullptr because they belong to a named item already
         // (i + 1) just makes sure the date is different from the current record
         // ((i + 1) * 0.25) just makes sure that the difference in price is interesting
-        pRecord[i] = Item("", {catalogue[0].date.month, catalogue[0].date.day - (i + 1), catalogue[0].date.year}, catalogue[0].price - ((i + 1) * 0.25), nullptr);
-        sRecord[i] = Item("", {catalogue[1].date.month, catalogue[1].date.day - (i + 1), catalogue[1].date.year}, catalogue[1].price - ((i + 1) * 0.25), nullptr);
-        vRecord[i] = Item("", {catalogue[2].date.month, catalogue[2].date.day - (i + 1), catalogue[2].date.year}, catalogue[2].price - ((i + 1) * 0.25), nullptr);
+        pRecord[i] = Item("", {9, 19 + (i + 1), 2026}, catalogue[0].price - ((i + 1) * 0.25), nullptr);
+        sRecord[i] = Item("", {9, 19 + (i + 1), 2026}, catalogue[1].price - ((i + 1) * 0.25), nullptr);
+        vRecord[i] = Item("", {9, 19 + (i + 1), 2026}, catalogue[2].price - ((i + 1) * 0.25), nullptr);
     }
 
     // Copies record arrays into catalogue array
@@ -140,4 +140,15 @@ int main()
     delete [] vRecord;
 
     return 0;
+}
+
+void formatOutput(Item* catalogue, int catalogueSize)
+{
+    int spaceSize = 5;
+    for(int i = 0; i < catalogueSize; i++)
+    {
+        cout << setw(spaceSize) << "Item: " << catalogue[i].name << setw(spaceSize) << "Date: ";
+        catalogue[i].date.printDate();
+        cout << setw(spaceSize) << "Price: " << catalogue[i].price;
+    }
 }
