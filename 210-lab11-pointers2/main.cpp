@@ -73,25 +73,22 @@ struct Item
 };
 
 // Global Variables
-const int arrSize = 10;
+const int CatalogueSize = 3;
+const int ItemRSize = 2;
 
 // Function Declarations
-void printItemArr(Item item)
-{
-    item.date.printDate();
-    
-}
+void printItemArr(Item item);
 
 int main()
 {
-    Item* itemArr = new Item[arrSize];
-    for(int i = 0; i < arrSize; i++)
-    {
-        itemArr[i] = Item();
-
-        itemArr[i].date.printDate(); // Couts full date M/D/Y
-        cout << itemArr[i].name << " " << itemArr[i].price;
-    }
+    Item* catalogue = new Item[CatalogueSize];
+    Item* pRecord = new Item[ItemRSize];
+    Item* sRecord = new Item[ItemRSize];
+    Item* vRecord = new Item[ItemRSize];
+    
+    catalogue[0] = Item("Pasta", {9, 20, 2026}, 5.22, pRecord);
+    catalogue[1] = Item("Steak", {9, 20, 2026}, 5.22, sRecord);
+    catalogue[2] = Item("Frozen Veggies", {9, 20, 2026}, 5.22, vRecord);
 
     return 0;
 }
