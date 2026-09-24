@@ -9,6 +9,7 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
+#include <cmath>
 
 using namespace std;
 
@@ -147,12 +148,13 @@ Student* findMinMedMax(vector<Student> dataArr)
 float* findMeanSD(vector<Student> dataArr)
 {
     int size = dataArr.size();
+    float sumOfDiffs = 0;
     float arrSum = 0;
     bool evenDataset = false;
 
     float* meanSD = new float[2] { 0, 0 };
 
-    if(dataArr.size() % 2 == 0)
+    if(size % 2 == 0)
     {
         evenDataset = true;
     } else
@@ -160,10 +162,23 @@ float* findMeanSD(vector<Student> dataArr)
         evenDataset = false;
     }
 
-    for(int i = 0; i < dataArr.size(); i++)
+    // Get sum of scores
+    for(int i = 0; i < size; i++)
     {
         arrSum += dataArr[i].score;
     }
 
+    // Save mean
+    meanSD[0] = arrSum/size;
 
+    // Square the sum of each datapoint - the mean
+    for(int j = 0; j < size; j++)
+    {
+        sumOfDiffs += pow((dataArr[j].score - meanSD[0]), 2);
+    }
+
+    // Save the sd which is the previous divided by the size of the array
+    meanSD[1] = sqrt((sumOfDiffs/size));
+    
+    return meanSD;
 }
