@@ -1,8 +1,8 @@
 
 // COMSC-210 | Lab 11 | Jonvianney Maglasang
 
-// Started September 20, 2026 at 11:54am
-// Finished September 20, 2026 at 2:19pm
+// Started September 20, 2026 at 6:50pm
+// Finished September 20, 2026 at 9:53pm
 
 #include <iostream>
 #include <vector>
@@ -48,6 +48,8 @@ Student* findMinMedMax(vector<Student> dataArr);
 // findMeanSD() finds the average by dividing sum, which you get by using a loop, by the size of the array
 // Finds sd by using a formula I found online, which is sqrt(((sum((datapoint - mean)^2))/size))
 float* findMeanSD(vector<Student>);
+
+// outputData() uses findMeanSD() and infdMinMedMax and outputs all of the summary data. It also deletes the allocated memory from those two functions
 void outputData(vector<Student> dataArr);
 
 int main()
@@ -58,7 +60,11 @@ int main()
     float* meanSD;
     
     readData(filename, dataArr);
+
     selectionSort(dataArr);
+    outputData(dataArr);
+
+    writeData("data/210-lab-13-grades-sorted.txt", dataArr);
 
     return 0;
 }
@@ -87,7 +93,7 @@ void writeData(string filename, vector<Student> dataArr)
     // Save contents of array into the file using loops
     for(int i = 0; i < dataArr.size(); i++)
     {
-        writeFile << dataArr[i].id << dataArr[i].score << endl;
+        writeFile << dataArr[i].id << " " << dataArr[i].score << endl;
     }
 
     writeFile.close();
@@ -129,13 +135,13 @@ Student* findMinMedMax(vector<Student> dataArr)
 
     for(int i = 0; i < size; i++)
     {
-        // Finds max
+        // Finds min
         if(minMaxMed[1].score > dataArr[i].score)
         {
             minMaxMed[1] = dataArr[i];
         }
 
-        // Finds min
+        // Finds max
         if(minMaxMed[0].score < dataArr[i].score)
         {
             minMaxMed[0] = dataArr[i];
@@ -194,6 +200,21 @@ void outputData(vector<Student> dataArr)
         evenDataset = false;
     }
 
-    cout << " --- Summary Statistics --- " << endl;
-    cout << "Minimum: " << minMaxMed[0].score << " (Student ID: " << minMaxMed[0].id << ")" << endl;
+    cout << "\n --- Summary Statistics --- " << endl;
+    cout << "Minimum: " << minMaxMed[1].score << " (Student ID: " << minMaxMed[1].id << ")" << endl;
+    cout << "Maximum: " << minMaxMed[0].score << " (Student ID: " << minMaxMed[0].id << ")" << endl;
+    cout << "Mean: " << meanSD[0] << endl;
+
+    if(evenDataset == true)
+    {
+        cout << "Median: " << minMaxMed[2].score << " (Student ID: " << minMaxMed[2].id << ") and " << minMaxMed[3].score << " (Student ID: " << minMaxMed[3].id << ")" << endl;
+    } else
+    {
+        cout << "Median: " << minMaxMed[2].score << " (Student ID: " << minMaxMed[2].id << ")" << endl;
+    }
+
+    cout << "Standard Deviation: " << meanSD[1] << endl;
+
+    delete [] minMaxMed;
+    delete [] meanSD;
 }
