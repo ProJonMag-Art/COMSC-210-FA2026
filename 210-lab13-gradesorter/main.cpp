@@ -29,8 +29,14 @@ struct Student
     }
 };
 
+// Function Declarations
+// readData() takes the filename creates the readFile object, makes a temp Student and populates it with the data from each line, then pushes it into the vector<Student> dataArr
 void readData(string filename, vector<Student>& dataArr);
-void writeData(string filename, vector<Student>& dataArr);
+
+// writeData creates the writeFile object using filename string and loops through dataArr.size() and writes it on each line
+void writeData(string filename, vector<Student> dataArr);
+
+void selectionSort(vector<Student>& dataArr);
 Student findMin(vector<Student> dataArr);
 Student findMax(vector<Student> dataArr);
 float findMean(vector<Student> dataArr);
@@ -40,7 +46,7 @@ void outputData(vector<Student> dataArr);
 
 int main()
 {
-    string filename = "210-lab-13-grades.txt";
+    string filename = "data/210-lab-13-grades.txt";
     vector<Student> dataArr; 
     
     readData(filename, dataArr);
@@ -51,16 +57,26 @@ int main()
 void readData(string filename, vector<Student>& dataArr)
 {
     ifstream readFile(filename);
-    Student tempStu = Student();
-
+    Student tempStu;
+    
     int i = 0;
-    while(readFile >> tempStu.id)
+    while(readFile >> tempStu.id >> tempStu.score)
     {
         dataArr.push_back(tempStu);
-        cout << "success";
-        cout << dataArr[i].id << " " << dataArr[i].score << endl;
         i++;
     }
 
     readFile.close();
+}
+
+void writeData(string filename, vector<Student> dataArr)
+{
+    ofstream writeFile(filename);
+
+    for(int i = 0; i < dataArr.size(); i++)
+    {
+        writeFile << dataArr[i].id << dataArr[i].score << endl;
+    }
+
+    writeFile.close();
 }
