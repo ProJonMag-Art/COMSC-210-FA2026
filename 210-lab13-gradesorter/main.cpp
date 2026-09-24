@@ -39,8 +39,12 @@ void writeData(string filename, vector<Student> dataArr);
 // selectionSort works like any other implementation of selection sort, finding the lowest element to the right of the already sorted parts, and puts it in the i position in the array
 void selectionSort(vector<Student>& dataArr);
 
-
+// findMinMedMex() finds the student element with the lowest score, highest score, and median score. The element after the median element is saved in case the array is even sized
+// The median of an even array are two different student values
+// Min and Max are found through looped checks
 Student* findMinMedMax(vector<Student> dataArr);
+
+
 float* findMeanSD(vector<Student>);
 void outputData(vector<Student> dataArr);
 
@@ -120,7 +124,7 @@ Student* findMinMedMax(vector<Student> dataArr)
     int size = dataArr.size();
     
     // [0] = min, [1] = max, [2] = median (odd, only output this for median) [3] = median (when dataset is even, there are two median values, output both values)
-    Student* minAndMax = new Student[4] {dataArr[0], dataArr[0], dataArr[size/2], dataArr[size/2 + 1]};
+    Student* minAndMax = new Student[4] { dataArr[0], dataArr[0], dataArr[size/2], dataArr[size/2 + 1] };
 
     for(int i = 0; i < size; i++)
     {
@@ -138,4 +142,28 @@ Student* findMinMedMax(vector<Student> dataArr)
     }
     
     return minAndMax;
+}
+
+float* findMeanSD(vector<Student> dataArr)
+{
+    int size = dataArr.size();
+    float arrSum = 0;
+    bool evenDataset = false;
+
+    float* meanSD = new float[2] { 0, 0 };
+
+    if(dataArr.size() % 2 == 0)
+    {
+        evenDataset = true;
+    } else
+    {
+        evenDataset = false;
+    }
+
+    for(int i = 0; i < dataArr.size(); i++)
+    {
+        arrSum += dataArr[i].score;
+    }
+
+
 }
