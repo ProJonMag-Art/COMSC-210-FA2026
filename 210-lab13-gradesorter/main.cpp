@@ -45,7 +45,8 @@ void selectionSort(vector<Student>& dataArr);
 // Min and Max are found through looped checks
 Student* findMinMedMax(vector<Student> dataArr);
 
-
+// findMeanSD() finds the average by dividing sum, which you get by using a loop, by the size of the array
+// Finds sd by using a formula I found online, which is sqrt(((sum((datapoint - mean)^2))/size))
 float* findMeanSD(vector<Student>);
 void outputData(vector<Student> dataArr);
 
@@ -53,13 +54,12 @@ int main()
 {
     string filename = "data/210-lab-13-grades.txt";
     vector<Student> dataArr; 
-    Student* minAndMax;
+    Student* minMaxMed;
+    float* meanSD;
     
     readData(filename, dataArr);
     selectionSort(dataArr);
-    minAndMax = findMinMedMax(dataArr);
 
-    delete [] minAndMax;
     return 0;
 }
 
@@ -125,24 +125,24 @@ Student* findMinMedMax(vector<Student> dataArr)
     int size = dataArr.size();
     
     // [0] = min, [1] = max, [2] = median (odd, only output this for median) [3] = median (when dataset is even, there are two median values, output both values)
-    Student* minAndMax = new Student[4] { dataArr[0], dataArr[0], dataArr[size/2], dataArr[size/2 + 1] };
+    Student* minMaxMed = new Student[4] { dataArr[0], dataArr[0], dataArr[size/2], dataArr[size/2 + 1] };
 
     for(int i = 0; i < size; i++)
     {
         // Finds max
-        if(minAndMax[1].score > dataArr[i].score)
+        if(minMaxMed[1].score > dataArr[i].score)
         {
-            minAndMax[1] = dataArr[i];
+            minMaxMed[1] = dataArr[i];
         }
 
         // Finds min
-        if(minAndMax[0].score < dataArr[i].score)
+        if(minMaxMed[0].score < dataArr[i].score)
         {
-            minAndMax[0] = dataArr[i];
+            minMaxMed[0] = dataArr[i];
         }
     }
     
-    return minAndMax;
+    return minMaxMed;
 }
 
 float* findMeanSD(vector<Student> dataArr)
@@ -150,17 +150,9 @@ float* findMeanSD(vector<Student> dataArr)
     int size = dataArr.size();
     float sumOfDiffs = 0;
     float arrSum = 0;
-    bool evenDataset = false;
 
+    // [0] = mean, [1] = sd
     float* meanSD = new float[2] { 0, 0 };
-
-    if(size % 2 == 0)
-    {
-        evenDataset = true;
-    } else
-    {
-        evenDataset = false;
-    }
 
     // Get sum of scores
     for(int i = 0; i < size; i++)
@@ -179,6 +171,29 @@ float* findMeanSD(vector<Student> dataArr)
 
     // Save the sd which is the previous divided by the size of the array
     meanSD[1] = sqrt((sumOfDiffs/size));
-    
+
     return meanSD;
+}
+
+void outputData(vector<Student> dataArr)
+{
+    int size = dataArr.size();
+    int spaceSize = 10;
+    Student* minMaxMed;
+    float* meanSD;
+    bool evenDataset;
+
+    minMaxMed = findMinMedMax(dataArr);
+    meanSD = findMeanSD(dataArr);
+
+    if(size % 2 == 0)
+    {
+        evenDataset = true;
+    } else
+    {
+        evenDataset = false;
+    }
+
+    cout << " --- Summary Statistics --- " << endl;
+    cout << "Minimum: " << minMaxMed[0].score << " (Student ID: " << minMaxMed[0].id << ")" << endl;
 }
