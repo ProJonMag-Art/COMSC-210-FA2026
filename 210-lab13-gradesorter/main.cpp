@@ -40,20 +40,21 @@ void writeData(string filename, vector<Student> dataArr);
 void selectionSort(vector<Student>& dataArr);
 
 
-Student* findMinAndMax(vector<Student> dataArr);
-float findMean(vector<Student> dataArr);
-Student findMedian(vector<Student> dataArr);
-float findSD(vector<Student> dataArr);
+Student* findMinMedMax(vector<Student> dataArr);
+float* findMeanSD(vector<Student>);
 void outputData(vector<Student> dataArr);
 
 int main()
 {
     string filename = "data/210-lab-13-grades.txt";
     vector<Student> dataArr; 
-
+    Student* minAndMax;
     
     readData(filename, dataArr);
+    selectionSort(dataArr);
+    minAndMax = findMinMedMax(dataArr);
 
+    delete [] minAndMax;
     return 0;
 }
 
@@ -114,24 +115,27 @@ void selectionSort(vector<Student>& dataArr)
     }
 }
 
-Student* findMinAndMax(vector<Student> dataArr)
+Student* findMinMedMax(vector<Student> dataArr)
 {
     int size = dataArr.size();
-    Student* minAndMax = new Student[2] {dataArr[0], dataArr[0]};
+    
+    // [0] = min, [1] = max, [2] = median (odd, only output this for median) [3] = median (when dataset is even, there are two median values, output both values)
+    Student* minAndMax = new Student[4] {dataArr[0], dataArr[0], dataArr[size/2], dataArr[size/2 + 1]};
 
     for(int i = 0; i < size; i++)
     {
-        // Finds 
+        // Finds max
         if(minAndMax[1].score > dataArr[i].score)
         {
             minAndMax[1] = dataArr[i];
         }
 
+        // Finds min
         if(minAndMax[0].score < dataArr[i].score)
         {
             minAndMax[0] = dataArr[i];
         }
     }
-
+    
     return minAndMax;
 }
