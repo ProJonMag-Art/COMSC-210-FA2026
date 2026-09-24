@@ -21,6 +21,12 @@ struct Student
         this->id = idInput;
         this->score = scoreInput;
     }
+
+    Student()
+    {
+        this->id = 0;
+        this->score = 0;
+    }
 };
 
 void readData(string filename, vector<Student>& dataArr);
@@ -36,7 +42,8 @@ int main()
 {
     string filename = "210-lab-13-grades.txt";
     vector<Student> dataArr; 
-
+    
+    readData(filename, dataArr);
 
     return 0;
 }
@@ -44,13 +51,14 @@ int main()
 void readData(string filename, vector<Student>& dataArr)
 {
     ifstream readFile(filename);
+    Student tempStu = Student();
 
     int i = 0;
-    while(readFile >> dataArr[i].id)
+    while(readFile >> tempStu.id)
     {
-        i++;
-        
-        readFile >> dataArr[i].score;
+        dataArr.push_back(tempStu);
+        cout << "success";
+        cout << dataArr[i].id << " " << dataArr[i].score << endl;
         i++;
     }
 
