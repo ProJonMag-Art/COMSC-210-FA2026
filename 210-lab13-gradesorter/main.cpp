@@ -80,3 +80,28 @@ void writeData(string filename, vector<Student> dataArr)
 
     writeFile.close();
 }
+
+void selectionSort(vector<Student>& dataArr)
+{
+    int size = dataArr.size();
+    int idxOfLowest = 0;
+    Student tempStu = Student();
+
+    for(int i = 0; i < size - 1; i++)
+    {
+        for(int j = i + 1; j < size; j++)
+        {
+            // If we found a new lowest id in the array
+            if(dataArr[j].id < dataArr[idxOfLowest].id)
+            {
+                // Save that index
+                idxOfLowest = j;
+            }
+        }
+
+        // Swap the i element and the lowest element
+        tempStu = dataArr[idxOfLowest];
+        dataArr[idxOfLowest] = dataArr[i];
+        dataArr[i] = dataArr[idxOfLowest];
+    }
+}
