@@ -12,11 +12,11 @@ using namespace std;
 class Color
 {
     private:
-        int r;
-        int g;
-        int b;
+        // [0] = r, [1] = g, [2] = b
+        int rgb[3];
 
-        void fixColVals(int& colVal)
+        // Turns a color value into 0 or 255 if it is less than 0 or greater than 255
+        void fixColVal(int& colVal)
         {
             if(colVal < 0)
             {
@@ -31,18 +31,33 @@ class Color
         
     
     public:
-        void setRGB(int rVal, int gVal, int bVal)
+        // setCol() saves colVal at rgb[colIdx]
+        int setCol(int colIdx, int colVal)
         {
-            fixColVals(rVal);
-            fixColVals(gVal);
-            fixColVals(bVal);
-
-            r = rVal;
-            g = gVal;
-            b = bVal;
+            if(colIdx < 0 || colIdx > 2)
+            {
+                fixColVal(colVal);
+                rgb[colIdx] = colVal;
+                return 1;
+            } else
+            {
+                return -1;
+            }
         }
 
-        
+        // getCol() returns the color value at rgb[colIdx]
+        int getCol(int colIdx)
+        {
+            if(colIdx < 0 || colIdx > 2)
+            {
+                return rgb[colIdx];
+            } else
+            {
+                return -1;
+            }
+        }
+
+        void printData()
 };
 
 int main()
