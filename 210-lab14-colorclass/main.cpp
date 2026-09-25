@@ -13,7 +13,7 @@ class Color
 {
     private:
         // [0] = r, [1] = g, [2] = b
-        int rgb[3];
+        int rgb[3] = { 0, 0, 0 };
 
         // Turns a color value into 0 or 255 if it is less than 0 or greater than 255
         void fixColVal(int& colVal)
@@ -57,11 +57,25 @@ class Color
             }
         }
 
+        // setAllCols() uses setCol() in a loop
+        void setAllCols(int rVal = 0, int gVal = 0, int bVal = 0)
+        {
+            int inputtedVals[3] = { rVal, gVal, bVal };
+
+            for(int i = 0; i < 3; i++)
+            {
+                setCol(i, inputtedVals[i]);
+            }
+        }
+
         void printData()
+        {
+            cout << "R: " << rgb[0] << " G: " << rgb[1] << " B: " << rgb[2] << endl;
+        }
 };
 
 int main()
 {
-
+    
     return 0;
 }
