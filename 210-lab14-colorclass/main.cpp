@@ -2,7 +2,7 @@
 // COMSC-210 | Lab 14 | Jonvianney Maglasang
 
 // Started September 24, 2026 at 11:01pm
-// Finished September 24, 2026 at 
+// Finished September 24, 2026 at 11:57pm
 
 #include <iostream>
 #include <iomanip>
@@ -35,26 +35,28 @@ class Color
         // setCol() saves colVal at rgb[colIdx]
         int setCol(int colIdx, int colVal)
         {
+            // If the index is out of the array range
             if(colIdx < 0 || colIdx > 2)
+            {
+                return -1;
+            } else
             {
                 fixColVal(colVal);
                 rgb[colIdx] = colVal;
                 return 1;
-            } else
-            {
-                return -1;
             }
         }
 
         // getCol() returns the color value at rgb[colIdx]
         int getCol(int colIdx)
         {
+            // If the index is out of the array range
             if(colIdx < 0 || colIdx > 2)
             {
-                return rgb[colIdx];
+                return -1;
             } else
             {
-                return -1;
+                return rgb[colIdx];
             }
         }
 
@@ -90,14 +92,15 @@ int main()
     colors[3].setAllCols(21, 9, 10);
     colors[4].setAllCols(66, 180, 230);
 
+    // Getter function test should return 30
     cout << colors[0].getCol(2) << endl;
-    colors[0].setCol(0, 30);
+    colors[1].setCol(0, 30);
 
     cout << "All Color Data:" << endl;
     cout << "---------------" << endl;
     for(int i = 0; i < colors.size(); i++)
     {
-        cout << "Color" << i << " ";
+        cout << "Color" << (i + 1) << " ";
         colors[i].printData();
     }
 
