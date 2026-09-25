@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <vector>
 
 using namespace std;
 
@@ -76,6 +77,29 @@ class Color
 
 int main()
 {
-    
+    vector<Color> colors;
+    for(int i = 0; i < 5; i++)
+    {
+        Color temp;
+        colors.push_back(temp);
+    }
+
+    colors[0].setAllCols(256, -1, 30);
+    colors[1].setAllCols(135, 200, 38);
+    colors[2].setAllCols(56, 56, 72);
+    colors[3].setAllCols(21, 9, 10);
+    colors[4].setAllCols(66, 180, 230);
+
+    cout << colors[0].getCol(2) << endl;
+    colors[0].setCol(0, 30);
+
+    cout << "All Color Data:" << endl;
+    cout << "---------------" << endl;
+    for(int i = 0; i < colors.size(); i++)
+    {
+        cout << "Color" << i << " ";
+        colors[i].printData();
+    }
+
     return 0;
 }
