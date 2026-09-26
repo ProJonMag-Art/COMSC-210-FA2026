@@ -99,15 +99,20 @@ void readData(string filename, vector<Movie>& movieArr)
     int tempInt = 0;
     string tempStr;
 
-    // While there is more data to read
-    while(readFile >> tempStr >> tempInt)
+    // While there is another line of data to save as a string
+    while(getline(readFile, tempStr))
     {
-        // Sets title and year
         tempMovie.setTitle(tempStr);
+
+        // Read the next piece of data into a tempInt
+        readFile >> tempInt;
         tempMovie.setYear(tempInt);
 
-        // Reads next file input int temp str to use the same tempStr again
-        readFile >> tempStr;
+        // Ignores the '/n' char that the >> operator leaves for some reason to allow getline() to read the right line
+        readFile.ignore();
+
+        // Reads next line into tempStr to use the same tempStr again
+        getline(readFile, tempStr);
         tempMovie.setSWriter(tempStr);
 
         movieArr.push_back(tempMovie);
