@@ -65,35 +65,53 @@ class Movie
         void printData()
         {
             int spaceSize = 5;
-            cout << "Movie: " << title << endl;
-            cout << setw(5) << "Year Released: " << yearReleased << endl;
-            cout << setw(5) << "Screenwriter: " << screenWriter << endl;
+            cout << "Movie: " << getTitle() << endl;
+            cout << setw(spaceSize) << "Year Released: " << getYear() << endl;
+            cout << setw(spaceSize) << "Screenwriter: " << getSWriter() << endl;
         }
 };
 
 // Function Declarations
-void readData(string filename, vector<Movie>& movieArr)
-{
-    ifstream readFile(filename);
-    Movie tempObj;
-    int tempInt = 0;
-    string tempStr;
-
-
-    while(readFile >> tempStr >> tempInt)
-    {
-        tempObj.setTitle(tempStr);
-        tempObj.setYear(tempInt);
-
-        readFile >> tempStr;
-        tempObj.setSWriter(tempStr);
-    }
-
-    readFile.close();
-}
+void readData(string filename, vector<Movie>& movieArr);
 
 int main()
 {
+    string filename = "input.txt";
+    vector<Movie> movieData;
+
+    readData(filename, movieData);
+
+    cout << "Best Movie Data: " << endl;
+    cout << "----------------" << endl;
+    for(int i = 0; i < movieData.size(); i++)
+    {
+        movieData[i].printData();
+        cout << endl;
+    }
 
     return 0;
+}
+
+void readData(string filename, vector<Movie>& movieArr)
+{
+    ifstream readFile(filename);
+    Movie tempMovie;
+    int tempInt = 0;
+    string tempStr;
+
+    // While there is more data to read
+    while(readFile >> tempStr >> tempInt)
+    {
+        // Sets title and year
+        tempMovie.setTitle(tempStr);
+        tempMovie.setYear(tempInt);
+
+        // Reads next file input int temp str to use the same tempStr again
+        readFile >> tempStr;
+        tempMovie.setSWriter(tempStr);
+
+        movieArr.push_back(tempMovie);
+    }
+
+    readFile.close();
 }
