@@ -2,7 +2,7 @@
 // COMSC-210 | Lab 16 | Jonvianney Maglasang
 
 // Started September 30, 2026 at 9:25pm
-// Finished September 30, 2026 at 
+// Finished September 30, 2026 at 9:40pm
 
 #include <iostream>
 #include <iomanip>
@@ -112,22 +112,18 @@ int main()
     for(int i = 0; i < 2; i++)
     {
         Color temp1 = Color();
-        Color temp2 = Color(10 * i, 10 * i, 10 * 1);
-        Color temp3 = Color(i * 50);
+        Color temp2 = Color(10 * (i + 1), 10 * (i + 1), 10 * (i + 1));
+        Color temp3 = Color((i + 1) * 50);
         colors.push_back(temp1);
         colors.push_back(temp2);
         colors.push_back(temp3);
     }
 
-     //Getter function test should return 30
-    cout << colors[0].getCol(2) << endl;
-    colors[1].setCol(0, 30);
-
     cout << "All Color Data:" << endl;
     cout << "---------------" << endl;
     for(int i = 0; i < colors.size(); i++)
     {
-        cout << "Color" << (i + 1) << " ";
+        cout << "Color " << (i + 1) << " ";
         colors[i].printData();
     }
 
