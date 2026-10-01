@@ -1,8 +1,8 @@
 
-// COMSC-210 | Lab 14 | Jonvianney Maglasang
+// COMSC-210 | Lab 16 | Jonvianney Maglasang
 
-// Started September 24, 2026 at 11:01pm
-// Finished September 24, 2026 at 11:57pm
+// Started September 30, 2026 at 9:25pm
+// Finished September 30, 2026 at 
 
 #include <iostream>
 #include <iomanip>
@@ -32,6 +32,35 @@ class Color
         
     
     public:
+        // Parameter Constructor
+        Color(int rInput, int gInput, int bInput)
+        {
+            fixColVal(rInput);
+            fixColVal(gInput);
+            fixColVal(bInput);
+            rgb[0] = rInput;
+            rgb[1] = gInput;
+            rgb[2] = gInput;
+        }
+
+        // Partial Constructor
+        Color(int rInput)
+        {
+            fixColVal(rInput);
+            rgb[0] = rInput;
+            rgb[1] = 0;
+            rgb[2] = 0;
+        }
+
+        // Default Constructor
+        Color()
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                rgb[i] = 0;
+            }
+        }
+        
         // setCol() saves colVal at rgb[colIdx]
         int setCol(int colIdx, int colVal)
         {
@@ -80,19 +109,17 @@ class Color
 int main()
 {
     vector<Color> colors;
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 2; i++)
     {
-        Color temp;
-        colors.push_back(temp);
+        Color temp1 = Color();
+        Color temp2 = Color(10 * i, 10 * i, 10 * 1);
+        Color temp3 = Color(i * 50);
+        colors.push_back(temp1);
+        colors.push_back(temp2);
+        colors.push_back(temp3);
     }
 
-    colors[0].setAllCols(256, -1, 30);
-    colors[1].setAllCols(135, 200, 38);
-    colors[2].setAllCols(56, 56, 72);
-    colors[3].setAllCols(21, 9, 10);
-    colors[4].setAllCols(66, 180, 230);
-
-    // Getter function test should return 30
+     //Getter function test should return 30
     cout << colors[0].getCol(2) << endl;
     colors[1].setCol(0, 30);
 
