@@ -18,17 +18,31 @@ struct Node {
 
 // Function Declaration
 void output(Node* head);
-void deleteNode(Node* head);
-void insertAfter(Node* head);
-void deleteList(Node* head);
+void createRandLL(Node*& head, int size);
+void deleteNode(Node*& head);
+void insertAfter(Node*& head);
+void deleteList(Node*& head);
 
 int main()
 {
-    Node *head = nullptr;
-    int count = 0;
+    Node* head = nullptr;
 
-    // create a linked list of size SIZE with random numbers 0-99
-    for (int i = 0; i < SIZE; i++)
+    createRandLL(head, SIZE);
+    output(head);
+    deleteNode(head);
+    output(head);
+    insertAfter(head);
+    output(head);
+    deleteList(head);
+    output(head);
+
+    return 0;
+}
+
+// create a linked list of size SIZE with random numbers 0-99
+void createRandLL(Node*& head, int size)
+{
+    for (int i = 0; i < size; i++)
     {
         int tmp_val = rand() % 100;
         Node *newVal = new Node;
@@ -45,23 +59,12 @@ int main()
             head = newVal;
         }
     }
-
-    output(head);
-    deleteNode(head);
-    output(head);
-    insertAfter(head);
-    output(head);
-    deleteList(head);
-    output(head);
-
-    return 0;
 }
 
 // deleting a node
-void deleteNode(Node* head)
+void deleteNode(Node*& head)
 {
     cout << "Which indexed node to delete? " << endl;
-    output(head);
     int entry;
     cout << "Choice --> ";
     cin >> entry;
@@ -76,7 +79,7 @@ void deleteNode(Node* head)
     }
     
     // at this point, delete current and reroute pointers
-    if (current) 
+    if (current != nullptr) 
     {
         if (prev == nullptr) 
         {
@@ -92,7 +95,7 @@ void deleteNode(Node* head)
 }
 
 // insert a node
-void insertAfter(Node* head)
+void insertAfter(Node*& head)
 {
     cout << "After which node to insert 10000? " << endl;
     int count = 1;
@@ -109,6 +112,7 @@ void insertAfter(Node* head)
     cin >> entry;
     current = head;
 
+    // move through the list until index == entry
     for (int i = 0; i < entry; i++) {
         prev = current;
         current = current->next;
@@ -130,11 +134,10 @@ void insertAfter(Node* head)
 }
 
 // deleting the linked list
-void deleteList(Node* head)
+void deleteList(Node*& head)
 {
     Node* current = head;
 
-    // while current does not point to the end of the list
     while (current != nullptr) 
     {
         head = current->next;
@@ -146,7 +149,7 @@ void deleteList(Node* head)
 }
 
 // outputs list that the list head points to
-void output(Node *head) 
+void output(Node* head) 
 {
     // if head points to nothing
     if (head == nullptr) {
