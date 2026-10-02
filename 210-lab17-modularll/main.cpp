@@ -1,8 +1,8 @@
 
-// COMSC-210 | Lab 16 | Jonvianney Maglasang
+// COMSC-210 | Lab 17 | Jonvianney Maglasang
 
 // Started October 10, 2026 at 11:16am
-// Finished October 10, 2026 at
+// Finished October 10, 2026 at 12:05pm
 
 #include <iostream>
 
@@ -39,6 +39,7 @@ int main()
     return 0;
 }
 
+// Function Definitions
 // create a linked list of size SIZE with random numbers 0-99
 void createRandLL(Node*& head, int size)
 {
