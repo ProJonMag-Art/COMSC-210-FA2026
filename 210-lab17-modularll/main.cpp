@@ -1,32 +1,49 @@
 
+// COMSC-210 | Lab 16 | Jonvianney Maglasang
+
+// Started October 10, 2026 at 11:16am
+// Finished October 10, 2026 at
+
 #include <iostream>
+
 using namespace std;
+
+// Struct/Constant Definition
 const int SIZE = 7;
+
 struct Node {
-float value;
-Node *next;
+    float value;
+    Node *next;
 };
+
+// Function Declaration
 void output(Node *);
-int main() {
-Node *head = nullptr;
-int count = 0;
-// create a linked list of size SIZE with random numbers 0-99
-for (int i = 0; i < SIZE; i++) {
-int tmp_val = rand() % 100;
-Node *newVal = new Node;
-// adds node at head
-if (!head) {
-head = newVal;
-newVal->next = nullptr;
-newVal->value = tmp_val;
+void delNode(Node *)
+
+
+int main()
+{
+    Node *head = nullptr;
+    int count = 0;
+    // create a linked list of size SIZE with random numbers 0-99
+    for (int i = 0; i < SIZE; i++) {
+        int tmp_val = rand() % 100;
+        Node *newVal = new Node;
+    // List is empty, adds node at head
+    if (!head) {
+        head = newVal;
+        newVal->next = nullptr;
+        newVal->value = tmp_val;
+    } else 
+    {
+        newVal->next = head;
+        newVal->value = tmp_val;
+        head = newVal;
+    }
 }
-else {
-newVal->next = head;
-newVal->value = tmp_val;
-head = newVal;
-}
-}
+
 output(head);
+
 // deleting a node
 cout << "Which node to delete? " << endl;
 output(head);
