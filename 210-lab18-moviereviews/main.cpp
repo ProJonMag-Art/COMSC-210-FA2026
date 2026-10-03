@@ -9,6 +9,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <ctime>
 
 using namespace std;
 
@@ -42,22 +43,23 @@ class Movie
             head = inputNode;
         }
 
+        // Destructor
         ~Movie()
         {
-            ReviewNode* temp = head;
+            ReviewNode* prev = nullptr;
 
             // While head is not empty
             while(head != nullptr)
             {
-                // Point head to the next node
+                // Point previous ptr to head node and head ptr to next node
+                prev = head;
                 head = head->next;
 
-                // Point temp, the previous head to null and free memory
-                temp = nullptr;
-                delete temp;
-
-                // Reasign temp to the new head of list
-                temp = head;
+                // Point prev, the previous head to null and free memory
+                prev->review = "";
+                prev->value = NULL;
+                prev = nullptr;
+                delete prev;
             }
         }
 
@@ -66,8 +68,6 @@ class Movie
 
         void addReview(ReviewNode* inputNode = new ReviewNode())
         {
-            ReviewNode* head = getHead();
-
             // If list is empty
             if(head == nullptr)
             {
@@ -83,8 +83,22 @@ class Movie
         }
 };
 
+// Define Constants
+const double MIN = 1.0;
+const double MAX = 5.0;
+
+// Declare Functions
+double getRandNum(double min, double max);
+
+
 int main()
 {
-
+    srand(time(0));
     return 0;
+}
+
+// Define Functions
+double getRandNum(double min, double max)
+{
+    return rand() % (max - min + 1) + min;
 }
