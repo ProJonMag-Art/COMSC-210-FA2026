@@ -25,8 +25,6 @@ struct ReviewNode
         this->review = inputRev;
         this->next = inputNode;
     }
-
-    
 };
 
 class Movie
@@ -44,13 +42,44 @@ class Movie
             head = inputNode;
         }
 
+        ~Movie()
+        {
+            ReviewNode* temp = head;
+
+            // While head is not empty
+            while(head != nullptr)
+            {
+                // Point head to the next node
+                head = head->next;
+
+                // Point temp, the previous head to null and free memory
+                temp = nullptr;
+                delete temp;
+
+                // Reasign temp to the new head of list
+                temp = head;
+            }
+        }
+
         string getTitle() { return title; }
         ReviewNode* getHead() { return head; }
 
-        void addReview(ReviewNode* = new ReviewNode())
+        void addReview(ReviewNode* inputNode = new ReviewNode())
         {
             ReviewNode* head = getHead();
-            ReviewNode* current = head;
+
+            // If list is empty
+            if(head == nullptr)
+            {
+                head = inputNode;
+            } else
+            {
+                // New node points to head of list which points to other nodes
+                inputNode->next = head;
+
+                // Head points to appended node
+                head = inputNode;
+            }
         }
 };
 
