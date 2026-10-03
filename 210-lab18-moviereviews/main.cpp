@@ -5,6 +5,7 @@
 // Finished October 3, 2026 at 
 
 #include <iostream>
+#include <iomanip>
 #include <random>
 #include <fstream>
 #include <vector>
@@ -96,6 +97,7 @@ const string ReviewData = "data/reviews.txt";
 // Declare Functions
 double getRevNum(int min, int max);
 vector<string> readData(string filename);
+void outputData();
 
 int main()
 {
@@ -107,11 +109,16 @@ int main()
     for(int i = 0; i < MovieCnt; i++)
     {
         Movie tempMov(titleStrs[i]);
+        int idxCounter = 0;
 
-        for(int j = i * ReviewCnt; j % ReviewCnt != 0; j++)
+        // Puts three strings from reviewStrs into the added reviewNode, saves the counter to save the index place in reviewStrs array
+        for(int j = 0; j < ReviewCnt; j++)
         {
-            tempMov.addReview(new ReviewNode(getRevNum(Min, Max), reviewStrs[j]));
+            tempMov.addReview(new ReviewNode(getRevNum(Min, Max), reviewStrs[idxCounter]));
+            idxCounter++;
         }
+
+        movieArr.push_back(tempMov);
     }
     return 0;
 }
@@ -140,4 +147,21 @@ vector<string> readData(string filename)
 
     readFile.close();
     return strArr;
+}
+
+void outputData(vector<Movie> dataArr, int listSize)
+{
+    int size = dataArr.size();
+    ReviewNode* tempPtr = nullptr;
+
+    for(int i = 0; i < size; i++)
+    {
+        cout << "Movie Title:" << dataArr[i].getTitle() << endl;
+        tempPtr = dataArr[i].getHead();
+        for(int j = 0; j < listSize; j++)
+        {
+            cout << "   Review #" << j << ": " << tempPtr->value << ": " << tempPtr->review << endl;
+            tempPtr = tempPtr->next;
+        }
+    }
 }
