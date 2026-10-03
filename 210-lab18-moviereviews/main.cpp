@@ -25,6 +25,8 @@ struct ReviewNode
         this->review = inputRev;
         this->next = inputNode;
     }
+
+    
 };
 
 class Movie
@@ -34,18 +36,21 @@ class Movie
         ReviewNode* head;
 
     public:
+        // Default and also regular constructor
+        // allows you to create a new default node and set it as the first linked list node, or set the head ptr to a copy of a pointer to an already existing node object
         Movie(string inputTitle = "", ReviewNode* inputNode = new ReviewNode())
         {
             title = inputTitle;
-            if(head == nullptr)
-            {
-                head = inputNode;
-            }
+            head = inputNode;
         }
 
-        void addReview()
-        {
+        string getTitle() { return title; }
+        ReviewNode* getHead() { return head; }
 
+        void addReview(ReviewNode* = new ReviewNode())
+        {
+            ReviewNode* head = getHead();
+            ReviewNode* current = head;
         }
 };
 
