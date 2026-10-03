@@ -2,7 +2,7 @@
 // COMSC-210 | Lab 18 | Jonvianney Maglasang
 
 // Started October 2, 2026 at 9:30pm
-// Finished October 2, 2026 at 
+// Finished October 3, 2026 at 
 
 #include <iostream>
 #include <random>
@@ -90,7 +90,8 @@ const int Min = 100;
 const int Max = 500;
 const int MovieCnt = 4;
 const int ReviewCnt = 3;
-const string DataFile = "data.txt";
+const string TitleData = "data/titles.txt";
+const string ReviewData = "data/reviews.txt";
 
 // Declare Functions
 double getRevNum(int min, int max);
@@ -100,20 +101,16 @@ int main()
 {
     srand(time(0));
     vector<Movie> movieArr;
-    vector<string> readStrs = readData(DataFile);
+    vector<string> titleStrs = readData(TitleData);
+    vector<string> reviewStrs = readData(ReviewData);
 
     for(int i = 0; i < MovieCnt; i++)
     {
-        // Index skips keeps track of how many times j increments because the string titles and reviews are saved in one array
-        int indexSkips = 0;
-        Movie tempMov(readStrs[i + indexSkips]);
+        Movie tempMov(titleStrs[i]);
 
-        for(int j = 0; j < ReviewCnt; j++)
+        for(int j = i * ReviewCnt; j % ReviewCnt != 0; j++)
         {
-            indexSkips++;
-
-            // Assigns filled in node whose string starts at i + index skips to skip already read strings
-            tempMov.addReview(new ReviewNode(getRevNum(Min, Max), readStrs[i + j]));
+            tempMov.addReview(new ReviewNode(getRevNum(Min, Max), reviewStrs[j]));
         }
     }
     return 0;
@@ -128,6 +125,7 @@ double getRevNum(int min, int max)
     return round(static_cast<double>(num)/10)/10;
 }
 
+// Saves read string data into a string vector
 vector<string> readData(string filename)
 {
     vector<string> strArr;
