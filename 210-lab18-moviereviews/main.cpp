@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include <ctime>
+#include <cmath>
 
 using namespace std;
 
@@ -57,7 +58,7 @@ class Movie
 
                 // Point prev, the previous head to null and free memory
                 prev->review = "";
-                prev->value = NULL;
+                prev->value = 0;
                 prev = nullptr;
                 delete prev;
             }
@@ -84,21 +85,27 @@ class Movie
 };
 
 // Define Constants
-const double MIN = 1.0;
-const double MAX = 5.0;
+const int MIN = 100;
+const int MAX = 500;
 
 // Declare Functions
-double getRandNum(double min, double max);
+double getRandNum(int min, int max);
 
 
 int main()
 {
     srand(time(0));
+
+    // Returns double between 1.0 and 5.0
+    for(int i = 0; i < 5; i++)
+    {
+        cout << round(static_cast<double>(getRandNum(MIN, MAX))/10)/10 << endl;
+    }
     return 0;
 }
 
 // Define Functions
-double getRandNum(double min, double max)
+double getRandNum(int min, int max)
 {
     return rand() % (max - min + 1) + min;
 }
