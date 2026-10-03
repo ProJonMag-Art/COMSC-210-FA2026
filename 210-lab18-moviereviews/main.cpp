@@ -97,7 +97,7 @@ const string ReviewData = "data/reviews.txt";
 // Declare Functions
 double getRevNum(int min, int max);
 vector<string> readData(string filename);
-void outputData();
+void outputData(vector<Movie> dataArr, int listSize);
 
 int main()
 {
@@ -111,7 +111,8 @@ int main()
         Movie tempMov(titleStrs[i]);
         int idxCounter = 0;
 
-        // Puts three strings from reviewStrs into the added reviewNode, saves the counter to save the index place in reviewStrs array
+        // Puts three strings from reviewStrs vector into the added reviewNode, saves the counter to save the index place in reviewStrs array
+        // For example i = 0 => reviewStrs[0-2] are added to the 3 new reviewNodes, i = 1 => reviewStrs[3-5] are added to the 3 new reviewNodes
         for(int j = 0; j < ReviewCnt; j++)
         {
             tempMov.addReview(new ReviewNode(getRevNum(Min, Max), reviewStrs[idxCounter]));
@@ -120,6 +121,8 @@ int main()
 
         movieArr.push_back(tempMov);
     }
+
+    outputData(movieArr, ReviewCnt);
     return 0;
 }
 
@@ -149,6 +152,7 @@ vector<string> readData(string filename)
     return strArr;
 }
 
+// Creates tempPtr that traverses each movie object's list
 void outputData(vector<Movie> dataArr, int listSize)
 {
     int size = dataArr.size();
@@ -156,12 +160,13 @@ void outputData(vector<Movie> dataArr, int listSize)
 
     for(int i = 0; i < size; i++)
     {
-        cout << "Movie Title:" << dataArr[i].getTitle() << endl;
+        cout << "Movie Title: " << dataArr[i].getTitle() << endl;
         tempPtr = dataArr[i].getHead();
         for(int j = 0; j < listSize; j++)
         {
-            cout << "   Review #" << j << ": " << tempPtr->value << ": " << tempPtr->review << endl;
+            cout << "   > Review #" << (j + 1) << ": " << tempPtr->value << ": " << tempPtr->review << endl;
             tempPtr = tempPtr->next;
         }
+        cout << endl;
     }
 }
