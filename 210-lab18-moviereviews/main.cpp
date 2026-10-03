@@ -85,27 +85,39 @@ class Movie
 };
 
 // Define Constants
-const int MIN = 100;
-const int MAX = 500;
+const int Min = 100;
+const int Max = 500;
+const int MovieCnt = 4;
+const int ReviewCnt = 3;
+const string DataFile = "data.txt";
 
 // Declare Functions
-double getRandNum(int min, int max);
-
+int getRandNum(int min, int max);
+string readData(string filename);
 
 int main()
 {
     srand(time(0));
+    vector<Movie> movieArr;
 
-    // Returns double between 1.0 and 5.0
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < MovieCnt; i++)
     {
-        cout << round(static_cast<double>(getRandNum(MIN, MAX))/10)/10 << endl;
+        Movie tempMov(readData(DataFile));
+        round(static_cast<double>(getRandNum(Min, Max))/10)/10;
     }
     return 0;
 }
 
 // Define Functions
-double getRandNum(int min, int max)
+int getRandNum(int min, int max)
 {
     return rand() % (max - min + 1) + min;
+}
+
+string readData(string filename)
+{
+    ifstream readFile(filename);
+    string temp = "";
+
+    readFile.close();
 }
