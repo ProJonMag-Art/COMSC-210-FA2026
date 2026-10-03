@@ -66,6 +66,7 @@ class Movie
 
         string getTitle() { return title; }
         ReviewNode* getHead() { return head; }
+        void setTitle(string inputTitle) { title = inputTitle; }
 
         void addReview(ReviewNode* inputNode = new ReviewNode())
         {
@@ -92,32 +93,53 @@ const int ReviewCnt = 3;
 const string DataFile = "data.txt";
 
 // Declare Functions
-int getRandNum(int min, int max);
-string readData(string filename);
+double getRevNum(int min, int max);
+vector<string> readData(string filename);
 
 int main()
 {
     srand(time(0));
     vector<Movie> movieArr;
+    vector<string> readStrs = readData(DataFile);
 
     for(int i = 0; i < MovieCnt; i++)
     {
-        Movie tempMov(readData(DataFile));
-        round(static_cast<double>(getRandNum(Min, Max))/10)/10;
+        // Index skips keeps track of how many times j increments because the string titles and reviews are saved in one array
+        int indexSkips = 0;
+        Movie tempMov(readStrs[i + indexSkips]);
+
+        for(int j = 0; j < ReviewCnt; j++)
+        {
+            indexSkips++;
+
+            // Assigns filled in node whose string starts at i + index skips to skip already read strings
+            tempMov.addReview(new ReviewNode(getRevNum(Min, Max), readStrs[i + j]));
+        }
     }
     return 0;
 }
 
 // Define Functions
-int getRandNum(int min, int max)
+double getRevNum(int min, int max)
 {
-    return rand() % (max - min + 1) + min;
+    int num = rand() % (max - min + 1) + min;
+    
+    // Casts num into into double, divides by ten, and then rounds to get rid of the excess decimal, then divides by ten again to give the new rounded num
+    return round(static_cast<double>(num)/10)/10;
 }
 
-string readData(string filename)
+vector<string> readData(string filename)
 {
+    vector<string> strArr;
     ifstream readFile(filename);
-    string temp = "";
+    string tempStr = "";
+
+    // Saves readlines into a sting vector
+    while(getline(readFile, tempStr))
+    {
+        strArr.push_back(tempStr);
+    }
 
     readFile.close();
+    return strArr;
 }
