@@ -5,7 +5,6 @@
 // Finished October 3, 2026 at 
 
 #include <iostream>
-#include <iomanip>
 #include <random>
 #include <fstream>
 #include <vector>
@@ -106,10 +105,10 @@ int main()
     vector<string> titleStrs = readData(TitleData);
     vector<string> reviewStrs = readData(ReviewData);
 
+    int idxCounter = 0;
     for(int i = 0; i < MovieCnt; i++)
     {
         Movie tempMov(titleStrs[i]);
-        int idxCounter = 0;
 
         // Puts three strings from reviewStrs vector into the added reviewNode, saves the counter to save the index place in reviewStrs array
         // For example i = 0 => reviewStrs[0-2] are added to the 3 new reviewNodes, i = 1 => reviewStrs[3-5] are added to the 3 new reviewNodes
@@ -119,6 +118,9 @@ int main()
             idxCounter++;
         }
 
+        cout << tempMov.getHead()->value << endl;
+        cout << tempMov.getHead()->next->value << endl;
+        cout << tempMov.getHead()->next->next->value << endl;
         movieArr.push_back(tempMov);
     }
 
