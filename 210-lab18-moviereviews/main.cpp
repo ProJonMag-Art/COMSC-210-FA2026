@@ -45,6 +45,7 @@ class Movie
         }
 
         // Destructor
+        /*
         ~Movie()
         {
             ReviewNode* prev = nullptr;
@@ -63,6 +64,7 @@ class Movie
                 delete prev;
             }
         }
+            */
 
         string getTitle() { return title; }
         ReviewNode* getHead() { return head; }
@@ -96,7 +98,7 @@ const string ReviewData = "data/reviews.txt";
 // Declare Functions
 double getRevNum(int min, int max);
 vector<string> readData(string filename);
-void outputData(vector<Movie> dataArr, int listSize);
+void outputData(vector<Movie>& dataArr, int listSize);
 
 int main()
 {
@@ -118,9 +120,9 @@ int main()
             idxCounter++;
         }
 
-        cout << tempMov.getHead()->value << endl;
-        cout << tempMov.getHead()->next->value << endl;
-        cout << tempMov.getHead()->next->next->value << endl;
+        //cout << tempMov.getHead()->value << endl;
+        //cout << tempMov.getHead()->next->value << endl;
+        //cout << tempMov.getHead()->next->next->value << endl;
         movieArr.push_back(tempMov);
     }
 
@@ -155,7 +157,7 @@ vector<string> readData(string filename)
 }
 
 // Creates tempPtr that traverses each movie object's list
-void outputData(vector<Movie> dataArr, int listSize)
+void outputData(vector<Movie>& dataArr, int listSize)
 {
     int size = dataArr.size();
     ReviewNode* tempPtr = nullptr;
@@ -164,11 +166,19 @@ void outputData(vector<Movie> dataArr, int listSize)
     {
         cout << "Movie Title: " << dataArr[i].getTitle() << endl;
         tempPtr = dataArr[i].getHead();
-        for(int j = 0; j < listSize; j++)
+
+        int j = 1;
+        while(tempPtr->next != nullptr)
+        {
+            cout << "   > Review #" << j << ": " << tempPtr->value << ": " << tempPtr->review << endl;
+            tempPtr = tempPtr->next;
+            j++;
+        }
+        /*for(int j = 0; j < listSize; j++)
         {
             cout << "   > Review #" << (j + 1) << ": " << tempPtr->value << ": " << tempPtr->review << endl;
             tempPtr = tempPtr->next;
-        }
+        }*/
         cout << endl;
     }
 }
