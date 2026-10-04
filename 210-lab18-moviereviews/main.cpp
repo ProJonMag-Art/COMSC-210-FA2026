@@ -36,7 +36,7 @@ class Movie
         ReviewNode* head;
 
     public:
-        // Default and also regular constructor
+        // Default and also Regular Constructor
         // allows you to create a new default node and set it as the first linked list node, or set the head ptr to a copy of a pointer to an already existing node object
         Movie(string inputTitle = "", ReviewNode* inputNode = new ReviewNode())
         {
@@ -44,8 +44,33 @@ class Movie
             head = inputNode;
         }
 
+        // Copy Constructor
+        Movie(const Movie& copy)
+        {
+            if(copy.head == nullptr)
+            {
+                head = nullptr;
+                return;
+            }
+
+            // Copy each value into new nodes of a new linked list
+            head = new ReviewNode(copy.head->value, copy.head->review);
+
+            // Start after head because we copied it already
+            ReviewNode* src = copy.head->next;
+            ReviewNode* dest = head;
+
+            // Traverse copied linked list and copy its values into new nodes.
+            // Then connect those new nodes to the new ll
+            while(src != nullptr)
+            {
+                dest->next = new ReviewNode(src->value, src->review);
+                dest = dest->next;
+                src = src->next;
+            }
+        }
+
         // Destructor
-        /*
         ~Movie()
         {
             ReviewNode* prev = nullptr;
@@ -60,11 +85,10 @@ class Movie
                 // Point prev, the previous head to null and free memory
                 prev->review = "";
                 prev->value = 0;
-                prev = nullptr;
                 delete prev;
+                prev = nullptr;
             }
         }
-            */
 
         string getTitle() { return title; }
         ReviewNode* getHead() { return head; }
