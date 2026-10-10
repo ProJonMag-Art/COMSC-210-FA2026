@@ -26,9 +26,20 @@ class Chair
         Chair() 
         {
             prices = new double[SIZE];
-            legs = 0;
+
+            // 50/50 to decide between 3 and 4 legs
+            if(getRandNum(0, 100) < 50)
+            {
+                legs = 3;
+            } else
+            {
+                legs = 4;
+            }
+            
             for (int i = 0; i < SIZE; i++)
-            prices[i] = 0;
+            {
+                prices[i] = getRandNum(MIN, MAX);
+            }
         }
 
         Chair(int l) 
@@ -36,7 +47,9 @@ class Chair
             prices = new double[SIZE];
             legs = l;
             for (int i = 0; i < SIZE; i++)
-            prices[i] = 0;
+            {
+                prices[i] = 0;
+            }
         }
 
         // setters and getters
@@ -52,7 +65,9 @@ class Chair
         {
             double sum = 0;
             for (int i = 0; i < SIZE; i++)
+            {
                 sum += prices[i];
+            }
             return sum / SIZE;
         }
 
@@ -60,10 +75,14 @@ class Chair
         {
             cout << "CHAIR DATA - legs: " << legs << endl;
             cout << "Price history: " ;
-        for (int i = 0; i < SIZE; i++)
-            cout << prices[i] << " ";
-        cout << endl << "Historical avg price: " << getAveragePrices();
-        cout << endl << endl;
+
+            for (int i = 0; i < SIZE; i++)
+            {
+                cout << prices[i] << " ";
+            }
+
+            cout << endl << "Historical avg price: " << getAveragePrices();
+            cout << endl << endl;
     }
 };
 
@@ -93,8 +112,12 @@ int main() {
     collection[1].setPrices(484.84, 959.59, 868.68);
     collection[2].setLegs(4);
     collection[2].setPrices(626.26, 515.15, 757.57);
+
     for (int i = 0; i < SIZE; i++)
+    {
         collection[i].print();
+    }
+
     return 0;
 }
 
@@ -103,6 +126,5 @@ double getRandNum(int min, int max)
 {
     double num = rand() % ((max - min + 1) + min) / (double) 100;
     
-    // Casts num into into double, divides by ten, and then rounds to get rid of the excess decimal, then divides by ten again to give the new rounded num
     return num;
 }
