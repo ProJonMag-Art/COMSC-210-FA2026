@@ -11,9 +11,13 @@
 
 using namespace std;
 
+// Constant Declaraion
 const int SIZE = 3;
 const int MIN = 10000;
 const int MAX = 99999;
+
+// Function Declaration
+double getRandNum(int min, int max);
 
 class Chair 
 {
@@ -35,20 +39,20 @@ class Chair
             {
                 legs = 4;
             }
-            
+
             for (int i = 0; i < SIZE; i++)
             {
                 prices[i] = getRandNum(MIN, MAX);
             }
         }
 
-        Chair(int l) 
+        Chair(int l, double inputPrices[SIZE]) 
         {
             prices = new double[SIZE];
             legs = l;
             for (int i = 0; i < SIZE; i++)
             {
-                prices[i] = 0;
+                prices[i] = inputPrices[i];
             }
         }
 
@@ -86,8 +90,6 @@ class Chair
     }
 };
 
-double getRandNum(int min, int max);
-
 int main() {
     cout << fixed << setprecision(2);
     
@@ -98,7 +100,8 @@ int main() {
     chairPtr->print();
 
     //creating dynamic chair object with constructor
-    Chair *livingChair = new Chair(3);
+    double prices[SIZE] = {525.25, 434.34, 252.52};
+    Chair *livingChair = new Chair(3, prices);
     livingChair->setPrices(525.25, 434.34, 252.52);
     livingChair->print();
     delete livingChair;
@@ -106,22 +109,17 @@ int main() {
 
     //creating dynamic array of chair objects
     Chair *collection = new Chair[SIZE];
-    collection[0].setLegs(4);
-    collection[0].setPrices(441.41, 552.52, 663.63);
-    collection[1].setLegs(4);
-    collection[1].setPrices(484.84, 959.59, 868.68);
-    collection[2].setLegs(4);
-    collection[2].setPrices(626.26, 515.15, 757.57);
 
     for (int i = 0; i < SIZE; i++)
     {
+        collection[i] = Chair();
         collection[i].print();
     }
 
     return 0;
 }
 
-
+// Function Definition
 double getRandNum(int min, int max)
 {
     double num = rand() % ((max - min + 1) + min) / (double) 100;
