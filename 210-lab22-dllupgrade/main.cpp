@@ -76,7 +76,7 @@ public:
         temp->next = newNode;
     }
 
-    void delete_node(int value) {
+    void delete_val(int value) {
         if (!head) return; // Empty list
 
         Node* temp = head;
@@ -118,6 +118,52 @@ public:
             current = current->prev;
         }
         cout << endl;
+    }
+
+    void pop_front()
+    {
+        Node* current = head;
+
+        // Empty list, do nothing
+        if(current == nullptr) { return; };
+
+        // One element list, removing head removes tail as well
+        if(head == tail)
+        {
+            current->next = nullptr;
+            delete head;
+            return;
+        }
+
+        // Move the head forward, set the new head's previous to null, then remove the old head from the link and delete the old head
+        head = current->next;
+        head->prev = nullptr;
+        current->next = nullptr;
+        current->data = 0;
+        delete current;
+    }
+
+    void pop_back()
+    {
+        Node* current = tail;
+
+        // If tail is null, list is empty
+        if(current = nullptr) { return; }
+
+        // If head == tail, the list has one element and deleting the head will delete the tail
+        if(head == tail)
+        {
+            current->prev = nullptr;
+            delete current;
+            return;
+        }
+
+        // Move the tail backward, set the new tail's next to null, then remove the old tail from the link and delete the old tail
+        tail = current->prev;
+        tail->next = nullptr;
+        current->prev = nullptr;
+        current->data = 0;
+        delete current;
     }
 
     ~DoublyLinkedList() {
