@@ -11,7 +11,7 @@
 
 using namespace std;
 
-const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20, MAX_STRCNT;
+const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
 
 int getRandInt(int min, int max);
 
@@ -27,11 +27,17 @@ class Goat
     public:
         Goat()
         {
-            for(int i = 0; i < MAX_STRCNT; i++)
+            for(int i = 0; i < 15; i++)
             {
-
+                age = getRandInt(0, 20);
+                name = randNames[getRandInt(0, 14)];
+                color = randCols[getRandInt(0, 14)];
             }
         }
+
+        int getAge() { return age; } 
+        string getName() { return name; }
+        string getCol() { return color; }
 };
 
 class DoublyLinkedList 
@@ -39,12 +45,12 @@ class DoublyLinkedList
 private:
     struct Node 
     {
-        Goat data;
+        Goat goat;
         Node* prev;
         Node* next;
         Node(Goat val, Node* p = nullptr, Node* n = nullptr) 
         {
-            data = val; 
+            goat = val; 
             prev = p;
             next = n;
         }
@@ -134,8 +140,10 @@ public:
         if (!head) return; // Empty list
 
         Node* temp = head;
+        /*
         while (temp && temp->data != value)
             temp = temp->next;
+        */
 
         if (!temp) return; // Value not found
 
@@ -157,10 +165,15 @@ public:
     void print() 
     {
         Node* current = head;
-        if (!current) { return; }
+        if (current == nullptr) 
+        {
+            cout << "List is empty!" << endl;
+            return; 
+        }
+        
         while (current) 
         {
-            //cout << current->data << " ";
+            cout << current->goat.getName() << " (" << current->goat.getCol() << ", " << current->goat.getAge() << ")";
             current = current->next;
         }
         cout << endl;
@@ -169,10 +182,15 @@ public:
     void print_reverse() 
     {
         Node* current = tail;
-        if (!current) { return; }
+        if (!current) 
+        {
+            cout << "List is empty!" << endl;
+            return; 
+        }
+
         while (current) 
         {
-            //cout << current->data << " ";
+            cout << current->goat.getName() << " (" << current->goat.getCol() << ", " << current->goat.getAge() << ")";
             current = current->prev;
         }
         cout << endl;
@@ -191,8 +209,10 @@ public:
 
 // Driver program
 int main() {
+    srand(time(0));
+
     DoublyLinkedList list;
-    int size = rand() % (MAX_LS-MIN_LS+1) + MIN_LS;
+    int size = getRandInt(MIN_LS, MAX_LS);
 
     for (int i = 0; i < size; ++i)
     {
