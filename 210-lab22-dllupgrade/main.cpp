@@ -166,6 +166,30 @@ public:
         delete current;
     }
 
+    void delete_pos(int pos)
+    {
+        int currentPos = 0;
+        Node* current = head;
+
+        // Pos 0 means delete head
+        if(pos == 0)
+        {
+            pop_front();
+        }
+
+        while(current != nullptr)
+        {
+            if(currentPos == pos)
+            {
+                // This delete_val method should already cover deleting the head or tail
+                delete_val(current->data);
+                break;
+            }
+
+            currentPos++;
+        }
+    }
+
     ~DoublyLinkedList() {
         while (head) {
             Node* temp = head;
@@ -182,11 +206,24 @@ int main() {
 
     for (int i = 0; i < size; ++i)
         list.push_back(rand() % (MAX_NR-MIN_NR+1) + MIN_NR);
-    cout << "List forward: ";
+
+    cout << "Original List forward: ";
     list.print();
 
-    cout << "List backward: ";
-    list.print_reverse();
+    list.pop_front();
+
+    cout << "Poopped Front List forward: ";
+    list.print();
+
+    list.pop_back();
+
+    cout << "Popped Back List forward: ";
+    list.print();
+
+    list.delete_pos(MAX_NR/2);
+
+    cout << "Middle Pos Deleted List forward: ";
+    list.print();
 
     cout << "Deleting list, then trying to print.\n";
     list.~DoublyLinkedList();
