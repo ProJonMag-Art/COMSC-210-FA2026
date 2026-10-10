@@ -23,6 +23,9 @@ public:
     // constructor
     DoublyLinkedList() { head = nullptr; tail = nullptr; }
 
+    int getHeadVal() { return head->data; }
+    int getTailVal() { return tail->prev->data; }
+
     void push_back(int value) {
         Node* newNode = new Node(value);
         if (!tail)  // if there's no tail, the list is empty
@@ -154,6 +157,7 @@ public:
         if(head == tail)
         {
             current->prev = nullptr;
+            current->data = 0;
             delete current;
             return;
         }
@@ -186,6 +190,7 @@ public:
                 break;
             }
 
+            current = current->next;
             currentPos++;
         }
     }
@@ -212,10 +217,10 @@ int main() {
 
     list.pop_front();
 
-    cout << "Poopped Front List forward: ";
+    cout << "Popped Front List forward: ";
     list.print();
 
-    list.pop_back();
+    //list.pop_back();
 
     cout << "Popped Back List forward: ";
     list.print();
