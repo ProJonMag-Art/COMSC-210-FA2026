@@ -1,10 +1,19 @@
 
+// COMSC-210 | Lab 20 | Jonvianney Maglasang
+
+// Started October 9, 2026 at 7:59pm
+// Finished October 9, 2026 at 
+
 #include <iostream>
 #include <iomanip>
+#include <ctime>
+#include <random>
 
 using namespace std;
 
 const int SIZE = 3;
+const int MIN = 10000;
+const int MAX = 99999;
 
 class Chair 
 {
@@ -58,6 +67,8 @@ class Chair
     }
 };
 
+double getRandNum(int min, int max);
+
 int main() {
     cout << fixed << setprecision(2);
     
@@ -85,4 +96,13 @@ int main() {
     for (int i = 0; i < SIZE; i++)
         collection[i].print();
     return 0;
+}
+
+
+double getRandNum(int min, int max)
+{
+    double num = rand() % ((max - min + 1) + min) / (double) 100;
+    
+    // Casts num into into double, divides by ten, and then rounds to get rid of the excess decimal, then divides by ten again to give the new rounded num
+    return num;
 }
