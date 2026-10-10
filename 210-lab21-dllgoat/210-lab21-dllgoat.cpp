@@ -1,19 +1,48 @@
 
+// COMSC-210 | Lab 21 | Jonvianney Maglasang
+
+// Started October 10, 2026 at 10:14am
+// Finished October 9, 2026 at 
+
 #include <iostream>
+#include <random>
+#include <ctime>
+#include <string>
 
 using namespace std;
 
-const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
+const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20, MAX_STRCNT;
+
+int getRandInt(int min, int max);
+
+class Goat
+{
+    private:
+        int age;
+        string name;
+        string color;
+        string randNames[15];
+        string randCols[15];
+            
+    public:
+        Goat()
+        {
+            for(int i = 0; i < MAX_STRCNT; i++)
+            {
+
+            }
+        }
+};
 
 class DoublyLinkedList 
 {
 private:
     struct Node 
     {
-        int data;
+        Goat data;
         Node* prev;
         Node* next;
-        Node(int val, Node* p = nullptr, Node* n = nullptr) 
+        Node(Goat val, Node* p = nullptr, Node* n = nullptr) 
         {
             data = val; 
             prev = p;
@@ -28,7 +57,7 @@ public:
     // constructor
     DoublyLinkedList() { head = nullptr; tail = nullptr; }
 
-    void push_back(int value) 
+    void push_back(Goat value) 
     {
         Node* newNode = new Node(value);
         if (!tail) // if there's no tail, the list is empty
@@ -43,7 +72,7 @@ public:
         }
     }
 
-    void push_front(int value) 
+    void push_front(Goat value) 
     {
         Node* newNode = new Node(value);
         if (!head) // if there's no head, the list is empty
@@ -58,7 +87,7 @@ public:
         }
     }
 
-    void insert_after(int value, int position) 
+    void insert_after(Goat value, int position) 
     {
         if (position < 0) 
         {
@@ -100,7 +129,7 @@ public:
         temp->next = newNode;
     }
 
-    void delete_node(int value) 
+    void delete_node(Goat value) 
     {
         if (!head) return; // Empty list
 
@@ -131,7 +160,7 @@ public:
         if (!current) { return; }
         while (current) 
         {
-            cout << current->data << " ";
+            //cout << current->data << " ";
             current = current->next;
         }
         cout << endl;
@@ -143,7 +172,7 @@ public:
         if (!current) { return; }
         while (current) 
         {
-            cout << current->data << " ";
+            //cout << current->data << " ";
             current = current->prev;
         }
         cout << endl;
@@ -167,7 +196,7 @@ int main() {
 
     for (int i = 0; i < size; ++i)
     {
-        list.push_back(rand() % (MAX_NR-MIN_NR+1) + MIN_NR);
+        list.push_back(Goat());
     }
     cout << "List forward: ";
     list.print();
@@ -181,4 +210,9 @@ int main() {
     list.print();
 
     return 0;
+}
+
+int getRandInt(int min, int max)
+{
+    return rand() % (max - min +1) + min;
 }
