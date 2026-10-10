@@ -5,6 +5,7 @@
 // Finished October 9, 2026 at 
 
 #include <iostream>
+#include <iomanip>
 #include <random>
 #include <ctime>
 #include <string>
@@ -21,8 +22,8 @@ class Goat
         int age;
         string name;
         string color;
-        string randNames[15];
-        string randCols[15];
+        string randNames[15] { "Arlen", "Kaia", "Darius", "Selene", "Rowan", "Nyla", "Jace", "Elara", "Orion", "Zara", "Theo", "Mira", "Cassian", "Lila", "Everett" };
+        string randCols[15] { "Crimson Tide", "Electric Teal", "Sunset Amber", "Frosted Lavender", "Midnight Indigo", "Coral Blush", "Lime Zest", "Arctic Silver", "Ocean Sapphire", "Cinnamon Bronze", "Mint Whisper", "Ruby Ember", "Storm Gray", "Peach Mirage", "Golden Olive" };
             
     public:
         Goat()
@@ -135,15 +136,16 @@ public:
         temp->next = newNode;
     }
 
-    void delete_node(Goat value) 
+    void delete_node(int value) 
     {
         if (!head) return; // Empty list
 
         Node* temp = head;
-        /*
-        while (temp && temp->data != value)
+        
+        while ( temp->goat.getAge() != value)
+        {
             temp = temp->next;
-        */
+        }
 
         if (!temp) return; // Value not found
 
@@ -173,7 +175,7 @@ public:
         
         while (current) 
         {
-            cout << current->goat.getName() << " (" << current->goat.getCol() << ", " << current->goat.getAge() << ")";
+            cout << "     " << current->goat.getName() << " (" << current->goat.getCol() << ", " << current->goat.getAge() << ")" << endl;
             current = current->next;
         }
         cout << endl;
@@ -190,7 +192,7 @@ public:
 
         while (current) 
         {
-            cout << current->goat.getName() << " (" << current->goat.getCol() << ", " << current->goat.getAge() << ")";
+            cout << "     " << current->goat.getName() << " (" << current->goat.getCol() << ", " << current->goat.getAge() << ")" << endl;
             current = current->prev;
         }
         cout << endl;
@@ -218,10 +220,10 @@ int main() {
     {
         list.push_back(Goat());
     }
-    cout << "List forward: ";
+    cout << "List forward: " << endl;
     list.print();
 
-    cout << "List backward: ";
+    cout << "List backward: " << endl;
     list.print_reverse();
 
     cout << "Deleting list, then trying to print.\n";
