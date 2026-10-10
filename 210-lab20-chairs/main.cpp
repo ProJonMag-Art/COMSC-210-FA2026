@@ -91,6 +91,8 @@ class Chair
 };
 
 int main() {
+    srand(time(0));
+
     cout << fixed << setprecision(2);
     
     //creating pointer to first chair object
