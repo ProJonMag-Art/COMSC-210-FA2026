@@ -151,7 +151,7 @@ public:
         Node* current = tail;
 
         // If tail is null, list is empty
-        if(current = nullptr) { return; }
+        if(current == nullptr) { return; }
 
         // If head == tail, the list has one element and deleting the head will delete the tail
         if(head == tail)
@@ -220,12 +220,12 @@ int main() {
     cout << "Popped Front List forward: ";
     list.print();
 
-    //list.pop_back();
+    list.pop_back();
 
     cout << "Popped Back List forward: ";
     list.print();
 
-    list.delete_pos(MAX_NR/2);
+    list.delete_pos(size/2 - 1);
 
     cout << "Middle Pos Deleted List forward: ";
     list.print();
