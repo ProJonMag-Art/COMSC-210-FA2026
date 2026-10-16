@@ -1,3 +1,9 @@
+
+// COMSC-210 | Lab 23 | Jonvianney Maglasang
+
+// Started October 16, 2026 at 2:11 PM
+// Finished October 9, 2026 at 
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -12,7 +18,7 @@ void delete_goat(list<Goat> &trip);
 void add_goat(list<Goat> &trip, string [], string []);
 void display_trip(list<Goat> trip);
 int main_menu();
-// test
+
 int main() {
     srand(time(0));
     bool again;
