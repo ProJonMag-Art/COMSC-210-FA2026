@@ -2,7 +2,7 @@
 // COMSC-210 | Lab 23 | Jonvianney Maglasang
 
 // Started October 16, 2026 at 2:11 PM
-// Finished October 9, 2026 at 
+// Finished October 16, 2026 at 
 
 #include <iostream>
 #include <fstream>
@@ -39,5 +39,46 @@ int main() {
 
 
     return 0;
+}
+
+void add_goat(list<Goat> &trip, string [], string [])
+{
+
+}
+
+int main_menu(list<Goat> &trip)
+{
+    // Input Validation (not accounting data types, only int values)
+    int choice = -1;
+    do
+    {
+        cout << "*** GOAT MANAGER 3001 ***" << endl;
+        cout << "[1] Add a goat" << endl;
+        cout << "[2] Delete a goat" << endl;
+        cout << "[3] List goats" << endl;
+        cout << "[4] Quit" << endl;
+        cout << "Choice --> ";
+        cin >> choice;
+    } while(choice < 0 || choice > 4);
+
+    switch(choice)
+    {
+        case1:
+        {
+            break;
+        }
+        case2:
+        {
+            break;
+        }
+        case3:
+        {
+            break;
+        }
+        case4:
+        {
+            break;
+        }
+    }
 }
 
