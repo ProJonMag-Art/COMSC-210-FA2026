@@ -40,10 +40,6 @@ int main() {
     fin1.close();
 
     list<Goat> goats;
-    for(int i = 0; i < SZ_NAMES; i++)
-    {
-
-    }
 
     int choice = 0;
     while(choice != 4)
@@ -52,23 +48,27 @@ int main() {
         handle_input(choice, goats, names, colors);
     }
 
-
     return 0;
 }
 
 int select_goat(list<Goat> trip)
 {
     int choice;
+    int size = trip.size();
     display_trip(trip);
-    if(trip.empty() == false)
+    if(size != 0)
     {
         cout << "The number on the left is the goat's position, use it to reference the correct goat." << endl;
         cout << "Choice --> ";
         cin >> choice;
         return choice;
+    } else
+    {
+        // Returns 1 instead of -1 for errors because add_goat will subtract by one to automatically add to the head
+        return 1;
     }
 
-    // Returns 1 instead of -1 for errors because add_goat will subtract by one to add to the head
+    // Still return 1 just in case something messes up to insert at the head
     return 1;
 }
 
