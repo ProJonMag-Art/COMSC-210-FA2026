@@ -60,10 +60,16 @@ int select_goat(list<Goat> trip)
 {
     int choice;
     display_trip(trip);
-    cout << "The number on the left is the goat's position, use it to reference the correct goat." << endl;
-    cout << "Choice --> ";
-    cin >> choice;
-    return choice;
+    if(trip.empty() == false)
+    {
+        cout << "The number on the left is the goat's position, use it to reference the correct goat." << endl;
+        cout << "Choice --> ";
+        cin >> choice;
+        return choice;
+    }
+
+    // Returns 1 instead of -1 for errors because add_goat will subtract by one to add to the head
+    return 1;
 }
 
 void add_goat(list<Goat> &trip, string names[], string colors[])
@@ -80,23 +86,36 @@ void add_goat(list<Goat> &trip, string names[], string colors[])
 
 void delete_goat(list<Goat> &trip)
 {
-    int position = select_goat(trip) - 1;
+    if(trip.empty() == false)
+    {
+        int position = select_goat(trip) - 1;
 
-    // Start at beginning of list, then move to chosen position
-    auto it = trip.begin();
-    advance(it, position);
-    trip.erase(it);
+        // Start at beginning of list, then move to chosen position
+        auto it = trip.begin();
+        advance(it, position);
+        trip.erase(it);
+    } else
+    {
+        cout << "\n*** LIST IS EMPTY! ***" << endl;
+    }
 }
 
 void display_trip(list<Goat> trip)
 {
-    cout << "\n*** LIST OF GOATS ***" << endl;
-    for(auto it = trip.begin(); it != trip.end(); it++)
+    if(trip.empty() == false)
     {
+        cout << "\n*** LIST OF GOATS ***" << endl;
         int idx = 1;
-        cout << "[" << idx << "]" << " " << it->get_name() << " (" << it->get_age() << ", " << it->get_color() << ")" << endl;
+        for(auto it = trip.begin(); it != trip.end(); it++)
+        {
+            cout << "[" << idx << "]" << " " << it->get_name() << " (" << it->get_age() << ", " << it->get_color() << ")" << endl;
+            idx++;
+        }
+        cout << endl;
+    } else
+    {
+        cout << "\n*** LIST IS EMPTY! ***" << endl;
     }
-    cout << endl;
 }
 
 int get_rand_int(int min, int max)
@@ -110,7 +129,7 @@ int main_menu()
     int choice = -1;
     do
     {
-        cout << "*** GOAT MANAGER 3001 ***" << endl;
+        cout << "\n*** GOAT MANAGER 3001 ***" << endl;
         cout << "[1] Add a goat" << endl;
         cout << "[2] Delete a goat" << endl;
         cout << "[3] List goats" << endl;
@@ -118,23 +137,24 @@ int main_menu()
         cout << "Choice --> ";
         cin >> choice;
     } while(choice < 0 || choice > 4);
+    return choice;
 }
 
 void handle_input(int choice, list<Goat> &trip, string names[], string colors[])
 {
     switch(choice)
     {
-        case1:
+        case 1:
         {
             add_goat(trip, names, colors);
             break;
         }
-        case2:
+        case 2:
         {
             delete_goat(trip);
             break;
         }
-        case3:
+        case 3:
         {
             display_trip(trip);
             break;
