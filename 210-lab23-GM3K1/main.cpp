@@ -38,20 +38,43 @@ int main() {
     while (fin1 >> colors[i++]);
     fin1.close();
 
+    list<Goat> goats;
 
+    int choice = 0;
+    while(choice != 4)
+    {
+        main_menu();
+        //handle_input(goats, names, colors);
+    }
 
 
     return 0;
 }
 
+int select_goat(list<Goat> trip)
+{
+    int choice;
+    display_trip(trip);
+    cout << "The number on the left is the goat's position, use it to reference the correct goat." << endl;
+    cout << "Choice --> ";
+    cin >> choice;
+    return choice;
+}
+
 void add_goat(list<Goat> &trip, string names[], string colors[])
 {
-
+    int position = select_goat(trip) - 1;
+    auto it = trip.begin();
+    advance(it, position);
+    //trip.insert(position, )
 }
 
 void delete_goat(list<Goat> &trip)
 {
-
+    int position = select_goat(trip) - 1;
+    auto it = trip.begin();
+    advance(it, position);
+    trip.erase(it);
 }
 
 void display_trip(list<Goat> trip)
@@ -62,6 +85,7 @@ void display_trip(list<Goat> trip)
         int idx = 1;
         cout << "[" << idx << "]" << " " << it->get_name() << " (" << it->get_age() << ", " << it->get_color() << ")" << endl;
     }
+    cout << endl;
 }
 
 int main_menu()
@@ -99,7 +123,7 @@ void handle_input(int choice, list<Goat> &trip, string names[], string colors[])
             display_trip(trip);
             break;
         }
-        case4:
+        default:
         {
             return;
             break;
