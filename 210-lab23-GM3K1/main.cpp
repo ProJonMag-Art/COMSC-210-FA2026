@@ -19,6 +19,7 @@ int select_goat(list<Goat> trip);
 void add_goat(list<Goat> &trip, string names[], string colors[]);
 void delete_goat(list<Goat> &trip);
 void display_trip(list<Goat> trip);
+int get_rand_int(int min, int max);
 int main_menu();
 void handle_input(int choice, list<Goat> &trip, string names[], string colors[]);
 
@@ -39,12 +40,16 @@ int main() {
     fin1.close();
 
     list<Goat> goats;
+    for(int i = 0; i < SZ_NAMES; i++)
+    {
+
+    }
 
     int choice = 0;
     while(choice != 4)
     {
-        main_menu();
-        //handle_input(goats, names, colors);
+        choice = main_menu();
+        handle_input(choice, goats, names, colors);
     }
 
 
@@ -63,15 +68,21 @@ int select_goat(list<Goat> trip)
 
 void add_goat(list<Goat> &trip, string names[], string colors[])
 {
+    // Make new temp goat with a random name, random age, and random color (- 1 accounts for out of a bounds access)
+    Goat temp = Goat(names[get_rand_int(0, SZ_NAMES - 1)], get_rand_int(0, MAX_AGE), colors[get_rand_int(0, SZ_COLORS - 1)]);
     int position = select_goat(trip) - 1;
+
+    // Start at beginning of list, then move to chosen position
     auto it = trip.begin();
     advance(it, position);
-    //trip.insert(position, )
+    trip.insert(it, temp);
 }
 
 void delete_goat(list<Goat> &trip)
 {
     int position = select_goat(trip) - 1;
+
+    // Start at beginning of list, then move to chosen position
     auto it = trip.begin();
     advance(it, position);
     trip.erase(it);
@@ -88,9 +99,14 @@ void display_trip(list<Goat> trip)
     cout << endl;
 }
 
+int get_rand_int(int min, int max)
+{
+    return rand() % (max - min +1) + min;
+}
+
 int main_menu()
 {
-    // Input Validation (not accounting data types, only int values)
+    // Input Validation (not accounting data types, only int values, doesn't use cin.fail)
     int choice = -1;
     do
     {
