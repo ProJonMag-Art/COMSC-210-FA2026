@@ -19,6 +19,7 @@ const int MAX = 99999;
 // Function Declaration
 double getRandNum(int min, int max);
 
+// Test
 class Chair 
 {
     private:
