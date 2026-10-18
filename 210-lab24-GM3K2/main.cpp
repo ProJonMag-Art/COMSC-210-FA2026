@@ -11,6 +11,7 @@
 #include <set>
 #include "Goat.h"
 
+
 using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25, MAX_AGE = 20;
@@ -76,12 +77,9 @@ void add_goat(set<Goat> &trip, string names[], string colors[])
 {
     // Make new temp goat with a random name, random age, and random color (- 1 accounts for out of a bounds access)
     Goat temp = Goat(names[get_rand_int(0, SZ_NAMES - 1)], get_rand_int(0, MAX_AGE), colors[get_rand_int(0, SZ_COLORS - 1)]);
-    int position = select_goat(trip) - 1;
 
-    // Start at beginning of set, then move to chosen position
-    auto it = trip.begin();
-    advance(it, position);
-    trip.insert(it, temp);
+    // Iniserts temp in correct position automatically
+    trip.insert(temp);
 }
 
 void delete_goat(set<Goat> &trip)

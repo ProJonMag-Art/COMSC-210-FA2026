@@ -26,9 +26,22 @@ public:
     string get_color() const        { return color; }
 
     // write overloaded < operator for the std::list
-    bool operator< (const Goat &other) { return name < other.name; }
-    bool operator< (const Goat &other) { return color < other.color; }
-    bool operator< (const Goat &other) { return age < other.age; }
+    bool operator< (const Goat &other)
+    { 
+        // Checks if names are equal, if yes, check age, if yes return the color that is earlier in the alphabet. 
+        // Returns the smaller age, and earlier name as well if the members aren't the same
+        if(name != other.name)
+        {
+            return name < other.name; 
+        }
+
+        if(age != other.age)
+        {
+            return age < other.age;
+        }
+
+        return color < other.color;
+    }
 };
 
 #endif
