@@ -2,7 +2,10 @@
 
 #ifndef GOAT_H
 #define GOAT_H
+
+#include <string>
 #include <iostream>
+
 using namespace std;
 
 class Goat {
@@ -26,22 +29,6 @@ public:
     string get_color() const        { return color; }
 
     // write overloaded < operator for the std::list
-    bool operator< (const Goat &other)
-    { 
-        // Checks if names are equal, if yes, check age, if yes return the color that is earlier in the alphabet. 
-        // Returns the smaller age, and earlier name as well if the members aren't the same
-        if(name != other.name)
-        {
-            return name < other.name; 
-        }
-
-        if(age != other.age)
-        {
-            return age < other.age;
-        }
-
-        return color < other.color;
-    }
 };
 
 #endif
