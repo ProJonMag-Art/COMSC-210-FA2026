@@ -1,27 +1,28 @@
 
 // COMSC-210 | Lab 23 | Jonvianney Maglasang
 
-// Started October 16, 2026 at 2:11 PM
-// Finished October 16, 2026 at 
+// Started October 17, 2026 at 6:58 PM
+// Finished October 17, 2026 at 
 
 #include <iostream>
 #include <random>
 #include <fstream>
 #include <iomanip>
-#include <list>
+#include <set>
 #include "Goat.h"
+#include <functional>
 
 using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25, MAX_AGE = 20;
 
-int select_goat(list<Goat> trip);
-void add_goat(list<Goat> &trip, string names[], string colors[]);
-void delete_goat(list<Goat> &trip);
-void display_trip(list<Goat> trip);
+int select_goat(set<Goat> trip);
+void add_goat(set<Goat> &trip, string names[], string colors[]);
+void delete_goat(set<Goat> &trip);
+void display_trip(set<Goat> trip);
 int get_rand_int(int min, int max);
 int main_menu();
-void handle_input(int choice, list<Goat> &trip, string names[], string colors[]);
+void handle_input(int choice, set<Goat> &trip, string names[], string colors[]);
 
 int main() {
     srand(time(0));
@@ -39,7 +40,7 @@ int main() {
     while (fin1 >> colors[i++]);
     fin1.close();
 
-    list<Goat> goats;
+    set<Goat> goats;
 
     int choice = 0;
     while(choice != 4)
@@ -51,7 +52,7 @@ int main() {
     return 0;
 }
 
-int select_goat(list<Goat> trip)
+int select_goat(set<Goat> trip)
 {
     int choice;
     int size = trip.size();
@@ -72,25 +73,25 @@ int select_goat(list<Goat> trip)
     return 1;
 }
 
-void add_goat(list<Goat> &trip, string names[], string colors[])
+void add_goat(set<Goat> &trip, string names[], string colors[])
 {
     // Make new temp goat with a random name, random age, and random color (- 1 accounts for out of a bounds access)
     Goat temp = Goat(names[get_rand_int(0, SZ_NAMES - 1)], get_rand_int(0, MAX_AGE), colors[get_rand_int(0, SZ_COLORS - 1)]);
     int position = select_goat(trip) - 1;
 
-    // Start at beginning of list, then move to chosen position
+    // Start at beginning of set, then move to chosen position
     auto it = trip.begin();
     advance(it, position);
     trip.insert(it, temp);
 }
 
-void delete_goat(list<Goat> &trip)
+void delete_goat(set<Goat> &trip)
 {
     if(trip.empty() == false)
     {
         int position = select_goat(trip) - 1;
 
-        // Start at beginning of list, then move to chosen position
+        // Start at beginning of set, then move to chosen position
         auto it = trip.begin();
         advance(it, position);
         trip.erase(it);
@@ -100,7 +101,7 @@ void delete_goat(list<Goat> &trip)
     }
 }
 
-void display_trip(list<Goat> trip)
+void display_trip(set<Goat> trip)
 {
     if(trip.empty() == false)
     {
@@ -140,7 +141,7 @@ int main_menu()
     return choice;
 }
 
-void handle_input(int choice, list<Goat> &trip, string names[], string colors[])
+void handle_input(int choice, set<Goat> &trip, string names[], string colors[])
 {
     switch(choice)
     {
