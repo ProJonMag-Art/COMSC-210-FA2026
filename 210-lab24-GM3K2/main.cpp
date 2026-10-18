@@ -10,7 +10,6 @@
 #include <iomanip>
 #include <set>
 #include "Goat.h"
-#include <functional>
 
 using namespace std;
 
