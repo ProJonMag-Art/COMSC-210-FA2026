@@ -1,11 +1,41 @@
 #include <iostream>
+#include <fstream>
 #include <chrono>
-using namespace std;
+#include <algorithm>
+#include <list>
+#include <set>
+#include <vector>
+#include <string>
 
-int main() {
+using namespace std;
+using namespace std::chrono;
+
+auto getTime();
+
+void readData(string filename, vector<string> &strVec);
+void readData(string filename, list<string> &strList);
+void readData(string filename, set<string> &strSet);
+
+void deleteItem();
+
+int main() 
+{
     
 
     return 0;
+}
+
+void readData(string filename, vector<string> &strVec)
+{
+    ifstream readFile(filename);
+    string tempStr;
+
+    while(getline(readFile, tempStr))
+    {
+        strVec.push_back(tempStr);
+    }
+
+    readFile.close();
 }
 
 /* syntax examples:
