@@ -18,8 +18,6 @@ using namespace std::chrono;
 
 const int DATASET_SIZE = 20000;
 
-auto getTime();
-
 void readData(string filename, vector<string> &strVec);
 void readData(string filename, list<string> &strList);
 void readData(string filename, set<string> &strSet);
@@ -32,9 +30,43 @@ void deleteItem(int position, vector<string> &strVec);
 void deleteItem(int position, list<string> &strList);
 void deleteItem(int position, set<string> &strSet);
 
+template<typename P1, typename P2, typename Func>
+auto getTime(P1 param1, P2 param2, Func func)
+{
+    auto start = high_resolution_clock::now();
+
+    func(param1, param2, func);
+
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start);
+    return duration.count();
+
+}
+
+/*
+template<typename Func, typename P1, typename P2, typename P3>
+auto getTime(P1 param1, P2 param2, P3 param3, Func func)
+{
+    auto start = high_resolution_clock::now();
+
+    func(param1, param2, func);
+
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start);
+    return duration.count();
+
+}
+*/
+
 int main() 
 {
-    
+    vector<string> strVec;
+    list<string> strList;
+    set<string> strSet;
+
+    string readFile = "codes.txt";
+
+    getTime(readFile, strVec, readData(readFile, strVec));
 
     return 0;
 }
@@ -57,11 +89,9 @@ void readData(string filename, list<string> &strList)
     ifstream readFile(filename);
     string tempStr;
 
-    auto it = strList.begin();
     while(getline(readFile, tempStr))
     {
-        strList.insert(it, tempStr);
-        it++;
+        strList.push_back(tempStr);
     }
 }
 
@@ -76,13 +106,18 @@ void readData(string filename, set<string> &strSet)
     }
 }
 
-void insertItem(int position, string item, vector<string> &strVec) { strVec.insert(strVec.begin() + position, item); }
+void insertItem(int position, string item, vector<string> &strVec) {
+    if(position < strVec.size())
+    {
+        strVec.insert(strVec.begin() + position, item);
+    }
+}
 
 void insertItem(int position, string item, list<string> &strList)
 {  
     auto it = strList.begin();
 
-    if(position <= strList.size())
+    if(position < strList.size())
     {
         // Move to the position at that item and insert a new item there
         advance(it, position);
@@ -94,7 +129,7 @@ void insertItem(string item, set<string> &strSet) { strSet.insert(item); }
 
 void deleteItem(int position, vector<string> &strVec)
 {
-    if(position <= strVec.size())
+    if(position < strVec.size())
     {
         strVec.erase(strVec.begin() + position);
     }
@@ -104,7 +139,7 @@ void deleteItem(int position, list<string> &strList)
 {
     auto it = strList.begin();
 
-    if(position <= strList.size())
+    if(position < strList.size())
     {
         // Move to the position at that item and delete the item there
         advance(it, position);
@@ -116,7 +151,7 @@ void deleteItem(int position, set<string> &strSet)
 {
     auto it = strSet.begin();
 
-    if(position <= strSet.size())
+    if(position < strSet.size())
     {
         // Move to the position at that item and delete the item there
         advance(it, position);
