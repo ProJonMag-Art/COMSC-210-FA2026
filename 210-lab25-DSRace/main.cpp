@@ -79,24 +79,29 @@ void readData(string filename, set<string> &strSet)
 void insertItem(int position, string item, vector<string> &strVec)
 {
     int size = strVec.size();
+    strVec.push_back(item);
 
     if(position < size)
     {
-        // Replace strVec[position] with inputted item and save strVec[position] in a temp to be moved
-        string tempStr = strVec[position];
-        strVec[position] = item;
-
-        // Shift all other items down one position
-        for(int i = position + 1; i < size - 1; i++)
+        // Shift all other items down one position by swapping with the element at the end
+        // At i = position the end element is the inputted string because of push_back
+        // At i = position + 1, the end element is the element at position
+        for(int i = position; i < size; i++)
         {
-            strVec[i] = tempStr;
-            tempStr = strVec[i];
+            strVec[i].swap(strVec[strVec.size()]);
         }
     }
 }
 
-void insertItem(int position, string item, list<string> &strVec);
-void insertItem(int position, string item, set<string> &strVec);
+void insertItem(int position, string item, list<string> &strList)
+{  
+    auto it = strList.begin();
+
+    advance(it, position - 1);
+    strList.insert(it, item);
+}
+
+void insertItem(string item, set<string> &strSet) { strSet.insert(item); }
 
 void deleteItem(int position, vector<string> &strVec);
 void deleteItem(int position, list<string> &strVec);
