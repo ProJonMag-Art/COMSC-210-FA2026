@@ -25,12 +25,12 @@ void readData(string filename, list<string> &strList);
 void readData(string filename, set<string> &strSet);
 
 void insertItem(int position, string item, vector<string> &strVec);
-void insertItem(int position, string item, list<string> &strVec);
-void insertItem(int position, string item, set<string> &strVec);
+void insertItem(int position, string item, list<string> &strList);
+void insertItem(int position, string item, set<string> &strSet);
 
 void deleteItem(int position, vector<string> &strVec);
-void deleteItem(int position, list<string> &strVec);
-void deleteItem(int position, set<string> &strVec);
+void deleteItem(int position, list<string> &strList);
+void deleteItem(int position, set<string> &strSet);
 
 int main() 
 {
@@ -76,36 +76,53 @@ void readData(string filename, set<string> &strSet)
     }
 }
 
-void insertItem(int position, string item, vector<string> &strVec)
-{
-    int size = strVec.size();
-    strVec.push_back(item);
-
-    if(position < size)
-    {
-        // Shift all other items down one position by swapping with the element at the end
-        // At i = position the end element is the inputted string because of push_back
-        // At i = position + 1, the end element is the element at position
-        for(int i = position; i < size; i++)
-        {
-            strVec[i].swap(strVec[strVec.size()]);
-        }
-    }
-}
+void insertItem(int position, string item, vector<string> &strVec) { strVec.insert(strVec.begin() + position, item); }
 
 void insertItem(int position, string item, list<string> &strList)
 {  
     auto it = strList.begin();
 
-    advance(it, position - 1);
-    strList.insert(it, item);
+    if(position <= strList.size())
+    {
+        // Move to the position at that item and insert a new item there
+        advance(it, position);
+        strList.insert(it, item);
+    }
 }
 
 void insertItem(string item, set<string> &strSet) { strSet.insert(item); }
 
-void deleteItem(int position, vector<string> &strVec);
-void deleteItem(int position, list<string> &strVec);
-void deleteItem(int position, set<string> &strVec);
+void deleteItem(int position, vector<string> &strVec)
+{
+    if(position <= strVec.size())
+    {
+        strVec.erase(strVec.begin() + position);
+    }
+}
+
+void deleteItem(int position, list<string> &strList)
+{
+    auto it = strList.begin();
+
+    if(position <= strList.size())
+    {
+        // Move to the position at that item and delete the item there
+        advance(it, position);
+        strList.erase(it);
+    }
+}
+
+void deleteItem(int position, set<string> &strSet)
+{
+    auto it = strSet.begin();
+
+    if(position <= strSet.size())
+    {
+        // Move to the position at that item and delete the item there
+        advance(it, position);
+        strSet.erase(it);
+    }
+}
 /* syntax examples:
 auto start = high_resolution_clock::now()
 auto end = high_resolution_clock::now()
