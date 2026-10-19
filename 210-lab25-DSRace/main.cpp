@@ -31,11 +31,11 @@ void deleteItem(int position, list<string> &strList);
 void deleteItem(int position, set<string> &strSet);
 
 template<typename P1, typename P2, typename Func>
-auto getTime(P1 param1, P2 param2, Func func)
+auto getTime(Func func, P1 param1, P2 param2)
 {
     auto start = high_resolution_clock::now();
 
-    func(param1, param2, func);
+    func(param1, param2);
 
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<nanoseconds>(end - start);
@@ -43,20 +43,20 @@ auto getTime(P1 param1, P2 param2, Func func)
 
 }
 
-/*
+
 template<typename Func, typename P1, typename P2, typename P3>
-auto getTime(P1 param1, P2 param2, P3 param3, Func func)
+auto getTime(Func func, P1 param1, P2 param2, P3 param3)
 {
     auto start = high_resolution_clock::now();
 
-    func(param1, param2, func);
+    func(param1, param2, param3);
 
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<nanoseconds>(end - start);
     return duration.count();
 
 }
-*/
+
 
 int main() 
 {
@@ -66,7 +66,7 @@ int main()
 
     string readFile = "codes.txt";
 
-    getTime(readFile, strVec, readData(readFile, strVec));
+    getTime(readData, readFile, strVec);
 
     return 0;
 }
