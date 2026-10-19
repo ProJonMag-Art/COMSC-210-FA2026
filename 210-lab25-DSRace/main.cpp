@@ -5,6 +5,7 @@
 // Finished October 18, 2026 at 
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <chrono>
 #include <algorithm>
@@ -16,8 +17,11 @@
 using namespace std;
 using namespace std::chrono;
 
+// Constants
 const int DATASET_SIZE = 20000;
+const int SPACING_SIZE = 20;
 
+// Function Declarations
 void readDataV(string filename, vector<string> &strVec);
 void readDataL(string filename, list<string> &strList);
 void readDataS(string filename, set<string> &strSet);
@@ -33,9 +37,10 @@ void deleteDataV(int position, vector<string> &strVec);
 void deleteDataL(int position, list<string> &strList);
 void deleteItemS(int position, set<string> &strSet);
 
+// Template Funtion Definitions
 // Template definitions to allow timing of any inputted function with one parameter
 template<typename P1, typename Func>
-nanoseconds getTime(Func func, P1 param1)
+auto getTime(Func func, P1 param1)
 {
     auto start = high_resolution_clock::now();
 
@@ -49,7 +54,7 @@ nanoseconds getTime(Func func, P1 param1)
 
 // Template definitions to allow timing of any inputted function with two parameters
 template<typename P1, typename P2, typename Func>
-nanoseconds getTime(Func func, P1 param1, P2 param2)
+auto getTime(Func func, P1 param1, P2 param2)
 {
     auto start = high_resolution_clock::now();
 
@@ -63,7 +68,7 @@ nanoseconds getTime(Func func, P1 param1, P2 param2)
 
 // Template definitions to allow timing of any inputted function with three parameters
 template<typename Func, typename P1, typename P2, typename P3>
-nanoseconds getTime(Func func, P1 param1, P2 param2, P3 param3)
+auto getTime(Func func, P1 param1, P2 param2, P3 param3)
 {
     auto start = high_resolution_clock::now();
 
@@ -83,31 +88,19 @@ int main()
 
     string readFile = "codes.txt";
 
-    nanoseconds timing;
+    cout << setw(SPACING_SIZE + 6) << "READ" << setw(SPACING_SIZE) << "SORT" << setw(SPACING_SIZE) << "INSERT" << setw(SPACING_SIZE) << "DELETE" << endl;
 
-    // Gets the time of reading, sorting, inserting, and deleting for a vector
-    timing = getTime(readDataV, readFile, strVec);
-    cout << timing;
-    timing = getTime(sortDataV, readFile, strVec);
-    timing = getTime(insertDataV, readFile, strVec);
-    timing = getTime(deleteDataV, readFile, strVec);
-
-    // Gets the time of reading, sorting, inserting, and deleting for a list
-    timing = getTime(readDataL, readFile, strVec);
-    timing = getTime(sortDataL, readFile, strVec);
-    timing = getTime(insertDataL, readFile, strVec);
-    timing = getTime(deleteDataL, readFile, strVec);
-
-    // Gets the time of reading, sorting, inserting, and deleting for a set
-    timing = getTime(readDataS, readFile, strVec);
-    timing = getTime(insertDataV, readFile, strVec);
-    timing = getTime(deleteDataV, readFile, strVec);
-
-    cout << "READ | SORT | INSERT | DELETE";
+    // Tests and outputs vector data
+    cout << "Vector: " << setw(SPACING_SIZE) << getTime(readDataV, readFile, strVec) << setw(SPACING_SIZE) 
+    << getTime(sortDataV, strVec) << setw(SPACING_SIZE) 
+    <<  getTime(insertDataV, DATASET_SIZE/2, "TESTCODE", strVec) << setw(SPACING_SIZE) 
+    << getTime(deleteDataV, DATASET_SIZE/2, strVec) << endl;
+    
 
     return 0;
 }
 
+// Function Definitions
 void readDataV(string filename, vector<string> &strVec)
 {
     ifstream readFile(filename);
