@@ -2,7 +2,7 @@
 // COMSC-210 | Lab 25 | Jonvianney Maglasang
 
 // Started October 18, 2026 at 4:45 PM
-// Finished October 18, 2026 at 
+// Finished October 18, 2026 at 7:32 PM
 
 #include <iostream>
 #include <iomanip>
@@ -97,11 +97,13 @@ int main()
     <<  getTime(insertDataV, DATASET_SIZE/2, "TESTCODE", strVec) << setw(SPACING_SIZE) 
     << getTime(deleteDataV, DATASET_SIZE/2, strVec) << endl;
 
+    // Tests and outputs list data
     cout << "List: " << setw(SPACING_SIZE + 2) << getTime(readDataL, readFile, strList) << setw(SPACING_SIZE) 
     << getTime(sortDataL, strList) << setw(SPACING_SIZE) 
     <<  getTime(insertDataL, DATASET_SIZE/2, "TESTCODE", strList) << setw(SPACING_SIZE) 
     << getTime(deleteDataL, DATASET_SIZE/2, strList) << endl;
 
+    // Test and outputs set data
     cout << "Set: " << setw(SPACING_SIZE + 3) << getTime(readDataS, readFile, strSet) << setw(SPACING_SIZE) 
     << -1 << setw(SPACING_SIZE) 
     <<  getTime(insertDataS, "TESTCODE", strSet) << setw(SPACING_SIZE) 
@@ -113,6 +115,8 @@ int main()
 }
 
 // Function Definitions
+// All of these functions use a slightly different version of predfined library functions for reading, sorting, inserting, and deleting
+// I didn't add too many notes because they are sort of self explanatory
 void readDataV(string filename, vector<string> &strVec)
 {
     ifstream readFile(filename);
