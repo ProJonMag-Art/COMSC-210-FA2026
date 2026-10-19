@@ -24,14 +24,13 @@ void readDataS(string filename, set<string> &strSet);
 
 void sortDataV(vector<string> &strVec);
 void sortDataL(list<string> &strList);
-void sortDataS(set<string> &strSet);
 
-void insertItemV(int position, string item, vector<string> &strVec);
-void insertItemL(int position, string item, list<string> &strList);
+void insertDataV(int position, string item, vector<string> &strVec);
+void insertDataL(int position, string item, list<string> &strList);
 void insertItemS(string item, set<string> &strSet);
 
-void deleteItemV(int position, vector<string> &strVec);
-void deleteItemL(int position, list<string> &strList);
+void deleteDataV(int position, vector<string> &strVec);
+void deleteDataL(int position, list<string> &strList);
 void deleteItemS(int position, set<string> &strSet);
 
 // Template definitions to allow timing of any inputted function with one parameter
@@ -40,7 +39,7 @@ nanoseconds getTime(Func func, P1 param1)
 {
     auto start = high_resolution_clock::now();
 
-    func(param1, param2);
+    func(param1);
 
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<nanoseconds>(end - start);
@@ -86,14 +85,25 @@ int main()
 
     nanoseconds timing;
 
+    // Gets the time of reading, sorting, inserting, and deleting for a vector
     timing = getTime(readDataV, readFile, strVec);
-    //timing = getTime(sort, readFile, strVec);
+    cout << timing;
+    timing = getTime(sortDataV, readFile, strVec);
+    timing = getTime(insertDataV, readFile, strVec);
+    timing = getTime(deleteDataV, readFile, strVec);
+
+    // Gets the time of reading, sorting, inserting, and deleting for a list
     timing = getTime(readDataL, readFile, strVec);
+    timing = getTime(sortDataL, readFile, strVec);
+    timing = getTime(insertDataL, readFile, strVec);
+    timing = getTime(deleteDataL, readFile, strVec);
+
+    // Gets the time of reading, sorting, inserting, and deleting for a set
+    timing = getTime(readDataS, readFile, strVec);
+    timing = getTime(insertDataV, readFile, strVec);
+    timing = getTime(deleteDataV, readFile, strVec);
 
     cout << "READ | SORT | INSERT | DELETE";
-
-
-    timing = getTime(readDataL, readFile, strVec);
 
     return 0;
 }
@@ -133,14 +143,17 @@ void readDataS(string filename, set<string> &strSet)
     }
 }
 
-void insertItemV(int position, string item, vector<string> &strVec) {
+void sortDataV(vector<string> &strVec) { sort(strVec.begin(), strVec.end()); }
+void sortDataL(list<string> &strList) { strList.sort(); }
+
+void insertDataV(int position, string item, vector<string> &strVec) {
     if(position < strVec.size())
     {
         strVec.insert(strVec.begin() + position, item);
     }
 }
 
-void insertItemL(int position, string item, list<string> &strList)
+void insertDataL(int position, string item, list<string> &strList)
 {  
     auto it = strList.begin();
 
@@ -154,7 +167,7 @@ void insertItemL(int position, string item, list<string> &strList)
 
 void insertItemS(string item, set<string> &strSet) { strSet.insert(item); }
 
-void deleteItemV(int position, vector<string> &strVec)
+void deleteDataV(int position, vector<string> &strVec)
 {
     if(position < strVec.size())
     {
@@ -162,7 +175,7 @@ void deleteItemV(int position, vector<string> &strVec)
     }
 }
 
-void deleteItemL(int position, list<string> &strList)
+void deleteDataL(int position, list<string> &strList)
 {
     auto it = strList.begin();
 
