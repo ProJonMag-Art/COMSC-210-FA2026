@@ -18,20 +18,25 @@ using namespace std::chrono;
 
 const int DATASET_SIZE = 20000;
 
-void readData(string filename, vector<string> &strVec);
-void readData(string filename, list<string> &strList);
-void readData(string filename, set<string> &strSet);
+void readDataV(string filename, vector<string> &strVec);
+void readDataL(string filename, list<string> &strList);
+void readDataS(string filename, set<string> &strSet);
 
-void insertItem(int position, string item, vector<string> &strVec);
-void insertItem(int position, string item, list<string> &strList);
-void insertItem(int position, string item, set<string> &strSet);
+void sortDataV(vector<string> &strVec);
+void sortDataL(list<string> &strList);
+void sortDataS(set<string> &strSet);
 
-void deleteItem(int position, vector<string> &strVec);
-void deleteItem(int position, list<string> &strList);
-void deleteItem(int position, set<string> &strSet);
+void insertItemV(int position, string item, vector<string> &strVec);
+void insertItemL(int position, string item, list<string> &strList);
+void insertItemS(string item, set<string> &strSet);
 
-template<typename P1, typename P2, typename Func>
-auto getTime(Func func, P1 param1, P2 param2)
+void deleteItemV(int position, vector<string> &strVec);
+void deleteItemL(int position, list<string> &strList);
+void deleteItemS(int position, set<string> &strSet);
+
+// Template definitions to allow timing of any inputted function with one parameter
+template<typename P1, typename Func>
+nanoseconds getTime(Func func, P1 param1)
 {
     auto start = high_resolution_clock::now();
 
@@ -43,9 +48,23 @@ auto getTime(Func func, P1 param1, P2 param2)
 
 }
 
+// Template definitions to allow timing of any inputted function with two parameters
+template<typename P1, typename P2, typename Func>
+nanoseconds getTime(Func func, P1 param1, P2 param2)
+{
+    auto start = high_resolution_clock::now();
 
+    func(param1, param2);
+
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<nanoseconds>(end - start);
+    return duration.count();
+
+}
+
+// Template definitions to allow timing of any inputted function with three parameters
 template<typename Func, typename P1, typename P2, typename P3>
-auto getTime(Func func, P1 param1, P2 param2, P3 param3)
+nanoseconds getTime(Func func, P1 param1, P2 param2, P3 param3)
 {
     auto start = high_resolution_clock::now();
 
@@ -54,7 +73,6 @@ auto getTime(Func func, P1 param1, P2 param2, P3 param3)
     auto end = high_resolution_clock::now();
     auto duration = duration_cast<nanoseconds>(end - start);
     return duration.count();
-
 }
 
 
@@ -66,12 +84,21 @@ int main()
 
     string readFile = "codes.txt";
 
-    getTime(readData, readFile, strVec);
+    nanoseconds timing;
+
+    timing = getTime(readDataV, readFile, strVec);
+    //timing = getTime(sort, readFile, strVec);
+    timing = getTime(readDataL, readFile, strVec);
+
+    cout << "READ | SORT | INSERT | DELETE";
+
+
+    timing = getTime(readDataL, readFile, strVec);
 
     return 0;
 }
 
-void readData(string filename, vector<string> &strVec)
+void readDataV(string filename, vector<string> &strVec)
 {
     ifstream readFile(filename);
     string tempStr;
@@ -84,7 +111,7 @@ void readData(string filename, vector<string> &strVec)
     readFile.close();
 }
 
-void readData(string filename, list<string> &strList)
+void readDataL(string filename, list<string> &strList)
 {
     ifstream readFile(filename);
     string tempStr;
@@ -95,7 +122,7 @@ void readData(string filename, list<string> &strList)
     }
 }
 
-void readData(string filename, set<string> &strSet)
+void readDataS(string filename, set<string> &strSet)
 {
     ifstream readFile(filename);
     string tempStr;
@@ -106,14 +133,14 @@ void readData(string filename, set<string> &strSet)
     }
 }
 
-void insertItem(int position, string item, vector<string> &strVec) {
+void insertItemV(int position, string item, vector<string> &strVec) {
     if(position < strVec.size())
     {
         strVec.insert(strVec.begin() + position, item);
     }
 }
 
-void insertItem(int position, string item, list<string> &strList)
+void insertItemL(int position, string item, list<string> &strList)
 {  
     auto it = strList.begin();
 
@@ -125,9 +152,9 @@ void insertItem(int position, string item, list<string> &strList)
     }
 }
 
-void insertItem(string item, set<string> &strSet) { strSet.insert(item); }
+void insertItemS(string item, set<string> &strSet) { strSet.insert(item); }
 
-void deleteItem(int position, vector<string> &strVec)
+void deleteItemV(int position, vector<string> &strVec)
 {
     if(position < strVec.size())
     {
@@ -135,7 +162,7 @@ void deleteItem(int position, vector<string> &strVec)
     }
 }
 
-void deleteItem(int position, list<string> &strList)
+void deleteItemL(int position, list<string> &strList)
 {
     auto it = strList.begin();
 
@@ -147,7 +174,7 @@ void deleteItem(int position, list<string> &strList)
     }
 }
 
-void deleteItem(int position, set<string> &strSet)
+void deleteItemS(int position, set<string> &strSet)
 {
     auto it = strSet.begin();
 
