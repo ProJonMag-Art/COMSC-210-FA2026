@@ -31,11 +31,11 @@ void sortDataL(list<string> &strList);
 
 void insertDataV(int position, string item, vector<string> &strVec);
 void insertDataL(int position, string item, list<string> &strList);
-void insertItemS(string item, set<string> &strSet);
+void insertDataS(string item, set<string> &strSet);
 
 void deleteDataV(int position, vector<string> &strVec);
 void deleteDataL(int position, list<string> &strList);
-void deleteItemS(int position, set<string> &strSet);
+void deleteDataS(int position, set<string> &strSet);
 
 // Template Funtion Definitions
 // Template definitions to allow timing of any inputted function with one parameter
@@ -88,14 +88,26 @@ int main()
 
     string readFile = "codes.txt";
 
-    cout << setw(SPACING_SIZE + 6) << "READ" << setw(SPACING_SIZE) << "SORT" << setw(SPACING_SIZE) << "INSERT" << setw(SPACING_SIZE) << "DELETE" << endl;
+    cout << endl << setw(55) << "Data Structure Task Speed" << endl;
+    cout << "Table [ms]: " << setw(16) << "READ" << setw(SPACING_SIZE) << "SORT" << setw(SPACING_SIZE) << "INSERT" << setw(SPACING_SIZE) << "DELETE" << endl;
 
     // Tests and outputs vector data
     cout << "Vector: " << setw(SPACING_SIZE) << getTime(readDataV, readFile, strVec) << setw(SPACING_SIZE) 
     << getTime(sortDataV, strVec) << setw(SPACING_SIZE) 
     <<  getTime(insertDataV, DATASET_SIZE/2, "TESTCODE", strVec) << setw(SPACING_SIZE) 
     << getTime(deleteDataV, DATASET_SIZE/2, strVec) << endl;
+
+    cout << "List: " << setw(SPACING_SIZE + 2) << getTime(readDataL, readFile, strList) << setw(SPACING_SIZE) 
+    << getTime(sortDataL, strList) << setw(SPACING_SIZE) 
+    <<  getTime(insertDataL, DATASET_SIZE/2, "TESTCODE", strList) << setw(SPACING_SIZE) 
+    << getTime(deleteDataL, DATASET_SIZE/2, strList) << endl;
+
+    cout << "Set: " << setw(SPACING_SIZE + 3) << getTime(readDataS, readFile, strSet) << setw(SPACING_SIZE) 
+    << -1 << setw(SPACING_SIZE) 
+    <<  getTime(insertDataS, "TESTCODE", strSet) << setw(SPACING_SIZE) 
+    << getTime(deleteDataS, DATASET_SIZE/2, strSet) << endl;
     
+    cout << "\n(Note: A negative one on the table means N/A)\n" << endl;
 
     return 0;
 }
@@ -158,7 +170,7 @@ void insertDataL(int position, string item, list<string> &strList)
     }
 }
 
-void insertItemS(string item, set<string> &strSet) { strSet.insert(item); }
+void insertDataS(string item, set<string> &strSet) { strSet.insert(item); }
 
 void deleteDataV(int position, vector<string> &strVec)
 {
@@ -180,7 +192,7 @@ void deleteDataL(int position, list<string> &strList)
     }
 }
 
-void deleteItemS(int position, set<string> &strSet)
+void deleteDataS(int position, set<string> &strSet)
 {
     auto it = strSet.begin();
 
