@@ -16,15 +16,21 @@
 using namespace std;
 using namespace std::chrono;
 
+const int DATASET_SIZE = 20000;
+
 auto getTime();
 
 void readData(string filename, vector<string> &strVec);
 void readData(string filename, list<string> &strList);
 void readData(string filename, set<string> &strSet);
 
-void deleteItem();
-void deleteItem();
-void deleteItem();
+void insertItem(int position, string item, vector<string> &strVec);
+void insertItem(int position, string item, list<string> &strVec);
+void insertItem(int position, string item, set<string> &strVec);
+
+void deleteItem(int position, vector<string> &strVec);
+void deleteItem(int position, list<string> &strVec);
+void deleteItem(int position, set<string> &strVec);
 
 int main() 
 {
@@ -70,6 +76,31 @@ void readData(string filename, set<string> &strSet)
     }
 }
 
+void insertItem(int position, string item, vector<string> &strVec)
+{
+    int size = strVec.size();
+
+    if(position < size)
+    {
+        // Replace strVec[position] with inputted item and save strVec[position] in a temp to be moved
+        string tempStr = strVec[position];
+        strVec[position] = item;
+
+        // Shift all other items down one position
+        for(int i = position + 1; i < size - 1; i++)
+        {
+            strVec[i] = tempStr;
+            tempStr = strVec[i];
+        }
+    }
+}
+
+void insertItem(int position, string item, list<string> &strVec);
+void insertItem(int position, string item, set<string> &strVec);
+
+void deleteItem(int position, vector<string> &strVec);
+void deleteItem(int position, list<string> &strVec);
+void deleteItem(int position, set<string> &strVec);
 /* syntax examples:
 auto start = high_resolution_clock::now()
 auto end = high_resolution_clock::now()
