@@ -20,6 +20,8 @@ using namespace std::chrono;
 // Constants
 const int DATASET_SIZE = 20000;
 const int SPACING_SIZE = 20;
+const int ROW_CNT = 3;
+const int COL_CNT = 4;
 
 // Function Declarations
 void readDataV(string filename, vector<string> &strVec);
@@ -86,7 +88,9 @@ int main()
     list<string> strList;
     set<string> strSet;
 
-    string readFile = "codes.txt";
+    string readFile = "names.txt";
+
+    int64_t data[ROW_CNT][COL_CNT][ROW_CNT * COL_CNT];
 
     cout << endl << setw(SPACING_SIZE * 2 + 5) << "Data Structure Task Speed" << endl;
     cout << "Operation: " << setw(SPACING_SIZE - 5) << "Vector" << setw(SPACING_SIZE) << "List" << setw(SPACING_SIZE) << "Set" << endl;
