@@ -90,7 +90,9 @@ int main()
 
     string readFile = "names.txt";
 
-    int64_t data[ROW_CNT][COL_CNT][ROW_CNT * COL_CNT];
+    int64_t data[ROW_CNT][COL_CNT][COL_CNT];
+
+    
 
     cout << endl << setw(SPACING_SIZE * 2 + 5) << "Data Structure Task Speed" << endl;
     cout << "Operation: " << setw(SPACING_SIZE - 5) << "Vector" << setw(SPACING_SIZE) << "List" << setw(SPACING_SIZE) << "Set" << endl;
