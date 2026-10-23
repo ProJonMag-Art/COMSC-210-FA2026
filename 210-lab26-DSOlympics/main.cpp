@@ -88,25 +88,22 @@ int main()
 
     string readFile = "codes.txt";
 
-    cout << endl << setw(55) << "Data Structure Task Speed" << endl;
-    cout << "Table [ms]: " << setw(16) << "READ" << setw(SPACING_SIZE) << "SORT" << setw(SPACING_SIZE) << "INSERT" << setw(SPACING_SIZE) << "DELETE" << endl;
+    cout << endl << setw(SPACING_SIZE * 2 + 5) << "Data Structure Task Speed" << endl;
+    cout << "Operation: " << setw(SPACING_SIZE - 5) << "Vector" << setw(SPACING_SIZE) << "List" << setw(SPACING_SIZE) << "Set" << endl;
 
     // Tests and outputs vector data
-    cout << "Vector: " << setw(SPACING_SIZE) << getTime(readDataV, readFile, strVec) << setw(SPACING_SIZE) 
-    << getTime(sortDataV, strVec) << setw(SPACING_SIZE) 
-    <<  getTime(insertDataV, DATASET_SIZE/2, "TESTCODE", strVec) << setw(SPACING_SIZE) 
-    << getTime(deleteDataV, DATASET_SIZE/2, strVec) << endl;
+    cout << "Read: " << setw(SPACING_SIZE) << getTime(readDataV, readFile, strVec) << setw(SPACING_SIZE) 
+    << getTime(readDataL, readFile, strList) << setw(SPACING_SIZE) 
+    <<  getTime(readDataS, readFile, strSet) << endl;
 
     // Tests and outputs list data
-    cout << "List: " << setw(SPACING_SIZE + 2) << getTime(readDataL, readFile, strList) << setw(SPACING_SIZE) 
+    cout << "Sort: " << setw(SPACING_SIZE) << getTime(sortDataV, strVec) << setw(SPACING_SIZE) 
     << getTime(sortDataL, strList) << setw(SPACING_SIZE) 
-    <<  getTime(insertDataL, DATASET_SIZE/2, "TESTCODE", strList) << setw(SPACING_SIZE) 
-    << getTime(deleteDataL, DATASET_SIZE/2, strList) << endl;
+    << -1 << endl;
 
     // Test and outputs set data
-    cout << "Set: " << setw(SPACING_SIZE + 3) << getTime(readDataS, readFile, strSet) << setw(SPACING_SIZE) 
-    << -1 << setw(SPACING_SIZE) 
-    <<  getTime(insertDataS, "TESTCODE", strSet) << setw(SPACING_SIZE) 
+    cout << "Delete: " << setw(SPACING_SIZE - 2) << getTime(deleteDataV, DATASET_SIZE/2, strVec) << setw(SPACING_SIZE) 
+    <<  getTime(deleteDataL, DATASET_SIZE/2, strList) << setw(SPACING_SIZE) 
     << getTime(deleteDataS, DATASET_SIZE/2, strSet) << endl;
     
     cout << "\n(Note: A negative one on the table means N/A)\n" << endl;
