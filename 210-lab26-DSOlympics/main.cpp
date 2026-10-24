@@ -1,8 +1,8 @@
 
 // COMSC-210 | Lab 26 | Jonvianney Maglasang
 
-// Started October 23, 2026 at  3:46 PM
-// Finished October 23, 2026 at 
+// Started October 23, 2026 at 3:46 PM
+// Finished October 23, 2026 at 6:47 PM
 
 #include <iostream>
 #include <iomanip>
@@ -253,6 +253,7 @@ void deleteDataS(int position, set<string> &strSet)
 
 void outputData(int64_t array[2][ROW_CNT][COL_CNT], int simCnt)
 {
+    cout << endl << "Number of simulations: " << simCnt << "\n";
     // 3d Array Key:
     // [x][y][0] => vector data
     // [x][y][1] => list data
@@ -283,6 +284,8 @@ void outputData(int64_t array[2][ROW_CNT][COL_CNT], int simCnt)
     
     cout << "\n(Note: A negative one on the table means N/A)\n" << endl;
 }
+
+
 /* syntax examples:
 auto start = high_resolution_clock::now()
 auto end = high_resolution_clock::now()
