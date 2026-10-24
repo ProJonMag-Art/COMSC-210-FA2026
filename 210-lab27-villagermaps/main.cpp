@@ -11,10 +11,10 @@
 
 using namespace std;
 
-void menu(map<string, tuple<int, string, string>> mapping);
+void menu(map<string, tuple<int, string, string>> &mapping);
 void printMap(map<string, tuple<int, string, string>> mapping);
-auto searchMap(map<string, tuple<int, string, string>> mapping, string searchKey);
-void changeFriendship(map<string, tuple<int, string, string>> mapping, int incOrDec);
+bool searchMap(map<string, tuple<int, string, string>> mapping, string searchKey);
+void changeFriendship(map<string, tuple<int, string, string>> &mapping, int incOrDec);
 
 int main() {
     // declarations
@@ -66,7 +66,7 @@ void printMap(map<string, tuple<int, string, string>> mapping)
     }
 }
 
-auto searchMap(map<string, tuple<int, string, string>> mapping, string searchKey)
+bool searchMap(map<string, tuple<int, string, string>> mapping, string searchKey)
 {
     auto it = mapping.find(searchKey);
 
@@ -77,27 +77,47 @@ auto searchMap(map<string, tuple<int, string, string>> mapping, string searchKey
         cout << "\nFound " << searchKey << "'s Details: ";
         cout << "[" << get<0>(it->second) << ", " << get<1>(it->second) << ", " << get<2>(it->second) << "]";
         cout << endl;
-        return it;
+        return true;
     } else
     {
         cout << endl << searchKey << " not found." << endl;
-        return it;
+        return false;
     }
 }
 
-void changeFriendship(map<string, tuple<int, string, string>> mapping, int incOrDec)
+void changeFriendship(map<string, tuple<int, string, string>> &mapping, int incOrDec)
 {
-    string choice = 0;
+    string choice = "";
     if(incOrDec = 1)
     {
         printMap(mapping);
         cout << "Which villager's friendship level do you want to increase?: ";
         cin >> choice;
+
+        if(searchMap(mapping, choice) == true)
+        {
+            // If searchKey is found and its friendship level is between 0 and 10
+            auto foundKey = mapping.find(choice);
+            if(get<0>(foundKey->second) >= 0 && get<0>(foundKey->second) < 10)
+            {
+                get<0>(foundKey->second) += 1;
+            }
+        }
     } else if(incOrDec = 2)
     {
         printMap(mapping);
         cout << "Which villager's friendship level do you want to decrease?: ";
         cin >> choice;
+
+        if(searchMap(mapping, choice) == true)
+        {
+            // If searchKey is found and its friendship level is between 0 and 10
+            auto foundKey = mapping.find(choice);
+            if(get<0>(foundKey->second) > 0 && get<0>(foundKey->second) <= 10)
+            {
+                get<0>(foundKey->second) -= 1;
+            }
+        }
     }
     
     
