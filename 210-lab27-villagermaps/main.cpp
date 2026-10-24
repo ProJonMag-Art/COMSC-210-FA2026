@@ -11,14 +11,15 @@
 
 using namespace std;
 
-void menu(map<string, tuple<int, string, string>> &mapping);
+void menu(map<string, tuple<int, string, string>> &mapping, int &choice);
 void printMap(map<string, tuple<int, string, string>> mapping);
-bool searchMap(map<string, tuple<int, string, string>> mapping, string searchKey);
+bool searchMap(map<string, tuple<int, string, string>> mapping);
 void changeFriendship(map<string, tuple<int, string, string>> &mapping, int incOrDec);
 
 int main() {
     // declarations
     map<string, tuple<int, string, string>> villagerDetails;
+    int choice = 0;
 
     // insert elements into the map
     // note how the right-hand side of the assignment are the vector elements
@@ -26,14 +27,35 @@ int main() {
     villagerDetails["Raymond"] = {7, "Shark", "RAAAHHH"};
     villagerDetails.insert({"Marshal", {8, "Sea Mouse", "Mew"}});
 
+    do
+    {
+        menu(villagerDetails, choice);
+        switch(choice)
+        {
+            case 1:
+            {
+                changeFriendship(villagerDetails, choice);
+            }
+
+            case 2:
+            {
+                changeFriendship(villagerDetails, choice);
+            }
+
+            case 3:
+            {
+               searchMap(villagerDetails);
+            }
+        }
+    } while (true);
+    
+
     printMap(villagerDetails);
 
     // delete an element
     villagerDetails.erase("Raymond");
 
-    // search for an element using .find() to avoid errors
-    string searchKey = "Audie";
-    searchMap(villagerDetails, searchKey);
+    searchMap(villagerDetails);
 
     // report size, clear, report size again to confirm map operations
     cout << "\nSize before clear: " << villagerDetails.size() << endl;
@@ -44,14 +66,14 @@ int main() {
 }
 
 
-void menu(map<string, tuple<int, string, string>> &mapping)
+void menu(map<string, tuple<int, string, string>> &mapping, int &choice)
 {
-    int choice = 0;
     printMap(mapping);
     do
     {
-        
-    } while (choice != 4);
+        cout << "Choice: ";
+        cin >> choice;
+    } while (choice < 1 || choice > 4);
     
 }
 
@@ -66,8 +88,11 @@ void printMap(map<string, tuple<int, string, string>> mapping)
     }
 }
 
-bool searchMap(map<string, tuple<int, string, string>> mapping, string searchKey)
+bool searchMap(map<string, tuple<int, string, string>> mapping)
 {
+    cout << "Which villager would you like to search for?: ";
+    cin >> searchKey;
+
     auto it = mapping.find(searchKey);
 
      // the iterator points to beyond the end of the map
