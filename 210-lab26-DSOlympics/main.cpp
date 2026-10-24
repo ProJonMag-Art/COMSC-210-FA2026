@@ -22,6 +22,7 @@ const int DATASET_SIZE = 20000;
 const int SPACING_SIZE = 20;
 const int ROW_CNT = 4;
 const int COL_CNT = 3;
+const int SIMULATION_CNT = 15;
 
 // Function Declarations
 void readDataV(string filename, vector<string> &strVec);
@@ -38,6 +39,8 @@ void insertDataS(string item, set<string> &strSet);
 void deleteDataV(int position, vector<string> &strVec);
 void deleteDataL(int position, list<string> &strList);
 void deleteDataS(int position, set<string> &strSet);
+
+void outputData(int64_t array[2][4][3]);
 
 // Template Funtion Definitions
 // Template definitions to allow timing of any inputted function with one parameter
@@ -94,20 +97,44 @@ int main()
     // Slice 1 is the total race values
     int64_t data[2][ROW_CNT][COL_CNT];
 
-    // Saves vector data
-    data[0][0][0] = getTime(readDataV, readFile, strVec);
-    data[0][1][0] = getTime(sortDataV, strVec);
-    data[0][2][0] = getTime(insertDataV, DATASET_SIZE/2, "TESTDATA", strVec);
-    data[0][3][0] = getTime(deleteDataV, DATASET_SIZE/2, strVec);
+    int idx = 0;
+    while(idx < SIMULATION_CNT)
+    {
+        // Saves vector data
+        data[0][0][0] = getTime(readDataV, readFile, strVec);
+        data[0][1][0] = getTime(sortDataV, strVec);
+        data[0][2][0] = getTime(insertDataV, DATASET_SIZE/2, "TESTDATA", strVec);
+        data[0][3][0] = getTime(deleteDataV, DATASET_SIZE/2, strVec);
 
-    // Saves list data
-    data[0][0][1] =  getTime(readDataL, readFile, strList);
-    data[0][1][1] = getTime(sortDataL, strList);
-    data[0][2][1] = getTime(insertDataL, DATASET_SIZE/2, "TESTDATA", strList);
-    data[0][3][1] = getTime(deleteDataL, DATASET_SIZE/2, strList);
+        // Saves list data
+        data[0][0][1] = getTime(readDataL, readFile, strList);
+        data[0][1][1] = getTime(sortDataL, strList);
+        data[0][2][1] = getTime(insertDataL, DATASET_SIZE/2, "TESTDATA", strList);
+        data[0][3][1] = getTime(deleteDataL, DATASET_SIZE/2, strList);
 
-    // Saves set data
-    data[0][0][2] =  getTime(readDataS, readFile, strSet);
+        // Saves set data
+        data[0][0][2] = getTime(readDataS, readFile, strSet);
+        data[0][1][2] = -1;
+        data[0][2][2] = getTime(insertDataS, "TESTDATA", strSet);
+        data[0][3][2] = getTime(deleteDataS, DATASET_SIZE/2, strList);
+
+        // Adds slice 0 to slice 1
+        for(int i = 0; i < ROW_CNT; i++)
+        {
+            for(int j = 0; j < COL_CNT; j++)
+            {
+                // If slice 1 is uninitialized
+                if(idx == 0)
+                {
+                    // Zero out the data
+                    data[1][i][j] = 0;
+                }
+
+                // Add slice 0 data to slice 1 data
+                data[1][i][j] += data[0][i][j];
+            }
+        }
+    };
 
     cout << endl << setw(SPACING_SIZE * 2 + 5) << "Data Structure Task Speed" << endl;
     cout << "Operation: " << setw(SPACING_SIZE - 5) << "Vector" << setw(SPACING_SIZE) << "List" << setw(SPACING_SIZE) << "Set" << endl;
@@ -224,6 +251,11 @@ void deleteDataS(int position, set<string> &strSet)
         advance(it, position);
         strSet.erase(it);
     }
+}
+
+void outputData(int64_t array[2][4][3])
+{
+
 }
 /* syntax examples:
 auto start = high_resolution_clock::now()
