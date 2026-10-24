@@ -1,7 +1,7 @@
 
 // COMSC-210 | Lab 26 | Jonvianney Maglasang
 
-// Started October 23, 2026 at  PM
+// Started October 23, 2026 at  3:46 PM
 // Finished October 23, 2026 at 
 
 #include <iostream>
@@ -20,8 +20,8 @@ using namespace std::chrono;
 // Constants
 const int DATASET_SIZE = 20000;
 const int SPACING_SIZE = 20;
-const int ROW_CNT = 3;
-const int COL_CNT = 4;
+const int ROW_CNT = 4;
+const int COL_CNT = 3;
 
 // Function Declarations
 void readDataV(string filename, vector<string> &strVec);
@@ -88,11 +88,26 @@ int main()
     list<string> strList;
     set<string> strSet;
 
-    string readFile = "names.txt";
+    string readFile = "data.txt";
 
-    int64_t data[ROW_CNT][COL_CNT][COL_CNT];
+    // Slice 0 is the current race values
+    // Slice 1 is the total race values
+    int64_t data[2][ROW_CNT][COL_CNT];
 
-    
+    // Saves vector data
+    data[0][0][0] = getTime(readDataV, readFile, strVec);
+    data[0][1][0] = getTime(sortDataV, strVec);
+    data[0][2][0] = getTime(insertDataV, DATASET_SIZE/2, "TESTDATA", strVec);
+    data[0][3][0] = getTime(deleteDataV, DATASET_SIZE/2, strVec);
+
+    // Saves list data
+    data[0][0][1] =  getTime(readDataL, readFile, strList);
+    data[0][1][1] = getTime(sortDataL, strList);
+    data[0][2][1] = getTime(insertDataL, DATASET_SIZE/2, "TESTDATA", strList);
+    data[0][3][1] = getTime(deleteDataL, DATASET_SIZE/2, strList);
+
+    // Saves set data
+    data[0][0][2] =  getTime(readDataS, readFile, strSet);
 
     cout << endl << setw(SPACING_SIZE * 2 + 5) << "Data Structure Task Speed" << endl;
     cout << "Operation: " << setw(SPACING_SIZE - 5) << "Vector" << setw(SPACING_SIZE) << "List" << setw(SPACING_SIZE) << "Set" << endl;
