@@ -1,24 +1,31 @@
+
+// COMSC-210 | Lab 27 | Jonvianney Maglasang
+
+// Started October 23, 2026 at 9:27 PM
+// Finished October 23, 2026 at 
+
 #include <iostream>
 #include <map>
 #include <vector>
+#include <tuple>
+
 using namespace std;
 
 int main() {
     // declarations
-    map<string, vector<string>> villagerColors;
+    map<string, tuple<int, string, string>> villagerColors;
 
     // insert elements into the map
     // note how the right-hand side of the assignment are the vector elements
-    villagerColors["Audie"] = {"Orange", "Yellow", "Red"};
-    villagerColors["Raymond"] = {"Black", "Gray", "White"};
-    villagerColors.insert({"Marshal", {"Blue", "White", "Black"}});
+    villagerColors["Audie"] = {2, "Dolphin", "Booyah"};
+    villagerColors["Raymond"] = {7, "Shark", "RAAAHHH"};
+    villagerColors.insert({"Marshal", {8, "Sea Mouse", "Mew"}});
 
     // access the map using a range-based for loop
-    cout << "Villagers and their favorite colors (range-based for loop):" << endl;
+    cout << "Villagers, their friendship level, their species, and their catchphrase (range-based for loop):" << endl;
     for (auto pair : villagerColors) {
         cout << pair.first << ": ";
-        for (auto color : pair.second)
-            cout << color << " ";
+        cout << get<0>(pair.second) << " " << get<1>(pair.second) << " " << get<2>(pair.second);
         cout << endl;
     }
 
