@@ -40,7 +40,7 @@ void deleteDataV(int position, vector<string> &strVec);
 void deleteDataL(int position, list<string> &strList);
 void deleteDataS(int position, set<string> &strSet);
 
-void outputData(int64_t array[2][4][3]);
+void outputData(int64_t array[2][ROW_CNT][COL_CNT], int simCnt);
 
 // Template Funtion Definitions
 // Template definitions to allow timing of any inputted function with one parameter
@@ -93,8 +93,14 @@ int main()
 
     string readFile = "data.txt";
 
-    // Slice 0 is the current race values
-    // Slice 1 is the total race values
+    // 3d Array Key:
+
+    // [0][y][z] is the current race values
+    // [1][y][z] is the total race values
+
+    // [x][y][0] => vector data
+    // [x][y][1] => list data
+    // [x][y][2] => set data
     int64_t data[2][ROW_CNT][COL_CNT];
 
     int idx = 0;
@@ -116,7 +122,7 @@ int main()
         data[0][0][2] = getTime(readDataS, readFile, strSet);
         data[0][1][2] = -1;
         data[0][2][2] = getTime(insertDataS, "TESTDATA", strSet);
-        data[0][3][2] = getTime(deleteDataS, DATASET_SIZE/2, strList);
+        data[0][3][2] = getTime(deleteDataS, DATASET_SIZE/2, strSet);
 
         // Adds slice 0 to slice 1
         for(int i = 0; i < ROW_CNT; i++)
@@ -134,27 +140,11 @@ int main()
                 data[1][i][j] += data[0][i][j];
             }
         }
+        
+        idx++;
     };
 
-    cout << endl << setw(SPACING_SIZE * 2 + 5) << "Data Structure Task Speed" << endl;
-    cout << "Operation: " << setw(SPACING_SIZE - 5) << "Vector" << setw(SPACING_SIZE) << "List" << setw(SPACING_SIZE) << "Set" << endl;
-
-    // Tests and outputs vector data
-    cout << "Read: " << setw(SPACING_SIZE) << getTime(readDataV, readFile, strVec) << setw(SPACING_SIZE) 
-    << getTime(readDataL, readFile, strList) << setw(SPACING_SIZE) 
-    <<  getTime(readDataS, readFile, strSet) << endl;
-
-    // Tests and outputs list data
-    cout << "Sort: " << setw(SPACING_SIZE) << getTime(sortDataV, strVec) << setw(SPACING_SIZE) 
-    << getTime(sortDataL, strList) << setw(SPACING_SIZE) 
-    << -1 << endl;
-
-    // Test and outputs set data
-    cout << "Delete: " << setw(SPACING_SIZE - 2) << getTime(deleteDataV, DATASET_SIZE/2, strVec) << setw(SPACING_SIZE) 
-    <<  getTime(deleteDataL, DATASET_SIZE/2, strList) << setw(SPACING_SIZE) 
-    << getTime(deleteDataS, DATASET_SIZE/2, strSet) << endl;
-    
-    cout << "\n(Note: A negative one on the table means N/A)\n" << endl;
+    outputData(data, SIMULATION_CNT);
 
     return 0;
 }
@@ -253,9 +243,37 @@ void deleteDataS(int position, set<string> &strSet)
     }
 }
 
-void outputData(int64_t array[2][4][3])
+void outputData(int64_t array[2][ROW_CNT][COL_CNT], int simCnt)
 {
+    // 3d Array Key:
+    // [x][y][0] => vector data
+    // [x][y][1] => list data
+    // [x][y][2] => set data
 
+    cout << endl << setw(SPACING_SIZE * 2 + 5) << "Data Structure Task Speed" << endl;
+    cout << "Operation: " << setw(SPACING_SIZE - 5) << "Vector" << setw(SPACING_SIZE) << "List" << setw(SPACING_SIZE) << "Set" << endl;
+
+    // Outputs read data
+    cout << "Read: " << setw(SPACING_SIZE) << array[1][0][0]/simCnt << setw(SPACING_SIZE) 
+    << array[1][0][1]/simCnt << setw(SPACING_SIZE) 
+    <<  array[1][0][2]/simCnt << endl;
+
+    // Outputs sort data
+    cout << "Sort: " << setw(SPACING_SIZE) << array[1][1][0]/simCnt << setw(SPACING_SIZE) 
+    << array[1][1][1]/simCnt << setw(SPACING_SIZE) 
+    << array[1][1][2]/simCnt << endl;
+
+    // Outputs insert data
+    cout << "Insert: " << setw(SPACING_SIZE - 2) << array[1][2][0]/simCnt << setw(SPACING_SIZE) 
+    << array[1][2][1]/simCnt << setw(SPACING_SIZE) 
+    << array[1][2][2]/simCnt << endl;
+
+    // Outputs delete data
+    cout << "Delete: " << setw(SPACING_SIZE - 2) << array[1][3][0]/simCnt << setw(SPACING_SIZE) 
+    << array[1][3][1]/simCnt << setw(SPACING_SIZE) 
+    << array[1][3][2]/simCnt << endl;
+    
+    cout << "\n(Note: A negative one on the table means N/A)\n" << endl;
 }
 /* syntax examples:
 auto start = high_resolution_clock::now()
