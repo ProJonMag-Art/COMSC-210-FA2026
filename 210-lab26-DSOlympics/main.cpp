@@ -140,7 +140,7 @@ int main()
                 data[1][i][j] += data[0][i][j];
             }
         }
-        
+
         idx++;
     };
 
@@ -154,6 +154,8 @@ int main()
 // I didn't add too many notes because they are sort of self explanatory
 void readDataV(string filename, vector<string> &strVec)
 {
+    // Clear resets data to ensure multiple copies aren't being saved to the same container
+    strVec.clear();
     ifstream readFile(filename);
     string tempStr;
 
@@ -167,6 +169,8 @@ void readDataV(string filename, vector<string> &strVec)
 
 void readDataL(string filename, list<string> &strList)
 {
+    // Clear resets data to ensure multiple copies aren't being saved to the same container
+    strList.clear();
     ifstream readFile(filename);
     string tempStr;
 
@@ -174,10 +178,13 @@ void readDataL(string filename, list<string> &strList)
     {
         strList.push_back(tempStr);
     }
+    readFile.close();
 }
 
 void readDataS(string filename, set<string> &strSet)
 {
+    // Clear resets data to ensure multiple copies aren't being saved to the same container
+    strSet.clear();
     ifstream readFile(filename);
     string tempStr;
 
@@ -185,6 +192,7 @@ void readDataS(string filename, set<string> &strSet)
     {
         strSet.insert(tempStr);
     }
+    readFile.close();
 }
 
 void sortDataV(vector<string> &strVec) { sort(strVec.begin(), strVec.end()); }
