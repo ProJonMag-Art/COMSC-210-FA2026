@@ -13,6 +13,8 @@ using namespace std;
 
 void menu(map<string, tuple<int, string, string>> mapping);
 void printMap(map<string, tuple<int, string, string>> mapping);
+auto searchMap(map<string, tuple<int, string, string>> mapping, string searchKey);
+void changeFriendship(map<string, tuple<int, string, string>> mapping, int incOrDec);
 
 int main() {
     // declarations
@@ -31,17 +33,7 @@ int main() {
 
     // search for an element using .find() to avoid errors
     string searchKey = "Audie";
-    auto it = villagerDetails.find(searchKey);
-    if (it != villagerDetails.end()) 
-    {  // the iterator points to beyond the end of the map
-                                       // if searchKey is not found
-        cout << "\nFound " << searchKey << "'s Details: ";
-        cout << "[" << get<0>(it->second) << ", " << get<1>(it->second) << ", " << get<2>(it->second) << "]";
-        cout << endl;
-    } else
-    {
-        cout << endl << searchKey << " not found." << endl;
-    }
+    searchMap(villagerDetails, searchKey);
 
     // report size, clear, report size again to confirm map operations
     cout << "\nSize before clear: " << villagerDetails.size() << endl;
@@ -72,4 +64,41 @@ void printMap(map<string, tuple<int, string, string>> mapping)
         cout << "[" << get<0>(it->second) << ", " << get<1>(it->second) << ", " << get<2>(it->second) << "]";
         cout << endl;
     }
+}
+
+auto searchMap(map<string, tuple<int, string, string>> mapping, string searchKey)
+{
+    auto it = mapping.find(searchKey);
+
+     // the iterator points to beyond the end of the map
+    if (it != mapping.end()) 
+    {
+        // if searchKey is not found
+        cout << "\nFound " << searchKey << "'s Details: ";
+        cout << "[" << get<0>(it->second) << ", " << get<1>(it->second) << ", " << get<2>(it->second) << "]";
+        cout << endl;
+        return it;
+    } else
+    {
+        cout << endl << searchKey << " not found." << endl;
+        return it;
+    }
+}
+
+void changeFriendship(map<string, tuple<int, string, string>> mapping, int incOrDec)
+{
+    string choice = 0;
+    if(incOrDec = 1)
+    {
+        printMap(mapping);
+        cout << "Which villager's friendship level do you want to increase?: ";
+        cin >> choice;
+    } else if(incOrDec = 2)
+    {
+        printMap(mapping);
+        cout << "Which villager's friendship level do you want to decrease?: ";
+        cin >> choice;
+    }
+    
+    
 }
