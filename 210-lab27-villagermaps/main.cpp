@@ -31,13 +31,6 @@ int main() {
 
     menu(villagerDetails);
 
-    // delete an element
-    villagerDetails.erase("Raymond");
-
-    // search for an element using .find() to avoid errors
-    string searchKey = "Audie";
-    searchMap(villagerDetails, searchKey);
-
     // report size, clear, report size again to confirm map operations
     cout << "\nSize before clear: " << villagerDetails.size() << endl;
     villagerDetails.clear();
@@ -60,17 +53,29 @@ void menu(map<string, tuple<int, string, string>> &mapping)
         {
             case 1:
             {
-                changeFriendship(mapping, choice);
+                addVillager(mapping);
                 break;
             }
 
             case 2:
             {
-                changeFriendship(mapping, choice);
+                deleteVillager(mapping);
                 break;
             }
 
             case 3:
+            {
+                changeFriendship(mapping, choice);
+                break;
+            }
+
+            case 4:
+            {
+                changeFriendship(mapping, choice);
+                break;
+            }
+
+            case 5:
             {
                 cout << endl << "Which villager would you like to search for?: ";
                 cin >> searchKey;
@@ -78,19 +83,19 @@ void menu(map<string, tuple<int, string, string>> &mapping)
                 break;
             }
 
-            case 4:
+            case 6:
             {
                 break;
             }
         }
-    } while (choice != 4);
+    } while (choice != 6);
 }
 
 void getInput(int &choice)
 {
     do
     {
-        cout << endl << "1. Increase Friendship" << endl << "2. Decrease Friendship" << endl << "3. Search for Villager" << endl << "4. Exit\n" << endl;
+        cout << endl << "1. Add Villager" << endl << "2. Delete Villager" << endl << "3. Increase Friendship" << endl << "4. Decrease Friendship" << endl << "5. Search for Villager" << endl << "6. Exit\n" << endl;
         cout << "Choice: ";
         cin >> choice;
     } while (choice < 1 || choice > 6);
@@ -187,9 +192,23 @@ void addVillager(map<string, tuple<int, string, string>> &mapping)
     cin >> val2;
 
     mapping.insert({key, {tempNum, val1, val2}});
+    cout << endl << key << "added." << endl;
 }
 
 void deleteVillager(map<string, tuple<int, string, string>> &mapping)
 {
-    
+    string temp = "";
+
+    printMap(mapping);
+
+    cout << "Which villager do you want to delete?: ";
+    cin >> temp;
+
+    if(searchMap(mapping, temp) == true)
+    {
+        mapping.erase(temp);
+    } else
+    {
+        cout << endl << "Coudln't find: " << temp << endl;
+    }
 }
