@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <list>
 #include <algorithm>
+#include <functional>
 #include "Goat.h"
 using namespace std;
 
@@ -67,21 +68,31 @@ int main() {
                 display_trip(trip);
                 break;
             case 4:
-                cout << "Reversing goat data. \n";
-                reverse(trip.begin(), trip.end());
-                break;
-            case 5:
-                do
                 {
-                    cout << "\nWhat age of goats should we count?: ";
-                    cin >> temp;
-                } while (temp < 0);
-                cout << "\nCounting goats. \n";
-                count(trip.begin(), trip.end(), temp);
-                break;
+                    cout << "Reversing goat data. \n";
+                    reverse(trip.begin(), trip.end());
+                    break;
+                }
+            case 5:
+                {
+                    do
+                    {
+                        cout << "\nHow many years should we add to each goat's age?: ";
+                        cin >> temp;
+                    } while (temp < 0);
+                    cout << "\nAdding " << temp << " years to each goat's age. \n";
+                    for_each(trip.begin(), trip.end(), [](Goat &list)
+                    { 
+                        int currentAge = list.get_age();
+                        list.set_age(currentAge + 2);
+                    });
+                    break;
+                }
             default:
-                cout << "Invalid selection.\n";
-                break;
+                {
+                    cout << "Invalid selection.\n";
+                    break;
+                }
         }
         sel = main_menu();
     }
@@ -96,12 +107,12 @@ int main_menu() {
     cout << "[2] Delete a goat\n";
     cout << "[3] List goats\n";
     cout << "[4] Sort goats\n";
-    cout << "[5] Count goats of a certain age\n";
+    cout << "[5] Add to all goats' age\n";
     cout << "[12] Quit\n";
     cout << "Choice --> ";
     int choice;
     cin >> choice;
-    while (choice < 1 || choice > 4) {
+    while (choice < 1 || choice > 12) {
         cout << "Invalid, again --> ";
         cin >> choice;
     }
