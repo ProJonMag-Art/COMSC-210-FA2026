@@ -52,7 +52,8 @@ int main() {
     }
     
     // Goat Manager 3001 Engine
-    int temp = 0;
+    int tempNum = 0;
+    string tempStr = "";
     int sel = main_menu();
     while (sel != 12) {
         switch (sel) {
@@ -85,13 +86,13 @@ int main() {
                     do
                     {
                         cout << "\nHow many years should we add to each goat's age?: ";
-                        cin >> temp;
-                    } while (temp < 0);
-                    cout << "\nAdding " << temp << " years to each goat's age. \n";
-                    for_each(trip.begin(), trip.end(), [&temp](Goat &list)
+                        cin >> tempNum;
+                    } while (tempNum < 0);
+                    cout << "\nAdding " << tempNum << " years to each goat's age. \n";
+                    for_each(trip.begin(), trip.end(), [&tempNum](Goat &list)
                     { 
                         int currentAge = list.get_age();
-                        list.set_age(currentAge + temp);
+                        list.set_age(currentAge + tempNum);
                     });
                     break;
                 }
@@ -107,15 +108,36 @@ int main() {
                 {
                     display_trip(trip);
                     cout << "Which goat would you like to replace?: ";
-                    cin >> temp;
+                    cin >> tempNum;
 
                     // Move to it
                     auto it = trip.begin();
-                    advance(it, temp - 1);
+                    advance(it, tempNum - 1);
 
-                    cout << "Replacing matched goats\n";
+                    cout << "Replacing matched goats.\n";
                     replace(trip.begin(), trip.end(), (Goat){it->get_name(), it->get_age(), it->get_color()}, (Goat){names[rand() % SZ_NAMES], rand() % MAX_AGE, colors[rand() % SZ_COLORS]});
                     break;
+                }
+
+            case 8:
+                {
+                    cout << "Which goat would you like to look for?: ";
+                    cin >> tempStr;
+
+                    auto foundGoat = find_if(trip.begin(), trip.end(), [&tempStr](Goat &list){return list.get_name() == tempStr;});
+                    if(foundGoat != trip.end())
+                    {
+                        int idx = 0;
+                        for(auto it = trip.begin(); it != foundGoat; it++)
+                        {
+                            idx++;
+                        }
+
+                        cout << endl << tempStr << "Is the: " << idx + 1 << "th goat in the list" << endl;
+                    } else
+                    {
+                        cout << endl << tempStr << " Was not found in the list." << endl;
+                    }
                 }
             default:
                 {
@@ -135,10 +157,12 @@ int main_menu() {
     cout << "[1] Add a goat\n";
     cout << "[2] Delete a goat\n";
     cout << "[3] List goats\n";
-    cout << "[4] Sort goats\n";
+    cout << "[4] Reverse goats' order\n";
     cout << "[5] Add to all goats' ages\n";
     cout << "[6] Average all goats' ages\n";
     cout << "[7] Replace goat\n";
+    cout << "[8] Find goat\n";
+    cout << "[9] Isolate goat\n";
     cout << "[12] Quit\n";
     cout << "Choice --> ";
     int choice;
