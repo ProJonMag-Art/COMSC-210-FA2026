@@ -153,18 +153,25 @@ int main() {
 
             case 10:
                 {
+                    int max = 0;
                     do
                     {
-                        cout << "After which goat index should the rest of the goats be removed?: ";
+                        cout << "What is the min of the range?: ";
                         cin >> tempNum;
                     } while (tempNum < 0);
+
+                    do
+                    {
+                        cout << "What is the max of the range?: ";
+                        cin >> max;
+                    } while (max < 0);
                     
                     int counter = -1;
-                    cout << "Removing goats.\n";
-                    auto deleted = remove_if(trip.begin(), trip.end(), [&tempNum, &counter](Goat & list){counter++; return counter > tempNum;});
-                    auto it = trip.begin();
-                    advance(it, counter);
-                    erase(it, trip.end());
+                    erase_if(trip, [&counter, tempNum, max](Goat &list)
+                    {
+                        counter++;
+                        return counter > tempNum && counter < max;
+                    });
                 }
 
             default:
@@ -191,7 +198,7 @@ int main_menu() {
     cout << "[7] Replace goat\n";
     cout << "[8] Find goat\n";
     cout << "[9] Count goats older than a certain age\n";
-    cout << "[10] Remove goats after index\n";
+    cout << "[10] Remove range\n";
     cout << "[12] Quit\n";
     cout << "Choice --> ";
     int choice;
