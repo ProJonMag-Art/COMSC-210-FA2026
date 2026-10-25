@@ -111,10 +111,11 @@ int main() {
 
                     // Move to it
                     auto it = trip.begin();
-                    advance(it, temp)
+                    advance(it, temp - 1);
 
-                    cout << "Replacing all goats'\n";
-                    replace(trip.begin(), trip.end(), it, {names[rand() % SZ_NAMES], rand() % MAX_AGE, colors[rand() % SZ_COLORS]});
+                    cout << "Replacing matched goats\n";
+                    replace(trip.begin(), trip.end(), (Goat){it->get_name(), it->get_age(), it->get_color()}, (Goat){names[rand() % SZ_NAMES], rand() % MAX_AGE, colors[rand() % SZ_COLORS]});
+                    break;
                 }
             default:
                 {
@@ -137,6 +138,7 @@ int main_menu() {
     cout << "[4] Sort goats\n";
     cout << "[5] Add to all goats' ages\n";
     cout << "[6] Average all goats' ages\n";
+    cout << "[7] Replace goat\n";
     cout << "[12] Quit\n";
     cout << "Choice --> ";
     int choice;
