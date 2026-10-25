@@ -77,12 +77,14 @@ int main() {
                 }
             case 4:
                 {
+                    // Reverses list
                     cout << "Reversing goat data. \n";
                     reverse(trip.begin(), trip.end());
                     break;
                 }
             case 5:
                 {
+                    // Adds to each goat's age by an inputted amount
                     do
                     {
                         cout << "\nHow many years should we add to each goat's age?: ";
@@ -100,6 +102,8 @@ int main() {
             case 6:
                 {
                     cout << "Averaging all goats' ages.\n";
+
+                    // Sums ages then divides by the size of the list
                     int ageSum = accumulate(trip.begin(), trip.end(), 0, [](int sum, const Goat &list){ return sum += list.get_age();});
                     cout << "Average of goats' ages: " << ageSum/trip.size() << endl; 
                 }
@@ -114,6 +118,7 @@ int main() {
                     auto it = trip.begin();
                     advance(it, tempNum - 1);
 
+                    // If a goat matches the goat whos values matches the inputted index, then it will get replaced with a random goat object
                     cout << "Replacing matched goats.\n";
                     replace(trip.begin(), trip.end(), (Goat){it->get_name(), it->get_age(), it->get_color()}, (Goat){names[rand() % SZ_NAMES], rand() % MAX_AGE, colors[rand() % SZ_COLORS]});
                     break;
@@ -124,6 +129,7 @@ int main() {
                     cout << "Which goat would you like to look for?: ";
                     cin >> tempStr;
 
+                    // If there is a goat's name who matches the inputted tempStr, list its index, otherwise they do not match the inputted name
                     cout << "Replacing matched goats.\n";
                     auto foundGoat = find_if(trip.begin(), trip.end(), [&tempStr](Goat &list){return list.get_name() == tempStr;});
                     if(foundGoat != trip.end())
@@ -146,6 +152,7 @@ int main() {
                     cout << "Which age should goats be older than to be counted?: ";
                     cin >> tempNum;
 
+                    // Increase a counter whenver an item in the list is greater than the inputted number
                     cout << "Counting goats.\n";
                     int numOfGoats = count_if(trip.begin(), trip.end(), [&tempNum](Goat &list){return list.get_age() >= tempNum;});
                     cout << "There are: " << numOfGoats << " goats older than: " << tempNum  << endl;
@@ -166,6 +173,7 @@ int main() {
                         cin >> max;
                     } while (max < 0);
                     
+                    // Add to counter, and if that counter aka the index is in the listed range, delete the associated item
                     cout << "Deleting range.\n";
                     int counter = -1;
                     erase_if(trip, [&counter, tempNum, max](Goat &list)
