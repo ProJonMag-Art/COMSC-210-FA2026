@@ -100,6 +100,21 @@ int main() {
                 {
                     cout << "Averaging all goats' ages.\n";
                     int ageSum = accumulate(trip.begin(), trip.end(), 0, [](int sum, const Goat &list){ return sum += list.get_age();});
+                    cout << "Average of goats' ages: " << ageSum/trip.size() << endl; 
+                }
+
+            case 7:
+                {
+                    display_trip(trip);
+                    cout << "Which goat would you like to replace?: ";
+                    cin >> temp;
+
+                    // Move to it
+                    auto it = trip.begin();
+                    advance(it, temp)
+
+                    cout << "Replacing all goats'\n";
+                    replace(trip.begin(), trip.end(), it, {names[rand() % SZ_NAMES], rand() % MAX_AGE, colors[rand() % SZ_COLORS]});
                 }
             default:
                 {
@@ -120,7 +135,8 @@ int main_menu() {
     cout << "[2] Delete a goat\n";
     cout << "[3] List goats\n";
     cout << "[4] Sort goats\n";
-    cout << "[5] Add to all goats' age\n";
+    cout << "[5] Add to all goats' ages\n";
+    cout << "[6] Average all goats' ages\n";
     cout << "[12] Quit\n";
     cout << "Choice --> ";
     int choice;
