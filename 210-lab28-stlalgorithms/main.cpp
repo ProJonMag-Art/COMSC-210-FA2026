@@ -50,6 +50,7 @@ int main() {
     }
     
     // Goat Manager 3001 Engine
+    int temp = 0;
     int sel = main_menu();
     while (sel != 12) {
         switch (sel) {
@@ -69,6 +70,15 @@ int main() {
                 cout << "Reversing goat data. \n";
                 reverse(trip.begin(), trip.end());
                 break;
+            case 5:
+                do
+                {
+                    cout << "\nWhat age of goats should we count?: ";
+                    cin >> temp;
+                } while (temp < 0);
+                cout << "\nCounting goats. \n";
+                count(trip.begin(), trip.end(), temp);
+                break;
             default:
                 cout << "Invalid selection.\n";
                 break;
@@ -86,6 +96,7 @@ int main_menu() {
     cout << "[2] Delete a goat\n";
     cout << "[3] List goats\n";
     cout << "[4] Sort goats\n";
+    cout << "[5] Count goats of a certain age\n";
     cout << "[12] Quit\n";
     cout << "Choice --> ";
     int choice;
