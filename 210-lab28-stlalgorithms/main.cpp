@@ -151,7 +151,22 @@ int main() {
                     cout << "There are: " << numOfGoats << " goats older than: " << tempNum  << endl;
                 }
 
-            
+            case 10:
+                {
+                    do
+                    {
+                        cout << "After which goat index should the rest of the goats be removed?: ";
+                        cin >> tempNum;
+                    } while (tempNum < 0);
+                    
+                    int counter = -1;
+                    cout << "Removing goats.\n";
+                    auto deleted = remove_if(trip.begin(), trip.end(), [&tempNum, &counter](Goat & list){counter++; return counter > tempNum;});
+                    auto it = trip.begin();
+                    advance(it, counter);
+                    erase(it, trip.end());
+                }
+
             default:
                 {
                     cout << "Invalid selection.\n";
@@ -176,6 +191,7 @@ int main_menu() {
     cout << "[7] Replace goat\n";
     cout << "[8] Find goat\n";
     cout << "[9] Count goats older than a certain age\n";
+    cout << "[10] Remove goats after index\n";
     cout << "[12] Quit\n";
     cout << "Choice --> ";
     int choice;
