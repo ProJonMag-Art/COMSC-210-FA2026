@@ -16,6 +16,8 @@ void getInput(int &choice);
 void printMap(map<string, tuple<int, string, string>> mapping);
 bool searchMap(map<string, tuple<int, string, string>> mapping, string &searchKey);
 void changeFriendship(map<string, tuple<int, string, string>> &mapping, int incOrDec);
+void addVillager(map<string, tuple<int, string, string>> &mapping);
+void deleteVillager(map<string, tuple<int, string, string>> &mapping);
 
 int main() {
     // declarations
@@ -91,7 +93,7 @@ void getInput(int &choice)
         cout << endl << "1. Increase Friendship" << endl << "2. Decrease Friendship" << endl << "3. Search for Villager" << endl << "4. Exit\n" << endl;
         cout << "Choice: ";
         cin >> choice;
-    } while (choice < 1 || choice > 4);
+    } while (choice < 1 || choice > 6);
 }
 
 void printMap(map<string, tuple<int, string, string>> mapping)
@@ -127,7 +129,7 @@ bool searchMap(map<string, tuple<int, string, string>> mapping, string &searchKe
 void changeFriendship(map<string, tuple<int, string, string>> &mapping, int incOrDec)
 {
     string choice = "";
-    if(incOrDec == 1)
+    if(incOrDec == 3)
     {
         printMap(mapping);
         cout << endl << "Which villager's friendship level do you want to increase?: ";
@@ -142,7 +144,7 @@ void changeFriendship(map<string, tuple<int, string, string>> &mapping, int incO
                 get<0>(foundKey->second) += 1;
             }
         }
-    } else if(incOrDec == 2)
+    } else if(incOrDec == 4)
     {
         printMap(mapping);
         cout << "Which villager's friendship level do you want to decrease?: ";
@@ -158,6 +160,36 @@ void changeFriendship(map<string, tuple<int, string, string>> &mapping, int incO
             }
         }
     }
-    
+}
+
+void addVillager(map<string, tuple<int, string, string>> &mapping)
+{
+    string key, val1, val2;
+    int tempNum = 0;
+
+    // Get name
+    cout << endl << "What's the new villager's name?: ";
+    cin >> key;
+
+    // Get friendship level
+    do
+    {
+        cout << "What's their friendship level? (0-10): ";
+        cin >> tempNum;
+    } while (tempNum < 0 || tempNum > 10);
+
+    // Get name
+    cout << endl << "What's the new villager's species?: ";
+    cin >> val1;
+
+    // Get name
+    cout << endl << "What's the new villager's catchphrase?: ";
+    cin >> val2;
+
+    mapping.insert({key, {tempNum, val1, val2}});
+}
+
+void deleteVillager(map<string, tuple<int, string, string>> &mapping)
+{
     
 }
