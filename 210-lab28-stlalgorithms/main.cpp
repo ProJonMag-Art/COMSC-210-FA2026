@@ -1,7 +1,14 @@
+
+// COMSC-210 | Lab 28 | Jonvianney Maglasang
+
+// Started October 24, 2026 at 8:02 PM
+// Finished October 24, 2026 at 7:05 PM
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <list>
+#include <algorithm>
 #include "Goat.h"
 using namespace std;
 
@@ -44,7 +51,7 @@ int main() {
     
     // Goat Manager 3001 Engine
     int sel = main_menu();
-    while (sel != 4) {
+    while (sel != 12) {
         switch (sel) {
             case 1:
                 cout << "Adding a goat.\n";
@@ -57,6 +64,10 @@ int main() {
             case 3:    
                 cout << "Displaying goat data.\n";
                 display_trip(trip);
+                break;
+            case 4:
+                cout << "Reversing goat data. \n";
+                reverse(trip.begin(), trip.end());
                 break;
             default:
                 cout << "Invalid selection.\n";
@@ -74,7 +85,8 @@ int main_menu() {
     cout << "[1] Add a goat\n";
     cout << "[2] Delete a goat\n";
     cout << "[3] List goats\n";
-    cout << "[4] Quit\n";
+    cout << "[4] Sort goats\n";
+    cout << "[12] Quit\n";
     cout << "Choice --> ";
     int choice;
     cin >> choice;

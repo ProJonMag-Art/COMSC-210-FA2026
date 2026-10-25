@@ -127,7 +127,7 @@ int main_menu()
     int choice = -1;
     do
     {
-        cout << "\n*** GOAT MANAGER 3001 ***" << endl;
+        cout << "\n*** GOAT MANAGER 3002 ***" << endl;
         cout << "[1] Add a goat" << endl;
         cout << "[2] Delete a goat" << endl;
         cout << "[3] List goats" << endl;
