@@ -124,6 +124,7 @@ int main() {
                     cout << "Which goat would you like to look for?: ";
                     cin >> tempStr;
 
+                    cout << "Replacing matched goats.\n";
                     auto foundGoat = find_if(trip.begin(), trip.end(), [&tempStr](Goat &list){return list.get_name() == tempStr;});
                     if(foundGoat != trip.end())
                     {
@@ -139,6 +140,18 @@ int main() {
                         cout << endl << tempStr << " Was not found in the list." << endl;
                     }
                 }
+
+            case 9:
+                {
+                    cout << "Which age should goats be older than to be counted?: ";
+                    cin >> tempNum;
+
+                    cout << "Counting goats.\n";
+                    int numOfGoats = count_if(trip.begin(), trip.end(), [&tempNum](Goat &list){return list.get_age() >= tempNum;});
+                    cout << "There are: " << numOfGoats << " goats older than: " << tempNum  << endl;
+                }
+
+            
             default:
                 {
                     cout << "Invalid selection.\n";
@@ -162,7 +175,7 @@ int main_menu() {
     cout << "[6] Average all goats' ages\n";
     cout << "[7] Replace goat\n";
     cout << "[8] Find goat\n";
-    cout << "[9] Isolate goat\n";
+    cout << "[9] Count goats older than a certain age\n";
     cout << "[12] Quit\n";
     cout << "Choice --> ";
     int choice;
