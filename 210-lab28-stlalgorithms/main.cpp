@@ -10,6 +10,7 @@
 #include <list>
 #include <algorithm>
 #include <functional>
+#include <numeric>
 #include "Goat.h"
 using namespace std;
 
@@ -56,17 +57,23 @@ int main() {
     while (sel != 12) {
         switch (sel) {
             case 1:
-                cout << "Adding a goat.\n";
-                add_goat(trip, names, colors);
-                break;
+                {
+                    cout << "Adding a goat.\n";
+                    add_goat(trip, names, colors);
+                    break;
+                }
             case 2:    
-                cout << "Removing a goat.\n";
-                delete_goat(trip);
-                break;
-            case 3:    
-                cout << "Displaying goat data.\n";
-                display_trip(trip);
-                break;
+                {
+                    cout << "Removing a goat.\n";
+                    delete_goat(trip);
+                    break;
+                }
+            case 3:   
+                {
+                    cout << "Displaying goat data.\n";
+                    display_trip(trip);
+                    break;   
+                }
             case 4:
                 {
                     cout << "Reversing goat data. \n";
@@ -81,12 +88,18 @@ int main() {
                         cin >> temp;
                     } while (temp < 0);
                     cout << "\nAdding " << temp << " years to each goat's age. \n";
-                    for_each(trip.begin(), trip.end(), [](Goat &list)
+                    for_each(trip.begin(), trip.end(), [&temp](Goat &list)
                     { 
                         int currentAge = list.get_age();
-                        list.set_age(currentAge + 2);
+                        list.set_age(currentAge + temp);
                     });
                     break;
+                }
+
+            case 6:
+                {
+                    cout << "Averaging all goats' ages.\n";
+                    int ageSum = accumulate(trip.begin(), trip.end(), 0, [](int sum, const Goat &list){ return sum += list.get_age();});
                 }
             default:
                 {
