@@ -11,15 +11,15 @@
 
 using namespace std;
 
-void menu(map<string, tuple<int, string, string>> &mapping, int &choice);
+void menu(map<string, tuple<int, string, string>> &mapping);
+void getInput(int &choice);
 void printMap(map<string, tuple<int, string, string>> mapping);
-bool searchMap(map<string, tuple<int, string, string>> mapping);
+bool searchMap(map<string, tuple<int, string, string>> mapping, string &searchKey);
 void changeFriendship(map<string, tuple<int, string, string>> &mapping, int incOrDec);
 
 int main() {
     // declarations
     map<string, tuple<int, string, string>> villagerDetails;
-    int choice = 0;
 
     // insert elements into the map
     // note how the right-hand side of the assignment are the vector elements
@@ -27,35 +27,14 @@ int main() {
     villagerDetails["Raymond"] = {7, "Shark", "RAAAHHH"};
     villagerDetails.insert({"Marshal", {8, "Sea Mouse", "Mew"}});
 
-    do
-    {
-        menu(villagerDetails, choice);
-        switch(choice)
-        {
-            case 1:
-            {
-                changeFriendship(villagerDetails, choice);
-            }
-
-            case 2:
-            {
-                changeFriendship(villagerDetails, choice);
-            }
-
-            case 3:
-            {
-               searchMap(villagerDetails);
-            }
-        }
-    } while (true);
-    
-
-    printMap(villagerDetails);
+    menu(villagerDetails);
 
     // delete an element
     villagerDetails.erase("Raymond");
 
-    searchMap(villagerDetails);
+    // search for an element using .find() to avoid errors
+    string searchKey = "Audie";
+    searchMap(villagerDetails, searchKey);
 
     // report size, clear, report size again to confirm map operations
     cout << "\nSize before clear: " << villagerDetails.size() << endl;
@@ -66,15 +45,53 @@ int main() {
 }
 
 
-void menu(map<string, tuple<int, string, string>> &mapping, int &choice)
+void menu(map<string, tuple<int, string, string>> &mapping)
 {
-    printMap(mapping);
+    int choice = 0;
+    string searchKey = "";
+    
     do
     {
+        printMap(mapping);
+        getInput(choice);
+        switch(choice)
+        {
+            case 1:
+            {
+                changeFriendship(mapping, choice);
+                break;
+            }
+
+            case 2:
+            {
+                changeFriendship(mapping, choice);
+                break;
+            }
+
+            case 3:
+            {
+                cout << endl << "Which villager would you like to search for?: ";
+                cin >> searchKey;
+                searchMap(mapping, searchKey);
+                break;
+            }
+
+            case 4:
+            {
+                break;
+            }
+        }
+    } while (choice != 4);
+}
+
+void getInput(int &choice)
+{
+    do
+    {
+        cout << endl << "1. Increase Friendship" << endl << "2. Decrease Friendship" << endl << "3. Search for Villager" << endl << "4. Exit\n" << endl;
         cout << "Choice: ";
         cin >> choice;
     } while (choice < 1 || choice > 4);
-    
 }
 
 void printMap(map<string, tuple<int, string, string>> mapping)
@@ -84,15 +101,12 @@ void printMap(map<string, tuple<int, string, string>> mapping)
     for (map<string, tuple<int, string, string>>::iterator it = mapping.begin(); it != mapping.end(); ++it) {
         cout << endl << it->first << ": ";
         cout << "[" << get<0>(it->second) << ", " << get<1>(it->second) << ", " << get<2>(it->second) << "]";
-        cout << endl;
     }
+    cout << endl;
 }
 
-bool searchMap(map<string, tuple<int, string, string>> mapping)
+bool searchMap(map<string, tuple<int, string, string>> mapping, string &searchKey)
 {
-    cout << "Which villager would you like to search for?: ";
-    cin >> searchKey;
-
     auto it = mapping.find(searchKey);
 
      // the iterator points to beyond the end of the map
@@ -113,10 +127,10 @@ bool searchMap(map<string, tuple<int, string, string>> mapping)
 void changeFriendship(map<string, tuple<int, string, string>> &mapping, int incOrDec)
 {
     string choice = "";
-    if(incOrDec = 1)
+    if(incOrDec == 1)
     {
         printMap(mapping);
-        cout << "Which villager's friendship level do you want to increase?: ";
+        cout << endl << "Which villager's friendship level do you want to increase?: ";
         cin >> choice;
 
         if(searchMap(mapping, choice) == true)
@@ -128,7 +142,7 @@ void changeFriendship(map<string, tuple<int, string, string>> &mapping, int incO
                 get<0>(foundKey->second) += 1;
             }
         }
-    } else if(incOrDec = 2)
+    } else if(incOrDec == 2)
     {
         printMap(mapping);
         cout << "Which villager's friendship level do you want to decrease?: ";
