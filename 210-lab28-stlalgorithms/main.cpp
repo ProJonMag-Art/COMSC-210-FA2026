@@ -166,12 +166,19 @@ int main() {
                         cin >> max;
                     } while (max < 0);
                     
+                    cout << "Deleting range.\n";
                     int counter = -1;
                     erase_if(trip, [&counter, tempNum, max](Goat &list)
                     {
                         counter++;
                         return counter > tempNum && counter < max;
                     });
+                }
+
+            case 11:
+                {
+                    cout << "Clearing list.\n";
+                    trip.clear();
                 }
 
             default:
@@ -199,6 +206,7 @@ int main_menu() {
     cout << "[8] Find goat\n";
     cout << "[9] Count goats older than a certain age\n";
     cout << "[10] Remove range\n";
+    cout << "[11] Clear list\n";
     cout << "[12] Quit\n";
     cout << "Choice --> ";
     int choice;
