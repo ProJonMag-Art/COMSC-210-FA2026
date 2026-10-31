@@ -10,6 +10,7 @@
 #include <string>
 #include <list>
 #include <map>
+#include <array>
 #include <ctime>
 #include <cstdlib>
 #include <cmath>
@@ -40,12 +41,13 @@ struct Polar2DVec
         this->mag = inputM;
         this->angle = inputA;
     }
+    ~Polar2DVec();
 };
 
 // Define function that updates vector values based on key force values, takes either vec type as input (possibly overloaded definition)
 // Define function that reads data from file
 
-void readData(string filename, map<Polar2DVec *, list<Cart2DVec>[3]> &);
+void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs);
 double randNum(int min, int max);
 
 int main()
@@ -64,22 +66,26 @@ int main()
     return 0;
 }
 
-void readData(string filename, map<Polar2DVec *, list<Cart2DVec>[3]> &simObjs)
+void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs)
 {
     ifstream readFile(filename);
     Cart2DVec tempVec = Cart2DVec();
-    list<Cart2DVec> tempList[3];
+    array<list<Cart2DVec>, 3> tempList;
+    double tempVal1, tempVal2;
 
-    for(auto it = simObjs.begin(); it != simObjs.end(); it++)
+    // While there are still lines to read from the read file
+    while(readFile >> tempVal1 >> tempVal2)
     {
-        Polar2DVec *tempPol = new Polar2DVec();
-        readFile >> tempPol->mag >> tempPol->angle;
+        // Allocate new memory to a key which is a Polar2DVec ptr
+        Polar2DVec *tempPol = new Polar2DVec(tempVal1, tempVal2);
         for(int i = 0; i < 3; i++)
         {
+            // Read the next 6 doubles and save them to a temp Cart2DVec object that is pushed into the list array object
             readFile >> tempVec.xComp >> tempVec.yComp;
             tempList[i].push_front(tempVec);
         }
-        simObjs[tempPol] = tempList;
+        // Insert a new key value pair using the polar2DVec ptr and the array<list<Cart2DVec>> object
+        simObjs.insert( {tempPol, tempList} );
     }
 
     readFile.close();
