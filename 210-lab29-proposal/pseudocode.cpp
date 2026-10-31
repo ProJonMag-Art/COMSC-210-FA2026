@@ -1,20 +1,64 @@
 
 // COMSC-210 | Lab 29 | Jonvianney Maglasang
 
-// Started October 30, 2026 at 7:43 PM
-// Finished October 30, 2026 at 8:30 PM
+// Started October 31, 2026 at 1:11 AM
+// Finished October 31, 2026 at 
 
 // Include headers and namespace
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <list>
+#include <map>
+
+using namespace std;
 
 // Define cartesian vector structs
 // Contains two doouble members representing the x and y component of the vector
+struct Cart2DVec
+{
+    double xComp;
+    double yComp;
+    Cart2DVec();
+};
 
 // Define polar vector structs
 // Contains two double members representing the magnitude and angle of the vector (angle north of the west direction, moving ccw)
+struct Polar2DVec
+{
+    double magnitude;
+    double angle;
+    Polar2DVec();
+};
 
 // Define function that updates vector values based on key force values, takes either vec type as input (possibly overloaded definition)
 // Define function that reads data from file
 
+void readData(string filename, map<Polar2DVec *, list<Cart2DVec>[3]>);
+
+int main()
+{
+    string filename = "";
+    int t = 25;
+
+    map<Polar2DVec *, list<Cart2DVec>[3]> forceSim;
+    for(int i = 0; i < t; i++)
+    {
+
+    }
+
+
+    return 0;
+}
+
+void readData(string filename, map<Polar2DVec *, list<Cart2DVec[3]>>)
+{
+    ifstream readFile(filename);
+
+    
+
+    readFile.close();
+}
 // Define main function
     // Initializes a map that stores every force, displacement, velocity, and acceleration vector as a polar vector
     // Key is pointer to force values, and value is each displacement, velocity, and acceleration in each time step
