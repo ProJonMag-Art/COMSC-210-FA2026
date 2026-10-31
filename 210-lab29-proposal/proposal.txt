@@ -1,0 +1,19 @@
+
+Project Overview:
+My project creates a physics environment simulation, a program designed to predict the future changes of an object's displacement, velocity, and acceleration when experiencing a net force. 
+This software will illustrate how an object will move when an experiencing a net force that can change over time, or remain constant.
+
+Implementation:
+I plan to use a std::map to store and manage data related to different environments with a different set of net forces acting on the object. 
+This map will categorize the object's position, velocity, and acceleration into three std::lists stored in an array.  
+The map will have the force's magnitude and angle as its key in the form of a pointer to the struct. 
+The map's value will be the array of these three lists.
+
+In other words map<*Force, PhysicalState> where struct Force = {double magnitude, double angle} and struct PhysicalState = list<double>arr[3] = {list<double> displacement, list<double> velocity, list<acceleration>}
+
+One map entry would be a force with magnitude of 30N acting at an angle of 0 degrees. The three lists would represent the displacement, velocity, and acceleration at each time interval. 
+Another map entry could be for 50N force acing at 30 degrees; a third might be for 100N and -55 degrees.
+
+Simulated events:
+The simulation will focus on three events: The object's current displacement from the origin, it's current velocity, or acceleration. 
+At any given time period, the net force's magnitude and angle might change, leading to a different trend of displacement, velocity, or acceleration.
