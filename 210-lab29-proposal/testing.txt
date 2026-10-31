@@ -1,0 +1,9 @@
+I can use unit testing to see if this function, which compares a randomly generated percentage out of 100 is less than or equal to the inputted change percentage.
+That change percentage is to determine whether or not the force will change in this time step.
+
+void changeForce(Polar2DVec &pVec, int chance)
+{
+    double diceRoll = randNum(0, 100);
+    cout << diceRoll;
+}
+

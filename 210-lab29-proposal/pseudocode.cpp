@@ -48,8 +48,7 @@ struct Polar2DVec
 
 void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs);
 double randNum(int min, int max);
-void updateVals(Polar2DVec &pVec, int time, double chance);
-void updateVals(Cart2DVec &cVec, Polar2DVec &pVec, int time);
+void changeForce(Polar2DVec *&pVec, int chance);
 
 int main()
 {
@@ -58,7 +57,7 @@ int main()
     int t = 25;
 
     map<Polar2DVec *, array<list<Cart2DVec>, 3>> forceSim;
-    readData(filename, forceSim);
+    //readData(filename, forceSim);
     for(int i = 0; i < t; i++)
     {
 
@@ -100,9 +99,19 @@ double randNum(int min, int max)
     return num;
 }
 
-void updateVals(Polar2DVec &pVec, int time, int chance)
+void changeForce(Polar2DVec *&pVec, int chance, double maxMag)
 {
-    
+    double diceRoll = randNum(0, 100);
+    cout << "Rolled number: " << diceRoll << endl;
+    cout << "Magnitude: " << pVec->mag << " Angle: " << pVec->angle << endl;
+
+    if(diceRoll <= chance/(double) 100)
+    {
+        pVec->mag = randNum(0, static_cast<int>(maxMag));
+        pVec->angle = randNum(0, 360);
+    }
+
+    cout << "New Magnitude: " << pVec->mag << " New Angle: " << pVec->angle << endl;
 }
 // Define main function
     // Initializes a map that stores every force, displacement, velocity, and acceleration vector as a polar vector
