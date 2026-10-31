@@ -10,6 +10,9 @@
 #include <string>
 #include <list>
 #include <map>
+#include <ctime>
+#include <cstdlib>
+#include <cmath>
 
 using namespace std;
 
@@ -19,7 +22,11 @@ struct Cart2DVec
 {
     double xComp;
     double yComp;
-    Cart2DVec();
+    Cart2DVec(double inputX, double inputY)
+    {
+        this->xComp = inputX;
+        this->yComp = inputY;
+    }
 };
 
 // Define polar vector structs
@@ -35,10 +42,12 @@ struct Polar2DVec
 // Define function that reads data from file
 
 void readData(string filename, map<Polar2DVec *, list<Cart2DVec>[3]>);
+double randNum(int min, int max);
 
 int main()
 {
-    string filename = "";
+    srand(time(0));
+    string filename = "data.txt";
     int t = 25;
 
     map<Polar2DVec *, list<Cart2DVec>[3]> forceSim;
@@ -51,13 +60,30 @@ int main()
     return 0;
 }
 
-void readData(string filename, map<Polar2DVec *, list<Cart2DVec[3]>>)
+void readData(string filename, map<Polar2DVec *, list<Cart2DVec>[3]> bodyState)
 {
     ifstream readFile(filename);
+    double tempVal1;
+    double tempVal2;
 
-    
+    for(auto it = bodyState.begin(); it != bodyState.end(); it++)
+    {
+        readFile >> it->first->magnitude >> it->first->angle;
+        for(int i = 0; i < 3; i++)
+        {
+            readFile >> tempVal1 >> tempVal2;
+            it->second[i].insert(it->second[i].begin(), Cart2DVec(tempVal1, tempVal2));
+        }
+    }
 
     readFile.close();
+}
+
+double randNum(int min, int max)
+{
+    double num = rand() % ((max - min + 1) + min) / (double) 100;
+    
+    return num;
 }
 // Define main function
     // Initializes a map that stores every force, displacement, velocity, and acceleration vector as a polar vector
