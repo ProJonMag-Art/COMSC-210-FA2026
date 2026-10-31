@@ -41,7 +41,6 @@ struct Polar2DVec
         this->mag = inputM;
         this->angle = inputA;
     }
-    ~Polar2DVec();
 };
 
 // Define function that updates vector values based on key force values, takes either vec type as input (possibly overloaded definition)
@@ -49,6 +48,8 @@ struct Polar2DVec
 
 void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs);
 double randNum(int min, int max);
+void updateVals(Polar2DVec &pVec, int time, double chance);
+void updateVals(Cart2DVec &cVec, Polar2DVec &pVec, int time);
 
 int main()
 {
@@ -56,7 +57,8 @@ int main()
     string filename = "data.txt";
     int t = 25;
 
-    map<Polar2DVec *, list<Cart2DVec>[3]> forceSim;
+    map<Polar2DVec *, array<list<Cart2DVec>, 3>> forceSim;
+    readData(filename, forceSim);
     for(int i = 0; i < t; i++)
     {
 
@@ -96,6 +98,11 @@ double randNum(int min, int max)
     double num = rand() % ((max - min + 1) + min) / (double) 100;
     
     return num;
+}
+
+void updateVals(Polar2DVec &pVec, int time, int chance)
+{
+    
 }
 // Define main function
     // Initializes a map that stores every force, displacement, velocity, and acceleration vector as a polar vector
