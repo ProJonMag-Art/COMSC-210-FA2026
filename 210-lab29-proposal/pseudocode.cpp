@@ -48,13 +48,16 @@ struct Polar2DVec
 
 void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs);
 double randNum(int min, int max);
-void changeForce(Polar2DVec *&pVec, int chance);
+void changeForce(Polar2DVec *&pVec, int chance, Polar2DVec maxForce);
 
 int main()
 {
     srand(time(0));
     string filename = "data.txt";
     int t = 25;
+
+    Polar2DVec *testVec = new Polar2DVec(100, 30);
+    changeForce(testVec, 5000, {200, 360});
 
     map<Polar2DVec *, array<list<Cart2DVec>, 3>> forceSim;
     //readData(filename, forceSim);
@@ -63,6 +66,7 @@ int main()
 
     }
 
+    delete testVec;
 
     return 0;
 }
@@ -94,22 +98,22 @@ void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &sim
 
 double randNum(int min, int max)
 {
-    double num = rand() % ((max - min + 1) + min) / (double) 100;
+    double num = rand() % ((max - min + 1) + min);
     
     return num;
 }
 
-void changeForce(Polar2DVec *&pVec, int chance, double maxMag)
+void changeForce(Polar2DVec *&pVec, int chance, Polar2DVec maxForce)
 {
-    double diceRoll = randNum(0, 100);
+    double diceRoll = randNum(0, 100)/(double) 100;
     cout << "Rolled number: " << diceRoll << endl;
     cout << "Magnitude: " << pVec->mag << " Angle: " << pVec->angle << endl;
 
-    if(diceRoll <= chance/(double) 100)
-    {
-        pVec->mag = randNum(0, static_cast<int>(maxMag));
-        pVec->angle = randNum(0, 360);
-    }
+    //if(diceRoll <= chance)
+    //{
+        pVec->mag = randNum(-1 * static_cast<int>(maxForce.mag * 100), static_cast<int>(maxForce.mag * 100))/(double) 100;
+        pVec->angle = randNum(-1 * static_cast<int>(maxForce.angle * 100), static_cast<int>(maxForce.angle * 100))/(double) 100;
+    //}
 
     cout << "New Magnitude: " << pVec->mag << " New Angle: " << pVec->angle << endl;
 }
