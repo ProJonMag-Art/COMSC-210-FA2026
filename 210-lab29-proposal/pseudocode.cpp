@@ -64,20 +64,22 @@ int main()
     return 0;
 }
 
-void readData(string filename, map<Polar2DVec *, list<Cart2DVec>[3]> &bodyState)
+void readData(string filename, map<Polar2DVec *, list<Cart2DVec>[3]> &simObjs)
 {
     ifstream readFile(filename);
-    Polar2DVec *tempPol = &Polar2DVec();
-    Cart2DVec tempCartArr[3];
+    Cart2DVec tempVec = Cart2DVec();
+    list<Cart2DVec> tempList[3];
 
-    for(auto it = bodyState.begin(); it != bodyState.end(); it++)
+    for(auto it = simObjs.begin(); it != simObjs.end(); it++)
     {
+        Polar2DVec *tempPol = new Polar2DVec();
         readFile >> tempPol->mag >> tempPol->angle;
         for(int i = 0; i < 3; i++)
         {
-            readFile >> tempCartArr[i].xComp >> tempCartArr[i].yComp;
+            readFile >> tempVec.xComp >> tempVec.yComp;
+            tempList[i].push_front(tempVec);
         }
-        bodyState.insert(tempPol, tempCartArr);
+        simObjs[tempPol] = tempList;
     }
 
     readFile.close();
