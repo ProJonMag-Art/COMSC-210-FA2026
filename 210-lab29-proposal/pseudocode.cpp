@@ -22,7 +22,7 @@ struct Cart2DVec
 {
     double xComp;
     double yComp;
-    Cart2DVec(double inputX, double inputY)
+    Cart2DVec(double inputX = 0, double inputY = 0)
     {
         this->xComp = inputX;
         this->yComp = inputY;
@@ -33,15 +33,19 @@ struct Cart2DVec
 // Contains two double members representing the magnitude and angle of the vector (angle north of the west direction, moving ccw)
 struct Polar2DVec
 {
-    double magnitude;
+    double mag;
     double angle;
-    Polar2DVec();
+    Polar2DVec(double inputM = 0, double inputA = 0)
+    {
+        this->mag = inputM;
+        this->angle = inputA;
+    }
 };
 
 // Define function that updates vector values based on key force values, takes either vec type as input (possibly overloaded definition)
 // Define function that reads data from file
 
-void readData(string filename, map<Polar2DVec *, list<Cart2DVec>[3]>);
+void readData(string filename, map<Polar2DVec *, list<Cart2DVec>[3]> &);
 double randNum(int min, int max);
 
 int main()
@@ -60,20 +64,20 @@ int main()
     return 0;
 }
 
-void readData(string filename, map<Polar2DVec *, list<Cart2DVec>[3]> bodyState)
+void readData(string filename, map<Polar2DVec *, list<Cart2DVec>[3]> &bodyState)
 {
     ifstream readFile(filename);
-    double tempVal1;
-    double tempVal2;
+    Polar2DVec *tempPol = &Polar2DVec();
+    Cart2DVec tempCartArr[3];
 
     for(auto it = bodyState.begin(); it != bodyState.end(); it++)
     {
-        readFile >> it->first->magnitude >> it->first->angle;
+        readFile >> tempPol->mag >> tempPol->angle;
         for(int i = 0; i < 3; i++)
         {
-            readFile >> tempVal1 >> tempVal2;
-            it->second[i].insert(it->second[i].begin(), Cart2DVec(tempVal1, tempVal2));
+            readFile >> tempCartArr[i].xComp >> tempCartArr[i].yComp;
         }
+        bodyState.insert(tempPol, tempCartArr);
     }
 
     readFile.close();
