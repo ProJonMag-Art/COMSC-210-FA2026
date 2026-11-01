@@ -82,9 +82,6 @@ int main()
     string filename = "data.txt";
     int t = 25;
 
-    Polar2DVec *testVec = new Polar2DVec(100, 30);
-    changeForce(testVec, 50, {200, 360});
-
     map<Polar2DVec *, array<list<Cart2DVec>, 3>> forceSim;
     readData(filename, forceSim);
 
@@ -104,7 +101,7 @@ int main()
             cout << "Acceleration: " << it->second[ACCEL].back().xComp << " i, " << it->second[ACCEL].back().yComp << " j [m/s^2]" << endl;
 
             // Change force
-            changeForce(it->first, 50, static_cast<int>(randNum(0, 500)));
+            changeForce(it->first, 50, {randNum(0, 500), randNum(0, 360)} );
             // Update bodystate using kinematic equations
             // Since each dt is 1, that is kept out of each equation because 1*x = x
             
@@ -113,7 +110,6 @@ int main()
             tempX = it->first->mag * cos(it->first->getRadAngle()) / mass;
             tempY = it->first->mag * sin(it->first->getRadAngle()) / mass;
             
-            // Append the new acceleration value to the end of the acceleration list
             it->second[ACCEL].push_back(Cart2DVec(tempX, tempY));
 
             // it->second[VEL].back() refers to the latest velocity vector object
@@ -132,8 +128,6 @@ int main()
 
         }
     }
-
-    delete testVec;
 
     return 0;
 }
@@ -179,48 +173,10 @@ void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce)
 
     if(diceRoll <= chance)
     {
-        // Statuc casted to int to run randNum(), then turned back to double
+        // Static casted to int to run randNum(), then turned back to double by dividing by 100 to generate decimals up to the hundreth's place
         pVec->mag = randNum(0, static_cast<int>(maxForce.mag * 100))/(double) 100;
-        pVec->angle = randNum(0, static_cast<int>(maxForce.angle * 100))/(double) 100;
+        pVec->angle = randNum(0, static_cast<int>(maxForce.angle * 100)/(double) 100);
     }
 
     cout << "New Magnitude: " << pVec->mag << " New Angle: " << pVec->angle << endl;
 }
-// Define main function
-    // Initializes a map that stores every force, displacement, velocity, and acceleration vector as a polar vector
-    // Key is pointer to force values, and value is each displacement, velocity, and acceleration in each time step
-
-    // Call readData to save file data into initialized map
-
-    // Begin a time-based simulation for physics changes
-        // For 20 time intervals
-            // Iterate through each net force key in the map
-                // For each force, simulate changes
-                    // Randomly decide if the force's magnitude or angle will change
-                        // If force changes
-                            // For each list in the array
-                                // Update vector values using kinematic equations with the update force values, using defined updateVec function
-                        // If not changing
-                            // For each list in the array
-                                // Update vector values using kinematic equations with the same force values, using defined updateVec function
-                    // Print the changes for this interval, e.g., "Changed force magnitude by {amount} and angle to {amount} leading to following changes in pos, vel, and acc {amount, amount, amount}"
-
-            // Simulate more complex net force chagnes, maybe using the sum of multiple forces instead of just one forces as the key
-            // Random forces impacting the object
-// End of main function
-
-// Define updateVec function
-    // Update key vector values by input paramters
-    // Update value vector values based on current key vector values
-// End updateVec function
-
-// Open an external file to read initial data about climate zones and populate the map
-// Define readData function
-    // If file does not open, print an error and exit
-
-    // Read data from file and populate map
-        // For each line, extract climate zone and species data
-        // Insert species into the appropriate list in the array for their climate zone
-
-    // Close the file
-// End of readData function
