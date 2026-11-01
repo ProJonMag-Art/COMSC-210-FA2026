@@ -72,6 +72,7 @@ void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &sim
 double randNum(int min, int max);
 void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce);
 void printData(auto it, int currentTime, double timeStep);
+void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs, int interval, int stepSize, int mass);
 
 int main()
 {
@@ -85,51 +86,13 @@ int main()
 
     map<Polar2DVec *, array<list<Cart2DVec>, 3>> forceSim;
     readData(filename, forceSim);
+    runSimulation(forceSim, t, dt, mass);
 
-    // Loop for entire time duration
-    double tempX = 0;
-    double tempY = 0;
-    for(int i = 0; i < t; i++)
+    int choice = 0;
+    do
     {
-        // For every map value
-        for(auto it = forceSim.begin(); it != forceSim.end(); it++)
-        {
-            // Print current time step data
-            printData(it, i, dt);
-
-            Cart2DVec oldPos = Cart2DVec(it->second[POS].back().xComp, it->second[POS].back().yComp);
-            Cart2DVec oldVel = Cart2DVec(it->second[VEL].back().xComp, it->second[VEL].back().yComp);
-            Cart2DVec oldAcc = Cart2DVec(it->second[ACCEL].back().xComp, it->second[ACCEL].back().yComp);
-
-            // Change force
-            changeForce(it->first, 50, {randNum(0, 500), randNum(0, 360)} );
-            // Update bodystate using kinematic equations
-            // Since each dt is 1, that is kept out of each equation because 1*x = x
-            
-            // it->first->mag refers to the magnitude of the key force, it->first->getRadAngle() refers to the angle of the key force converted from degrees to radians
-            // dividing by mass satisfies the F=ma relationship, since we only want a, we divide m on both sides
-            tempX = it->first->mag * cos(it->first->getRadAngle()) / mass;
-            tempY = it->first->mag * sin(it->first->getRadAngle()) / mass;
-            
-            it->second[ACCEL].push_back(Cart2DVec(tempX, tempY));
-
-            // it->second[VEL].back() refers to the latest velocity vector object
-            // The kinematic equation for velocity is vf = vi + a * dt
-            tempX = oldVel.xComp + it->second[ACCEL].back().xComp;
-            tempY = oldVel.yComp + it->second[ACCEL].back().yComp;
-
-            it->second[VEL].push_back(Cart2DVec(tempX, tempY));
-
-            // it->second[POS].back() refers to the latest position vector object
-            // The kinematic equation for velocity is xf = xi + v * dt +  0.5 * a * dt^2
-            tempX = oldPos.xComp + (dt * oldVel.xComp) + (0.5 * dt * dt * it->second[ACCEL].back().xComp);
-            tempY = oldPos.yComp + (dt * oldVel.yComp) + (0.5 * dt * dt * it->second[ACCEL].back().yComp); 
-
-            it->second[POS].push_back(Cart2DVec(tempX, tempY));
-
-        }
-    }
-
+        
+    } while(choice < 1 || choice > 3);
 
 
     // Free memory
@@ -177,8 +140,6 @@ double randNum(int min, int max)
 void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce)
 {
     double diceRoll = randNum(0, 10000)/(double) 100;
-    cout << "Rolled number: " << diceRoll << endl;
-    cout << "Magnitude: " << pVec->mag << " Angle: " << pVec->angle << endl;
 
     if(diceRoll <= chance)
     {
@@ -186,8 +147,6 @@ void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce)
         pVec->mag = randNum(0, static_cast<int>(maxForce.mag * 100))/(double) 100;
         pVec->angle = randNum(0, static_cast<int>(maxForce.angle * 100))/(double) 100;
     }
-
-    cout << "New Magnitude: " << pVec->mag << " New Angle: " << pVec->angle << endl;
 }
 
 void printData(auto it, int currentTime, double timeStep)
@@ -197,4 +156,51 @@ void printData(auto it, int currentTime, double timeStep)
     cout << "Position: " << it->second[POS].back().xComp << " i, " << it->second[POS].back().yComp << " j [m]" << endl;
     cout << "Veclocity: " << it->second[VEL].back().xComp << " i, " << it->second[VEL].back().yComp << " j [m/s]" << endl;
     cout << "Acceleration: " << it->second[ACCEL].back().xComp << " i, " << it->second[ACCEL].back().yComp << " j [m/s^2]" << endl; 
+}
+
+void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs, int interval, int stepSize, int mass)
+{
+    // Loop for entire time duration
+    double tempX = 0;
+    double tempY = 0;
+    for(int i = 0; i < interval; i++)
+    {
+        // For every map value
+        for(auto it = simObjs.begin(); it != simObjs.end(); it++)
+        {
+            // Print current time step data
+            printData(it, i, stepSize);
+
+            Cart2DVec oldPos = Cart2DVec(it->second[POS].back().xComp, it->second[POS].back().yComp);
+            Cart2DVec oldVel = Cart2DVec(it->second[VEL].back().xComp, it->second[VEL].back().yComp);
+            Cart2DVec oldAcc = Cart2DVec(it->second[ACCEL].back().xComp, it->second[ACCEL].back().yComp);
+
+            // Change force
+            changeForce(it->first, 50, {randNum(0, 500), randNum(0, 360)} );
+            // Update bodystate using kinematic equations
+            // Since each dt is 1, that is kept out of each equation because 1*x = x
+            
+            // it->first->mag refers to the magnitude of the key force, it->first->getRadAngle() refers to the angle of the key force converted from degrees to radians
+            // dividing by mass satisfies the F=ma relationship, since we only want a, we divide m on both sides
+            tempX = it->first->mag * cos(it->first->getRadAngle()) / mass;
+            tempY = it->first->mag * sin(it->first->getRadAngle()) / mass;
+            
+            it->second[ACCEL].push_back(Cart2DVec(tempX, tempY));
+
+            // it->second[VEL].back() refers to the latest velocity vector object
+            // The kinematic equation for velocity is vf = vi + a * dt
+            tempX = oldVel.xComp + (it->second[ACCEL].back().xComp * stepSize);
+            tempY = oldVel.yComp + (it->second[ACCEL].back().yComp * stepSize);
+
+            it->second[VEL].push_back(Cart2DVec(tempX, tempY));
+
+            // it->second[POS].back() refers to the latest position vector object
+            // The kinematic equation for velocity is xf = xi + v * dt +  0.5 * a * dt^2
+            tempX = oldPos.xComp + (stepSize * oldVel.xComp) + (0.5 * stepSize * stepSize * it->second[ACCEL].back().xComp);
+            tempY = oldPos.yComp + (stepSize * oldVel.yComp) + (0.5 * stepSize * stepSize * it->second[ACCEL].back().yComp); 
+
+            it->second[POS].push_back(Cart2DVec(tempX, tempY));
+
+        }
+    }
 }

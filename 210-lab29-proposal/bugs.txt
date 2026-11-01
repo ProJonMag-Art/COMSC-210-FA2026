@@ -10,4 +10,5 @@ Bug 3: Old calculations was use the new velocity and new position in its calcula
 Bug 4: New printData() function isn't compiling
        This bug was caused because the function was attempting to use variables outside of its scope.Fixed this bug by passing the appropriate parameters to be used in the function.
 
-Bug 5:
+Bug 5: Old definition for velocity vector updates was incorrect because the acceleration components were not being scaled by the dt timeSteps
+       Fixed this bug by multiplying each acceleration component by the variable timeStep which represents dt
