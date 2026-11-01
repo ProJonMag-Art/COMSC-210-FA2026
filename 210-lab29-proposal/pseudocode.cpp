@@ -6,6 +6,7 @@
 
 // Include headers and namespace
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <list>
@@ -94,26 +95,32 @@ int main()
         cout << "\nOptions:" << endl << "   1. Print Data" << endl << "   2. Exit" << endl;
         cout << "Choice: ";
         cin >> choice1;
+
         switch(choice1)
         {
             case 1:
             {
                 do
                 {
-                    cout << "This program had: " << mapSize << " simulations. Which simulation's data would you like to see?: ";
+                    cout << "This program had: " << mapSize << " simulations. Which simulation's data would you like to see? (1-" << mapSize << "): " << endl;
+                    cout << "Choice: ";
                     cin >> choice2; 
 
                     int idx = 0;
+
+                    // Walk through map
                     for(auto it = forceSim.begin(); it != forceSim.end(); it++)
                     {
+                        // If current key value pair is the same idx as the user's choice
                         if(idx == (choice2 - 1))
                         {
+                            // Print data
                             for(int i = 0; i < t; i++)
                             {
                                 printData(it, i, dt);
                             }
                         }
-                    idx++;
+                        idx++;
                     }
                 } while(choice2 < 1 || choice2 > mapSize);
 
@@ -187,11 +194,20 @@ void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce)
 
 void printData(auto it, int currentTime, double timeStep)
 {
+    /*
     cout << "\nTime step: " << timeStep * currentTime << endl;
     cout << "Force: " << it->first->mag << " [N] at an angle: " << it->first->angle << " [DEG] North of East" << endl;
     cout << "Position: " << it->second[POS].back().xComp << " i, " << it->second[POS].back().yComp << " j [m]" << endl;
     cout << "Veclocity: " << it->second[VEL].back().xComp << " i, " << it->second[VEL].back().yComp << " j [m/s]" << endl;
     cout << "Acceleration: " << it->second[ACCEL].back().xComp << " i, " << it->second[ACCEL].back().yComp << " j [m/s^2]" << endl; 
+    */
+
+    cout << "\nTime [s]: " << setw(20) << "Force [N]:" << setw(40) << "Position [m]: " << setw(40) << "Velocity [m/s]: " << setw(40) << "Acceleration [m/s^2]: " << endl;
+    cout << timeStep * currentTime << setw(20) 
+    << it->first->mag << " at " << it->first->angle << "[DEG] NE" << setw(20) 
+    << it->second[POS].back().xComp << " i, " << it->second[POS].back().yComp << " j [m]" << setw(20) 
+    << it->second[VEL].back().xComp << " i, " << it->second[VEL].back().yComp << " j [m/s]" << setw(20) 
+    << it->second[ACCEL].back().xComp << " i, " << it->second[ACCEL].back().yComp << " j [m/s^2]" << endl;
 }
 
 void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs, int interval, int stepSize, int mass)
