@@ -17,6 +17,11 @@
 
 using namespace std;
 
+// Constants for better time understanding the code
+const int POS = 0;
+const int VEL = 1;
+const int ACCEL = 2;
+
 // Define cartesian vector structs
 // Contains two doouble members representing the x and y component of the vector
 struct Cart2DVec
@@ -82,6 +87,8 @@ int main()
     map<Polar2DVec *, array<list<Cart2DVec>, 3>> forceSim;
     //readData(filename, forceSim);
     // Loop for entire time duration
+    double tempX = 0;
+    double tempY = 0;
     for(int i = 0; i < t; i++)
     {
         // For every map value
@@ -91,10 +98,16 @@ int main()
             //cout << "Time step " << i << ": "
             // Change force
             changeForce(it->first, 50, static_cast<int>(randNum(0, 500)));
-            // Update bodystate values
-            it->second[2].push_back(Cart2DVec());
+            // Update bodystate
             
-            it->second[2].assign(it->second[2].end(), it->second[2]->back.xComp + it->first->mag / mass)
+            // it->first->mag refers to the magnitude of the key force, it->first->getRadAngle() refers to the angle of the key force converted from degrees to radians
+            // dividing by mass satisfies the F=ma relationship, since we only want a, we divide m on both sides
+            tempX = it->first->mag * cos(it->first->getRadAngle()) / mass;
+            tempX = it->first->mag * sin(it->first->getRadAngle()) / mass;
+            
+            it->second[2].push_back(Cart2DVec(tempX, tempY));
+            
+            
         }
     }
 
