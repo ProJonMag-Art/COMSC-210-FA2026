@@ -1,0 +1,20 @@
+I can use unit testing to see if this function, which compares a randomly generated percentage out of 100 is less than or equal to the inputted change percentage.
+That change percentage is to determine whether or not the force will change in this time step.
+The unit test is mainly to make sure that the random number generator is properly working, and that the doubles are within the correct bounds.
+It's also to check if the condition for the force change is correctly being followed.
+
+void changeForce(Polar2DVec *&pVec, int chance, Polar2DVec maxForce)
+{
+    double diceRoll = randNum(0, 100)/(double) 100;
+    cout << "Rolled number: " << diceRoll << endl;
+    cout << "Magnitude: " << pVec->mag << " Angle: " << pVec->angle << endl;
+
+    if(diceRoll <= chance)
+    {
+        pVec->mag = randNum(0, static_cast<int>(maxForce.mag * 100))/(double) 100;
+        pVec->angle = randNum(0, static_cast<int>(maxForce.angle * 100))/(double) 100;
+    }
+
+    cout << "New Magnitude: " << pVec->mag << " New Angle: " << pVec->angle << endl;
+}
+
