@@ -75,6 +75,7 @@ void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce);
 int main()
 {
     double mass = 1;
+    double dt = 1;
 
     // Seed randomness
     srand(time(0));
@@ -98,16 +99,31 @@ int main()
             //cout << "Time step " << i << ": "
             // Change force
             changeForce(it->first, 50, static_cast<int>(randNum(0, 500)));
-            // Update bodystate
+            // Update bodystate using kinematic equations
+            // Since each dt is 1, that is kept out of each equation because 1*x = x
             
             // it->first->mag refers to the magnitude of the key force, it->first->getRadAngle() refers to the angle of the key force converted from degrees to radians
             // dividing by mass satisfies the F=ma relationship, since we only want a, we divide m on both sides
             tempX = it->first->mag * cos(it->first->getRadAngle()) / mass;
-            tempX = it->first->mag * sin(it->first->getRadAngle()) / mass;
+            tempY = it->first->mag * sin(it->first->getRadAngle()) / mass;
             
-            it->second[2].push_back(Cart2DVec(tempX, tempY));
-            
-            
+            // Append the new acceleration value to the end of the acceleration list
+            it->second[ACCEL].push_back(Cart2DVec(tempX, tempY));
+
+            // it->second[VEL].back() refers to the latest velocity vector object
+            // The kinematic equation for velocity is vf = vi + a * dt
+            tempX = it->second[VEL].back().xComp + it->second[ACCEL].back().xComp;
+            tempY = it->second[VEL].back().yComp + it->second[ACCEL].back().yComp;
+
+            it->second[VEL].push_back(Cart2DVec(tempX, tempY));
+
+            // it->second[POS].back() refers to the latest position vector object
+            // The kinematic equation for velocity is xf = xi + v * dt +  0.5 * a * dt^2
+            tempX = it->second[POS].back().xComp + (dt * it->second[VEL].back().xComp) + (0.5 * dt * dt * it->second[ACCEL].back().xComp);
+            tempY = it->second[POS].back().yComp + (dt * it->second[VEL].back().yComp) + (0.5 * dt * dt * it->second[ACCEL].back().yComp); 
+
+            it->second[POS].push_back(Cart2DVec(tempX, tempY));
+
         }
     }
 
