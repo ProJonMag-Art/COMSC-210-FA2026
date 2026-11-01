@@ -86,7 +86,8 @@ int main()
     changeForce(testVec, 50, {200, 360});
 
     map<Polar2DVec *, array<list<Cart2DVec>, 3>> forceSim;
-    //readData(filename, forceSim);
+    readData(filename, forceSim);
+
     // Loop for entire time duration
     double tempX = 0;
     double tempY = 0;
@@ -96,7 +97,12 @@ int main()
         for(auto it = forceSim.begin(); it != forceSim.end(); it++)
         {
             // Print current time step data
-            //cout << "Time step " << i << ": "
+            cout << "\nTime step: " << dt * i << endl;
+            cout << "Force: " << it->first->mag << " [N] at an angle: " << it->first->angle << " [DEG] North of West" << endl;
+            cout << "Position: " << it->second[POS].back().xComp << " i, " << it->second[POS].back().yComp << " j [m]" << endl;
+            cout << "Veclocity: " << it->second[VEL].back().xComp << " i, " << it->second[VEL].back().yComp << " j [m/s]" << endl;
+            cout << "Acceleration: " << it->second[ACCEL].back().xComp << " i, " << it->second[ACCEL].back().yComp << " j [m/s^2]" << endl;
+
             // Change force
             changeForce(it->first, 50, static_cast<int>(randNum(0, 500)));
             // Update bodystate using kinematic equations
