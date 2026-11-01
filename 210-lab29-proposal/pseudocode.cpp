@@ -88,40 +88,45 @@ int main()
     int mapSize = readData(filename, forceSim);
     runSimulation(forceSim, t, dt, mass);
 
-    int choice = 0;
+    int choice1, choice2 = 0;
     do
     {
-        switch(choice)
+        cout << "\nOptions:" << endl << "   1. Print Data" << endl << "   2. Exit" << endl;
+        cout << "Choice: ";
+        cin >> choice1;
+        switch(choice1)
         {
             case 1:
-                {
-                    do
-                    {
-                        cout << "This program had: " << mapSize << " simulations. Which simulation's data would you like to see?: ";
-                        cin >> choice; 
-                    } while(choice < 1 || choice > mapSize + 1);
-                }
-            case 2:
-                {
-                    break;
-                }
-
-        }
-    } while (choice < 1 || choice > 2);
-
-    int idx = 0;
-    for(auto it = forceSim.begin(); it != forceSim.end(); it++)
-    {
-        if(idx == (choice - 1))
-        {
-            for(int i = 0; i < t; i++)
             {
-                printData(it, i, dt);
-            }
-        }
-        idx++;
-    }
+                do
+                {
+                    cout << "This program had: " << mapSize << " simulations. Which simulation's data would you like to see?: ";
+                    cin >> choice2; 
 
+                    int idx = 0;
+                    for(auto it = forceSim.begin(); it != forceSim.end(); it++)
+                    {
+                        if(idx == (choice2 - 1))
+                        {
+                            for(int i = 0; i < t; i++)
+                            {
+                                printData(it, i, dt);
+                            }
+                        }
+                    idx++;
+                    }
+                } while(choice2 < 1 || choice2 > mapSize);
+
+                break;
+            }
+
+            case 2:
+            {
+                break;
+            }
+
+        }
+    } while (choice1 != 2);
 
     // Free memory
     for(auto it = forceSim.begin(); it != forceSim.end(); it++)
