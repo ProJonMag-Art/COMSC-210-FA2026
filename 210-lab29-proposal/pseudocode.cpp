@@ -129,6 +129,12 @@ int main()
         }
     }
 
+    // Free memory
+    for(auto it = forceSim.begin(); it != forceSim.end(); it++)
+    {
+        delete it->first;
+    }
+
     return 0;
 }
 
@@ -175,7 +181,7 @@ void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce)
     {
         // Static casted to int to run randNum(), then turned back to double by dividing by 100 to generate decimals up to the hundreth's place
         pVec->mag = randNum(0, static_cast<int>(maxForce.mag * 100))/(double) 100;
-        pVec->angle = randNum(0, static_cast<int>(maxForce.angle * 100)/(double) 100);
+        pVec->angle = randNum(0, static_cast<int>(maxForce.angle * 100))/(double) 100;
     }
 
     cout << "New Magnitude: " << pVec->mag << " New Angle: " << pVec->angle << endl;
