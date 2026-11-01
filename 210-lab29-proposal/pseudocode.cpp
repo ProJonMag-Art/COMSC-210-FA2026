@@ -81,12 +81,20 @@ int main()
 
     map<Polar2DVec *, array<list<Cart2DVec>, 3>> forceSim;
     //readData(filename, forceSim);
+    // Loop for entire time duration
     for(int i = 0; i < t; i++)
     {
+        // For every map value
         for(auto it = forceSim.begin(); it != forceSim.end(); it++)
         {
-            cout << "Time step " << i << ": "
+            // Print current time step data
+            //cout << "Time step " << i << ": "
+            // Change force
             changeForce(it->first, 50, static_cast<int>(randNum(0, 500)));
+            // Update bodystate values
+            it->second[2].push_back(Cart2DVec());
+            
+            it->second[2].assign(it->second[2].end(), it->second[2]->back.xComp + it->first->mag / mass)
         }
     }
 
@@ -120,6 +128,7 @@ void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &sim
     readFile.close();
 }
 
+// Gets random int and turns it into a double
 double randNum(int min, int max)
 {
     double num = rand() % ((max - min + 1) + min);
