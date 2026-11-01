@@ -71,7 +71,7 @@ struct Polar2DVec
 void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs);
 double randNum(int min, int max);
 void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce);
-void printData(int choice, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs);
+void printData(auto it, int currentTime, double timeStep);
 
 int main()
 {
@@ -95,7 +95,7 @@ int main()
         for(auto it = forceSim.begin(); it != forceSim.end(); it++)
         {
             // Print current time step data
-            printData(it);
+            printData(it, i, dt);
 
             Cart2DVec oldPos = Cart2DVec(it->second[POS].back().xComp, it->second[POS].back().yComp);
             Cart2DVec oldVel = Cart2DVec(it->second[VEL].back().xComp, it->second[VEL].back().yComp);
@@ -129,6 +129,8 @@ int main()
 
         }
     }
+
+
 
     // Free memory
     for(auto it = forceSim.begin(); it != forceSim.end(); it++)
@@ -188,12 +190,11 @@ void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce)
     cout << "New Magnitude: " << pVec->mag << " New Angle: " << pVec->angle << endl;
 }
 
-void printData(auto it)
+void printData(auto it, int currentTime, double timeStep)
 {
-    int idx = 1;
-    cout << "\nTime step: " << dt * i << endl;
+    cout << "\nTime step: " << timeStep * currentTime << endl;
     cout << "Force: " << it->first->mag << " [N] at an angle: " << it->first->angle << " [DEG] North of East" << endl;
     cout << "Position: " << it->second[POS].back().xComp << " i, " << it->second[POS].back().yComp << " j [m]" << endl;
     cout << "Veclocity: " << it->second[VEL].back().xComp << " i, " << it->second[VEL].back().yComp << " j [m/s]" << endl;
-    cout << "Acceleration: " << it->second[ACCEL].back().xComp << " i, " << it->second[ACCEL].back().yComp << " j [m/s^2]" << endl;
+    cout << "Acceleration: " << it->second[ACCEL].back().xComp << " i, " << it->second[ACCEL].back().yComp << " j [m/s^2]" << endl; 
 }
