@@ -95,10 +95,14 @@ int main()
         {
             // Print current time step data
             cout << "\nTime step: " << dt * i << endl;
-            cout << "Force: " << it->first->mag << " [N] at an angle: " << it->first->angle << " [DEG] North of West" << endl;
+            cout << "Force: " << it->first->mag << " [N] at an angle: " << it->first->angle << " [DEG] North of East" << endl;
             cout << "Position: " << it->second[POS].back().xComp << " i, " << it->second[POS].back().yComp << " j [m]" << endl;
             cout << "Veclocity: " << it->second[VEL].back().xComp << " i, " << it->second[VEL].back().yComp << " j [m/s]" << endl;
             cout << "Acceleration: " << it->second[ACCEL].back().xComp << " i, " << it->second[ACCEL].back().yComp << " j [m/s^2]" << endl;
+
+            Cart2DVec oldPos = Cart2DVec(it->second[POS].back().xComp, it->second[POS].back().yComp);
+            Cart2DVec oldVel = Cart2DVec(it->second[VEL].back().xComp, it->second[VEL].back().yComp);
+            Cart2DVec oldAcc = Cart2DVec(it->second[ACCEL].back().xComp, it->second[ACCEL].back().yComp);
 
             // Change force
             changeForce(it->first, 50, {randNum(0, 500), randNum(0, 360)} );
@@ -114,15 +118,15 @@ int main()
 
             // it->second[VEL].back() refers to the latest velocity vector object
             // The kinematic equation for velocity is vf = vi + a * dt
-            tempX = it->second[VEL].back().xComp + it->second[ACCEL].back().xComp;
-            tempY = it->second[VEL].back().yComp + it->second[ACCEL].back().yComp;
+            tempX = oldVel.xComp + it->second[ACCEL].back().xComp;
+            tempY = oldVel.yComp + it->second[ACCEL].back().yComp;
 
             it->second[VEL].push_back(Cart2DVec(tempX, tempY));
 
             // it->second[POS].back() refers to the latest position vector object
             // The kinematic equation for velocity is xf = xi + v * dt +  0.5 * a * dt^2
-            tempX = it->second[POS].back().xComp + (dt * it->second[VEL].back().xComp) + (0.5 * dt * dt * it->second[ACCEL].back().xComp);
-            tempY = it->second[POS].back().yComp + (dt * it->second[VEL].back().yComp) + (0.5 * dt * dt * it->second[ACCEL].back().yComp); 
+            tempX = oldPos.xComp + (dt * oldVel.xComp) + (0.5 * dt * dt * it->second[ACCEL].back().xComp);
+            tempY = oldPos.yComp + (dt * oldVel.yComp) + (0.5 * dt * dt * it->second[ACCEL].back().yComp); 
 
             it->second[POS].push_back(Cart2DVec(tempX, tempY));
 

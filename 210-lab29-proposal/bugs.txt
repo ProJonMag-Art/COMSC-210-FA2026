@@ -1,0 +1,8 @@
+Bug 1: Noticed angle was being truncated because of wrong parenthesis usage in changeForce() definition. 
+       Corrected this bug by assigning pVec->angle to randNum(0, input)/(double) 100; from pVec->angle being assigned to randNum(0, input/(double) 100)
+
+Bug 2: Output says north of west instead of north of east, which is the correct starting dirction.
+       Corrected this bug by changing the text that is being outputted.
+
+Bug 3: Old calculations was use the new velocity and new position in its calculations
+       Corrected this bug by creating temp variables that save the current position as an old vec object. And then saves to each list the calculations using those old vec objects 
