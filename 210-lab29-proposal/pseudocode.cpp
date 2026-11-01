@@ -28,6 +28,12 @@ struct Cart2DVec
         this->xComp = inputX;
         this->yComp = inputY;
     }
+
+    void updateVals(Cart2DVec inputVec)
+    {
+        this->xComp += inputVec.xComp;
+        this->yComp += inputVec.yComp;
+    }
 };
 
 // Define polar vector structs
@@ -41,6 +47,17 @@ struct Polar2DVec
         this->mag = inputM;
         this->angle = inputA;
     }
+
+    void updateVals(Polar2DVec inputVec)
+    {
+        this->mag += inputVec.mag;
+        this->angle += inputVec.angle;
+    }
+
+    double getRadAngle()
+    {
+        return angle * M_PI / 180;
+    }
 };
 
 // Define function that updates vector values based on key force values, takes either vec type as input (possibly overloaded definition)
@@ -48,22 +65,29 @@ struct Polar2DVec
 
 void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs);
 double randNum(int min, int max);
-void changeForce(Polar2DVec *&pVec, int chance, Polar2DVec maxForce);
+void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce);
 
 int main()
 {
+    double mass = 1;
+
+    // Seed randomness
     srand(time(0));
     string filename = "data.txt";
     int t = 25;
 
     Polar2DVec *testVec = new Polar2DVec(100, 30);
-    changeForce(testVec, 5000, {200, 360});
+    changeForce(testVec, 50, {200, 360});
 
     map<Polar2DVec *, array<list<Cart2DVec>, 3>> forceSim;
     //readData(filename, forceSim);
     for(int i = 0; i < t; i++)
     {
-
+        for(auto it = forceSim.begin(); it != forceSim.end(); it++)
+        {
+            cout << "Time step " << i << ": "
+            changeForce(it->first, 50, static_cast<int>(randNum(0, 500)));
+        }
     }
 
     delete testVec;
@@ -103,17 +127,18 @@ double randNum(int min, int max)
     return num;
 }
 
-void changeForce(Polar2DVec *&pVec, int chance, Polar2DVec maxForce)
+void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce)
 {
-    double diceRoll = randNum(0, 100)/(double) 100;
+    double diceRoll = randNum(0, 10000)/(double) 100;
     cout << "Rolled number: " << diceRoll << endl;
     cout << "Magnitude: " << pVec->mag << " Angle: " << pVec->angle << endl;
 
-    //if(diceRoll <= chance)
-    //{
-        pVec->mag = randNum(-1 * static_cast<int>(maxForce.mag * 100), static_cast<int>(maxForce.mag * 100))/(double) 100;
-        pVec->angle = randNum(-1 * static_cast<int>(maxForce.angle * 100), static_cast<int>(maxForce.angle * 100))/(double) 100;
-    //}
+    if(diceRoll <= chance)
+    {
+        // Statuc casted to int to run randNum(), then turned back to double
+        pVec->mag = randNum(0, static_cast<int>(maxForce.mag * 100))/(double) 100;
+        pVec->angle = randNum(0, static_cast<int>(maxForce.angle * 100))/(double) 100;
+    }
 
     cout << "New Magnitude: " << pVec->mag << " New Angle: " << pVec->angle << endl;
 }
