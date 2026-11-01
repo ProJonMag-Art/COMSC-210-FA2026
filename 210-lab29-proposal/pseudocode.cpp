@@ -91,9 +91,23 @@ int main()
     int choice = 0;
     do
     {
-        cout << "This program had: " << mapSize << " simulations. Which simulation's data would you like to see?: ";
-        cin >> choice; 
-    } while(choice < 1 || choice > mapSize + 1);
+        switch(choice)
+        {
+            case 1:
+                {
+                    do
+                    {
+                        cout << "This program had: " << mapSize << " simulations. Which simulation's data would you like to see?: ";
+                        cin >> choice; 
+                    } while(choice < 1 || choice > mapSize + 1);
+                }
+            case 2:
+                {
+                    break;
+                }
+
+        }
+    } while (choice < 1 || choice > 2);
 
     int idx = 0;
     for(auto it = forceSim.begin(); it != forceSim.end(); it++)
@@ -105,6 +119,7 @@ int main()
                 printData(it, i, dt);
             }
         }
+        idx++;
     }
 
 

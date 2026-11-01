@@ -14,5 +14,15 @@ Bug 5: Old definition for velocity vector updates was incorrect because the acce
        Fixed this bug by multiplying each acceleration component by the variable timeStep which represents dt
 
 Bug 6: User input didn't print the simulation data at that index
+       This was fixed by subtracting the inputted choice by one to keep it in line with the c++ standard of starting at index == 0
 
 Bug 7: runSimulation printed the entire simulation data at the wrong time
+       This was fixed by simply getting rid of the extra printData within the runSimulation loop
+
+Bug 8: Printing data using the user inputted choice printed the simulation data multiple timeStep
+       This was fixed by incrementing the index variable used for telling when a map entry's key is equal to the user's choice
+
+Bug 9: The user loop finished immediately after the user chooses a map entry to print
+       This was fixed by adding an outside loop before the user gets to choose which simulation to print, which dlets the user whether to print another simulation, or to quit the program.
+
+       
