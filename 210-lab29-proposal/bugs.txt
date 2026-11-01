@@ -12,3 +12,7 @@ Bug 4: New printData() function isn't compiling
 
 Bug 5: Old definition for velocity vector updates was incorrect because the acceleration components were not being scaled by the dt timeSteps
        Fixed this bug by multiplying each acceleration component by the variable timeStep which represents dt
+
+Bug 6: User input didn't print the simulation data at that index
+
+Bug 7: runSimulation printed the entire simulation data at the wrong time

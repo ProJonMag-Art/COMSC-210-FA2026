@@ -68,7 +68,7 @@ struct Polar2DVec
 // Define function that updates vector values based on key force values, takes either vec type as input (possibly overloaded definition)
 // Define function that reads data from file
 
-void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs);
+int readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs);
 double randNum(int min, int max);
 void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce);
 void printData(auto it, int currentTime, double timeStep);
@@ -85,14 +85,27 @@ int main()
     int t = 25;
 
     map<Polar2DVec *, array<list<Cart2DVec>, 3>> forceSim;
-    readData(filename, forceSim);
+    int mapSize = readData(filename, forceSim);
     runSimulation(forceSim, t, dt, mass);
 
     int choice = 0;
     do
     {
-        
-    } while(choice < 1 || choice > 3);
+        cout << "This program had: " << mapSize << " simulations. Which simulation's data would you like to see?: ";
+        cin >> choice; 
+    } while(choice < 1 || choice > mapSize + 1);
+
+    int idx = 0;
+    for(auto it = forceSim.begin(); it != forceSim.end(); it++)
+    {
+        if(idx == (choice - 1))
+        {
+            for(int i = 0; i < t; i++)
+            {
+                printData(it, i, dt);
+            }
+        }
+    }
 
 
     // Free memory
@@ -104,12 +117,13 @@ int main()
     return 0;
 }
 
-void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs)
+int readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs)
 {
     ifstream readFile(filename);
     Cart2DVec tempVec = Cart2DVec();
     array<list<Cart2DVec>, 3> tempList;
     double tempVal1, tempVal2;
+    int mapSize = 0;
 
     // While there are still lines to read from the read file
     while(readFile >> tempVal1 >> tempVal2)
@@ -124,9 +138,11 @@ void readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &sim
         }
         // Insert a new key value pair using the polar2DVec ptr and the array<list<Cart2DVec>> object
         simObjs.insert( {tempPol, tempList} );
+        mapSize++;
     }
 
     readFile.close();
+    return mapSize;
 }
 
 // Gets random int and turns it into a double
@@ -168,9 +184,6 @@ void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs, int in
         // For every map value
         for(auto it = simObjs.begin(); it != simObjs.end(); it++)
         {
-            // Print current time step data
-            printData(it, i, stepSize);
-
             Cart2DVec oldPos = Cart2DVec(it->second[POS].back().xComp, it->second[POS].back().yComp);
             Cart2DVec oldVel = Cart2DVec(it->second[VEL].back().xComp, it->second[VEL].back().yComp);
             Cart2DVec oldAcc = Cart2DVec(it->second[ACCEL].back().xComp, it->second[ACCEL].back().yComp);
