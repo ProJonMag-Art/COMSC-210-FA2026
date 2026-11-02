@@ -22,6 +22,8 @@ using namespace std;
 const int POS = 0;
 const int VEL = 1;
 const int ACCEL = 2;
+const int FORCE = 3;
+const int VALSIZE = 4;
 
 // Define cartesian vector structs
 // Contains two doouble members representing the x and y component of the vector
@@ -69,11 +71,11 @@ struct Polar2DVec
 // Define function that updates vector values based on key force values, takes either vec type as input (possibly overloaded definition)
 // Define function that reads data from file
 
-int readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs);
+int readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, VALSIZE>> &simObjs);
 double randNum(int min, int max);
 void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce);
 void printData(auto it, int interval, double timeStep);
-void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs, int interval, int stepSize, int mass);
+void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, VALSIZE>> &simObjs, int interval, int stepSize, int mass);
 
 int main()
 {
@@ -85,7 +87,7 @@ int main()
     string filename = "data.txt";
     int t = 25;
 
-    map<Polar2DVec *, array<list<Cart2DVec>, 3>> forceSim;
+    map<Polar2DVec *, array<list<Cart2DVec>, VALSIZE>> forceSim;
     int mapSize = readData(filename, forceSim);
     runSimulation(forceSim, t, dt, mass);
 
@@ -112,7 +114,7 @@ int main()
                     for(auto it = forceSim.begin(); it != forceSim.end(); it++)
                     {
                         // If current key value pair is the same idx as the user's choice
-                        if(idx == (choice2 - 1))
+                        if(idx == choice2)
                         {
                             // Print data
                             printData(it, t, dt);
@@ -141,11 +143,11 @@ int main()
     return 0;
 }
 
-int readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs)
+int readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, VALSIZE>> &simObjs)
 {
     ifstream readFile(filename);
     Cart2DVec tempVec = Cart2DVec();
-    array<list<Cart2DVec>, 3> tempList;
+    array<list<Cart2DVec>, VALSIZE> tempList;
     double tempVal1, tempVal2;
     int mapSize = 0;
 
@@ -154,7 +156,7 @@ int readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simO
     {
         // Allocate new memory to a key which is a Polar2DVec ptr
         Polar2DVec *tempPol = new Polar2DVec(tempVal1, tempVal2);
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < VALSIZE - 1; i++)
         {
             // Read the next 6 doubles and save them to a temp Cart2DVec object that is pushed into the list array object
             readFile >> tempVec.xComp >> tempVec.yComp;
@@ -194,12 +196,16 @@ void printData(auto it, int interval, double timeStep)
     auto posIt = it->second[POS].begin();
     auto velIt = it->second[VEL].begin();
     auto accelIt = it->second[ACCEL].begin();
+    auto forceIt = it->second[FORCE].begin();
 
     for(int i = 0; i < interval; i++)
     {
+        double mag = sqrt(forceIt->xComp * forceIt->xComp + forceIt->yComp * forceIt->yComp);
+        double angle = atan(forceIt->yComp/forceIt->xComp) * 180/M_PI;
+
         cout << "\nTime [s]: " << setw(20) << "Force [N]:" << setw(40) << "Position [m]: " << setw(40) << "Velocity [m/s]: " << setw(40) << "Acceleration [m/s^2]: " << endl;
         cout << timeStep * i << setw(20) 
-        << it->first->mag << " at " << it->first->angle << " [DEG] NE" << setw(20) 
+        << mag << " at " << angle << " [DEG] NE" << setw(20) 
         << posIt->xComp << " i, " << posIt->yComp << " j" << setw(20) 
         << velIt->xComp << " i, " << velIt->yComp << " j" << setw(20) 
         << accelIt->xComp << " i, " << accelIt->yComp << " j" << endl;
@@ -207,8 +213,9 @@ void printData(auto it, int interval, double timeStep)
         posIt++;
         velIt++;
         accelIt++;
+        forceIt++;
     }
-    /*
+    /* Logic for printing when the simulation is running
     cout << "\nTime step: " << timeStep * interval << endl;
     cout << "Force: " << it->first->mag << " [N] at an angle: " << it->first->angle << " [DEG] North of East" << endl;
     cout << "Position: " << it->second[POS].back().xComp << " i, " << it->second[POS].back().yComp << " j [m]" << endl;
@@ -217,7 +224,7 @@ void printData(auto it, int interval, double timeStep)
     */
 }
 
-void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs, int interval, int stepSize, int mass)
+void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, VALSIZE>> &simObjs, int interval, int stepSize, int mass)
 {
     // Loop for entire time duration
     double tempX = 0;
@@ -230,6 +237,12 @@ void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs, int in
             Cart2DVec oldPos = Cart2DVec(it->second[POS].back().xComp, it->second[POS].back().yComp);
             Cart2DVec oldVel = Cart2DVec(it->second[VEL].back().xComp, it->second[VEL].back().yComp);
             Cart2DVec oldAcc = Cart2DVec(it->second[ACCEL].back().xComp, it->second[ACCEL].back().yComp);
+
+            // Saves current force value to fourth value index
+            tempX = it->first->mag * cos(it->first->getRadAngle());
+            tempY = it->first->mag * sin(it->first->getRadAngle());
+
+            it->second[FORCE].push_back(Cart2DVec(tempX, tempY));
 
             // Change force
             changeForce(it->first, 50, {randNum(0, 500), randNum(0, 360)} );
