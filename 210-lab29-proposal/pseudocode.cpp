@@ -171,9 +171,11 @@ int readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, VALSIZE>>
             readFile >> tempVec.xComp >> tempVec.yComp;
             tempList[i].push_front(tempVec);
         }
-        // Initialize force
-        
-        tempList[FORCE].push_front({});
+        // Initialize force using conversion from polar to cartesian vector
+        double forceX = tempPol->mag * cos(tempPol->getRadAngle());
+        double forceY = tempPol->mag * sin(tempPol->getRadAngle());
+
+        tempList[FORCE].push_front({ forceX, forceY });
 
         // Insert a new key value pair using the polar2DVec ptr and the array<list<Cart2DVec>> object
         simObjs.insert( {tempPol, tempList} );
@@ -219,7 +221,7 @@ void printData(auto it, int interval, double timeStep)
         cout << timeStep * i << setw(20) 
         << polarForce.mag << " at " << polarForce.angle << " [DEG] NE" << setw(20) 
         << posIt->xComp << " i, " << posIt->yComp << " j" << setw(25) 
-        << velIt->xComp << " i, " << velIt->yComp << " j" << setw(20) 
+        << velIt->xComp << " i, " << velIt->yComp << " j" << setw(25) 
         << accelIt->xComp << " i, " << accelIt->yComp << " j" << endl;
 
         posIt++;

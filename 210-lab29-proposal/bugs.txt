@@ -26,4 +26,4 @@ Bug 9: The user loop finished immediately after the user chooses a map entry to 
        This was fixed by adding an outside loop before the user gets to choose which simulation to print, which dlets the user whether to print another simulation, or to quit the program.
 
 Bug 10: New format method wasn't printing the right table values
-        This was fixed by iterating through each list and printing their values. And saving the force at a certain time to a fourth array element
+        This was fixed by iterating through each list and printing their values. And saving the force at a certain time to a fourth list array element using polar and cartesian conversions
