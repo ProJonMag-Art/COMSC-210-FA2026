@@ -25,25 +25,6 @@ const int ACCEL = 2;
 const int FORCE = 3;
 const int VALSIZE = 4;
 
-// Define cartesian vector structs
-// Contains two doouble members representing the x and y component of the vector
-struct Cart2DVec
-{
-    double xComp;
-    double yComp;
-    Cart2DVec(double inputX = 0, double inputY = 0)
-    {
-        this->xComp = inputX;
-        this->yComp = inputY;
-    }
-
-    void updateVals(Cart2DVec inputVec)
-    {
-        this->xComp += inputVec.xComp;
-        this->yComp += inputVec.yComp;
-    }
-};
-
 // Define polar vector structs
 // Contains two double members representing the magnitude and angle of the vector (angle north of the west direction, moving ccw)
 struct Polar2DVec
@@ -65,6 +46,33 @@ struct Polar2DVec
     double getRadAngle()
     {
         return angle * M_PI / 180;
+    }
+};
+
+// Define cartesian vector structs
+// Contains two doouble members representing the x and y component of the vector
+struct Cart2DVec
+{
+    double xComp;
+    double yComp;
+    Cart2DVec(double inputX = 0, double inputY = 0)
+    {
+        this->xComp = inputX;
+        this->yComp = inputY;
+    }
+
+    void updateVals(Cart2DVec inputVec)
+    {
+        this->xComp += inputVec.xComp;
+        this->yComp += inputVec.yComp;
+    }
+
+    Polar2DVec convertToPolar()
+    {
+        double mag = sqrt(this->xComp * this->xComp + this->yComp * this->yComp);
+        double angle = atan(this->yComp/this->xComp) * 180/M_PI;
+
+        return Polar2DVec(mag, angle);
     }
 };
 
@@ -147,13 +155,14 @@ int readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, VALSIZE>>
 {
     ifstream readFile(filename);
     Cart2DVec tempVec = Cart2DVec();
-    array<list<Cart2DVec>, VALSIZE> tempList;
     double tempVal1, tempVal2;
     int mapSize = 0;
 
     // While there are still lines to read from the read file
     while(readFile >> tempVal1 >> tempVal2)
     {
+        array<list<Cart2DVec>, VALSIZE> tempList;
+
         // Allocate new memory to a key which is a Polar2DVec ptr
         Polar2DVec *tempPol = new Polar2DVec(tempVal1, tempVal2);
         for(int i = 0; i < VALSIZE - 1; i++)
@@ -162,6 +171,10 @@ int readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, VALSIZE>>
             readFile >> tempVec.xComp >> tempVec.yComp;
             tempList[i].push_front(tempVec);
         }
+        // Initialize force
+        
+        tempList[FORCE].push_front({});
+
         // Insert a new key value pair using the polar2DVec ptr and the array<list<Cart2DVec>> object
         simObjs.insert( {tempPol, tempList} );
         mapSize++;
@@ -200,13 +213,12 @@ void printData(auto it, int interval, double timeStep)
 
     for(int i = 0; i < interval; i++)
     {
-        double mag = sqrt(forceIt->xComp * forceIt->xComp + forceIt->yComp * forceIt->yComp);
-        double angle = atan(forceIt->yComp/forceIt->xComp) * 180/M_PI;
+        Polar2DVec polarForce = forceIt->convertToPolar();
 
         cout << "\nTime [s]: " << setw(20) << "Force [N]:" << setw(40) << "Position [m]: " << setw(40) << "Velocity [m/s]: " << setw(40) << "Acceleration [m/s^2]: " << endl;
         cout << timeStep * i << setw(20) 
-        << mag << " at " << angle << " [DEG] NE" << setw(20) 
-        << posIt->xComp << " i, " << posIt->yComp << " j" << setw(20) 
+        << polarForce.mag << " at " << polarForce.angle << " [DEG] NE" << setw(20) 
+        << posIt->xComp << " i, " << posIt->yComp << " j" << setw(25) 
         << velIt->xComp << " i, " << velIt->yComp << " j" << setw(20) 
         << accelIt->xComp << " i, " << accelIt->yComp << " j" << endl;
 
@@ -247,7 +259,6 @@ void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, VALSIZE>> &simObjs, 
             // Change force
             changeForce(it->first, 50, {randNum(0, 500), randNum(0, 360)} );
             // Update bodystate using kinematic equations
-            // Since each dt is 1, that is kept out of each equation because 1*x = x
             
             // it->first->mag refers to the magnitude of the key force, it->first->getRadAngle() refers to the angle of the key force converted from degrees to radians
             // dividing by mass satisfies the F=ma relationship, since we only want a, we divide m on both sides
