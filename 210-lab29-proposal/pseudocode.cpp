@@ -72,7 +72,7 @@ struct Polar2DVec
 int readData(string filename, map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs);
 double randNum(int min, int max);
 void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce);
-void printData(auto it, int currentTime, double timeStep);
+void printData(auto it, int interval, double timeStep);
 void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs, int interval, int stepSize, int mass);
 
 int main()
@@ -115,10 +115,7 @@ int main()
                         if(idx == (choice2 - 1))
                         {
                             // Print data
-                            for(int i = 0; i < t; i++)
-                            {
-                                printData(it, i, dt);
-                            }
+                            printData(it, t, dt);
                         }
                         idx++;
                     }
@@ -192,31 +189,32 @@ void changeForce(Polar2DVec *pVec, int chance, Polar2DVec maxForce)
     }
 }
 
-void printData(auto it, int currentTime, double timeStep)
+void printData(auto it, int interval, double timeStep)
 {
     auto posIt = it->second[POS].begin();
     auto velIt = it->second[VEL].begin();
     auto accelIt = it->second[ACCEL].begin();
 
-    
-    next(posIt, currentTime);
-    next(velIt, currentTime);
-    next(accelIt, currentTime);
+    for(int i = 0; i < interval; i++)
+    {
+        cout << "\nTime [s]: " << setw(20) << "Force [N]:" << setw(40) << "Position [m]: " << setw(40) << "Velocity [m/s]: " << setw(40) << "Acceleration [m/s^2]: " << endl;
+        cout << timeStep * i << setw(20) 
+        << it->first->mag << " at " << it->first->angle << " [DEG] NE" << setw(20) 
+        << posIt->xComp << " i, " << posIt->yComp << " j" << setw(20) 
+        << velIt->xComp << " i, " << velIt->yComp << " j" << setw(20) 
+        << accelIt->xComp << " i, " << accelIt->yComp << " j" << endl;
+
+        posIt++;
+        velIt++;
+        accelIt++;
+    }
     /*
-    cout << "\nTime step: " << timeStep * currentTime << endl;
+    cout << "\nTime step: " << timeStep * interval << endl;
     cout << "Force: " << it->first->mag << " [N] at an angle: " << it->first->angle << " [DEG] North of East" << endl;
     cout << "Position: " << it->second[POS].back().xComp << " i, " << it->second[POS].back().yComp << " j [m]" << endl;
     cout << "Veclocity: " << it->second[VEL].back().xComp << " i, " << it->second[VEL].back().yComp << " j [m/s]" << endl;
     cout << "Acceleration: " << it->second[ACCEL].back().xComp << " i, " << it->second[ACCEL].back().yComp << " j [m/s^2]" << endl; 
     */
-    
-    cout << "\nTime [s]: " << setw(20) << "Force [N]:" << setw(40) << "Position [m]: " << setw(40) << "Velocity [m/s]: " << setw(40) << "Acceleration [m/s^2]: " << endl;
-    cout << timeStep * currentTime << setw(20) 
-    << first->mag << " at " << first->angle << "[DEG] NE" << setw(20) 
-    << posIt.xComp << " i, " << posIt.yComp << " j [m]" << setw(20) 
-    << velIt.xComp << " i, " << velIt.yComp << " j [m/s]" << setw(20) 
-    << accelIt.xComp << " i, " << accelIt.yComp << " j [m/s^2]" << endl;
-    
 }
 
 void runSimulation(map<Polar2DVec *, array<list<Cart2DVec>, 3>> &simObjs, int interval, int stepSize, int mass)
