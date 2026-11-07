@@ -16,7 +16,7 @@ using namespace std;
 int randNum(int min, int max);
 bool runProb(int prob);
 void printDeque(deque<Car> deq);
-void initEmptyDeque(deque<Car> deq, int size);
+void initEmptyDeque(deque<Car> &deq, int size);
 
 int main()
 {
@@ -47,8 +47,8 @@ int main()
         } else
         {
             cout << "Time: " << t << " Operation: Joined Lane: ";
-            toll.back().print();
             toll.push_back(Car());
+            toll.back().print();
         }
 
         // Print queue
@@ -85,15 +85,21 @@ bool runProb(int probability)
 
 void printDeque(deque<Car> deq)
 {
-
-    for(auto it = deq.begin(); it != deq.end(); ++it)
+    if(deq.size() != 0)
     {
-        cout << "   ";
-        it->print();
+        for(auto it = deq.begin(); it != deq.end(); ++it)
+        {
+            cout << "   ";
+            it->print();
+        }
+    } else
+    {
+        cout << "Empty" << endl;
     }
+    cout << endl;
 }
 
-void initEmptyDeque(deque<Car> deq, int size)
+void initEmptyDeque(deque<Car> &deq, int size)
 {
     for(int i = 0; i < size; i++)
     {
