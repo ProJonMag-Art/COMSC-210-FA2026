@@ -6,13 +6,16 @@
 #include <ctime>
 
 const int INITSIZE = 2;
-const int PROB1 = 0.55;
+
+// Probability for car to pay and leave
+const int PROB1 = 55;
 const int PROB2 = 100 - PROB1 ;
 
 using namespace std;
 
 int randNum(int min, int max);
 bool runProb(int prob);
+void printDeque(deque<Car> deq);
 
 int main()
 {
@@ -21,11 +24,26 @@ int main()
     int t = 0;
     deque<Car> toll = { Car(), Car() };
 
-    bool carExits, carEnters;
+    bool carExits;
+    Car frontCar, backCar;
+
+    printDeque(toll);
     while(toll.size() != 0)
     {
+        // Save current front and back to temps
+        frontCar = toll.front();
+        backCar = toll.back();
+
+        // Run probability, true if rolled number is less than probability, false if greater
         carExits = runProb(PROB1);
-        carEnters = runProb(PROB2);       
+        t++;
+
+        if(carExits == true)
+        {
+            cout << "Time: " << t << " Operation: Car Paid: ";
+            cout << toll.front().print();
+            toll.pop_front();
+        } else
     }
 
     return 0;
@@ -52,5 +70,14 @@ bool runProb(int probability)
     } else
     {
         return runProb(probability);
+    }
+}
+
+void printDeque(deque<Car> deq)
+{
+
+    for(auto it = deq.begin(); it != deq.end(); ++it)
+    {
+        it->print();
     }
 }
