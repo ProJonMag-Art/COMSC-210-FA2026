@@ -16,24 +16,25 @@ using namespace std;
 int randNum(int min, int max);
 bool runProb(int prob);
 void printDeque(deque<Car> deq);
+void initEmptyDeque(deque<Car> deq, int size);
 
 int main()
 {
     srand(time(0));
+    deque<Car> toll;
 
-    int t = 0;
-    deque<Car> toll = { Car(), Car() };
+    // Adds Car() values to deque, takes constant size as paramter to allow for different sizings if need be
+    initEmptyDeque(toll, INITSIZE);
+
+    
+    // Prints initial queue
+    cout << "Initial Queue:" << endl;
+    printDeque(toll);
 
     bool carExits;
-    Car frontCar, backCar;
-
-    printDeque(toll);
+    int t = 0;
     while(toll.size() != 0)
     {
-        // Save current front and back to temps
-        frontCar = toll.front();
-        backCar = toll.back();
-
         // Run probability, true if rolled number is less than probability, false if greater
         carExits = runProb(PROB1);
         t++;
@@ -41,9 +42,18 @@ int main()
         if(carExits == true)
         {
             cout << "Time: " << t << " Operation: Car Paid: ";
-            cout << toll.front().print();
+            toll.front().print();
             toll.pop_front();
         } else
+        {
+            cout << "Time: " << t << " Operation: Joined Lane: ";
+            toll.back().print();
+            toll.push_back(Car());
+        }
+
+        // Print queue
+        cout << "Queue:" << endl;
+        printDeque(toll);
     }
 
     return 0;
@@ -78,6 +88,15 @@ void printDeque(deque<Car> deq)
 
     for(auto it = deq.begin(); it != deq.end(); ++it)
     {
+        cout << "   ";
         it->print();
+    }
+}
+
+void initEmptyDeque(deque<Car> deq, int size)
+{
+    for(int i = 0; i < size; i++)
+    {
+        deq.push_back(Car());
     }
 }
