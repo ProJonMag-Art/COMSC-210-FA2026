@@ -8,8 +8,9 @@
 const int INITSIZE = 2;
 
 // Probability for car to pay and leave
-const int PROB1 = 55;
-const int PROB2 = 100 - PROB1 ;
+const int PROB1 = 46;
+const int PROB2 = 39;
+const int PROB3 = 100 - (PROB1 + PROB2);
 
 using namespace std;
 
