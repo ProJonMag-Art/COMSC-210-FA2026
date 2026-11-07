@@ -1,16 +1,22 @@
 
+// COMSC-210 | Lab 33 | Jonvianney Maglasang
+
+// Started November 6, 2026 at 10:36 PM
+// Finished November 7, 2026 at 
+
 #include "Car.h"
 #include <iostream>
 #include <deque>
 #include <cstdlib>
 #include <ctime>
+#include <array>
 
 const int INITSIZE = 2;
-
-// Probability for car to pay and leave
 const int PROB1 = 46;
 const int PROB2 = 39;
 const int PROB3 = 100 - (PROB1 + PROB2);
+const int TOLLCNT = 4;
+const int SIMDURATION = 20;
 
 using namespace std;
 
@@ -23,18 +29,27 @@ int main()
 {
     srand(time(0));
     deque<Car> toll;
+    array<deque<Car>, TOLLCNT> plaza;
 
     // Adds Car() values to deque, takes constant size as paramter to allow for different sizings if need be
     initEmptyDeque(toll, INITSIZE);
 
-    
     // Prints initial queue
     cout << "Initial Queue:" << endl;
-    printDeque(toll);
+    //printDeque(toll);
+
+    for(int i = 0; i < plaza.size(); i++)
+    {
+        initEmptyDeque(plaza[i], INITSIZE);
+        cout << "Lane: " << (i + 1) << endl;
+        printDeque(plaza[i]);
+    }
 
     bool carExits;
     int t = 0;
-    while(toll.size() != 0)
+    
+    /*
+    while(t != SIMDURATION)
     {
         // Run probability, true if rolled number is less than probability, false if greater
         carExits = runProb(PROB1);
@@ -56,7 +71,7 @@ int main()
         cout << "Queue:" << endl;
         printDeque(toll);
     }
-
+    */
     return 0;
 }
 
