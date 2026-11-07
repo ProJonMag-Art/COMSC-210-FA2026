@@ -94,7 +94,7 @@ void printDeque(deque<Car> deq)
         }
     } else
     {
-        cout << "Empty" << endl;
+        cout << "   Empty" << endl;
     }
     cout << endl;
 }
