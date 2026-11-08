@@ -23,9 +23,10 @@ const int SIMDURATION = 20;
 using namespace std;
 
 int randNum(int min, int max);
-bool runProb(int prob);
+int runProb(int prob1, int prob2, int prob3);
 void printDeque(deque<Car> deq);
 void initEmptyDeque(deque<Car> &deq, int size);
+void runOperation(deque<Car> &deq, int opNum, int time);
 
 int main()
 {
@@ -47,7 +48,7 @@ int main()
         printDeque(plaza[i]);
     }
 
-    bool carExits;
+    int operation = 0;
     int t = 0;
     
     /*
@@ -84,20 +85,27 @@ int randNum(int min, int max)
     return num;
 }
 
-// Returns true if random number is less than probability, false if greater, and recursively reruns if it equals the probability
-bool runProb(int probability)
+// Returns which probability the rolledNum lands on
+int runProb(int prob1, int prob2, int prob3)
 {
     int rolledNum = randNum(0, 100);
 
-    if(rolledNum < probability)
+    if(rolledNum < prob1)
     {
-        return true;
-    } else if(rolledNum > probability)
+        // Ex: Between 0 and 46
+        return 1;
+    } else if(rolledNum > prob1 && rolledNum < 100 - prob3)
     {
-        return false;
+        // Ex: Between 46 and 84
+        return 2;
+    } else if(rolledNum > (prob1 + prob2))
+    {
+        // Ex: Between 84 and 100
+        return 3;
     } else
     {
-        return runProb(probability);
+        // If rolledNum is exactly equal to any probabilities, rerun
+        return runProb(prob1, prob2, prob3);
     }
 }
 
@@ -122,5 +130,22 @@ void initEmptyDeque(deque<Car> &deq, int size)
     for(int i = 0; i < size; i++)
     {
         deq.push_back(Car());
+    }
+}
+
+void runOperation(deque<Car> &deq, int opNum, int time)
+{
+    if(opNum == 1)
+    {
+        // Pay operation
+        cout << "Time: " << time << " Operation: Car Paid: ";
+        deq.front().print();
+        deq.pop_front();
+    } else
+    {
+        // Join operation
+        cout << "Time: " << time << " Operation: Joined Lane: ";
+        deq.push_back(Car());
+        deq.back().print();
     }
 }
