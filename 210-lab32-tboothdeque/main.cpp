@@ -26,20 +26,17 @@ int randNum(int min, int max);
 int runProb(int prob1, int prob2, int prob3);
 void printDeque(deque<Car> deq);
 void initEmptyDeque(deque<Car> &deq, int size);
-void runOperation(deque<Car> &deq, int opNum, int time);
+void runOperation(deque<Car> &deq, int opNum);
 
 int main()
 {
     srand(time(0));
-    deque<Car> toll;
     array<deque<Car>, TOLLCNT> plaza;
 
     // Adds Car() values to deque, takes constant size as paramter to allow for different sizings if need be
-    initEmptyDeque(toll, INITSIZE);
 
     // Prints initial queue
     cout << "Initial Queue:" << endl;
-    //printDeque(toll);
 
     for(int i = 0; i < plaza.size(); i++)
     {
@@ -51,30 +48,31 @@ int main()
     int operation = 0;
     int t = 0;
     
-    /*
+    
     while(t != SIMDURATION)
     {
-        // Run probability, true if rolled number is less than probability, false if greater
-        carExits = runProb(PROB1);
         t++;
+        cout << "Time: " << time << endl;
 
-        if(carExits == true)
+        // Loop through deque array
+        for(int i = 0; i < plaza.size(); i++)
         {
-            cout << "Time: " << t << " Operation: Car Paid: ";
-            toll.front().print();
-            toll.pop_front();
-        } else
-        {
-            cout << "Time: " << t << " Operation: Joined Lane: ";
-            toll.push_back(Car());
-            toll.back().print();
+            cout << "Lane: " << i << " ";
+            // Run probability, true if rolled number is less than probability, false if greater
+            operation = runProb(PROB1, PROB2, PROB3);
+            runOperation(plaza[i], operation);
         }
 
+        
+
         // Print queue
-        cout << "Queue:" << endl;
-        printDeque(toll);
+        for(int i = 0; i < plaza.size(); i++)
+        {
+            cout << "Lane " << i << " Queue:" << endl;
+            printDeque(plaza[i]);
+        }
     }
-    */
+    
     return 0;
 }
 
@@ -133,19 +131,23 @@ void initEmptyDeque(deque<Car> &deq, int size)
     }
 }
 
-void runOperation(deque<Car> &deq, int opNum, int time)
+void runOperation(deque<Car> &deq, int opNum)
 {
     if(opNum == 1)
     {
         // Pay operation
-        cout << "Time: " << time << " Operation: Car Paid: ";
+        cout << " Operation: Car Paid: ";
         deq.front().print();
         deq.pop_front();
-    } else
+    } else if(opNum == 2)
     {
         // Join operation
-        cout << "Time: " << time << " Operation: Joined Lane: ";
+        cout << time << " Operation: Joined Lane: ";
         deq.push_back(Car());
+        deq.back().print();
+    } else
+    {
+        cout << " Operation: Switched: ";
         deq.back().print();
     }
 }
