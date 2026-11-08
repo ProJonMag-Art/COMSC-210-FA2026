@@ -52,12 +52,12 @@ int main()
     while(t != SIMDURATION)
     {
         t++;
-        cout << "Time: " << time << endl;
+        cout << "Time: " << t << endl;
 
         // Loop through deque array
         for(int i = 0; i < plaza.size(); i++)
         {
-            cout << "Lane: " << i << " ";
+            cout << "Lane: " << (i + 1) << " ";
             // Run probability, true if rolled number is less than probability, false if greater
             operation = runProb(PROB1, PROB2, PROB3);
             runOperation(plaza[i], operation);
@@ -68,7 +68,7 @@ int main()
         // Print queue
         for(int i = 0; i < plaza.size(); i++)
         {
-            cout << "Lane " << i << " Queue:" << endl;
+            cout << "Lane " << (i + 1) << " Queue:" << endl;
             printDeque(plaza[i]);
         }
     }
@@ -133,21 +133,27 @@ void initEmptyDeque(deque<Car> &deq, int size)
 
 void runOperation(deque<Car> &deq, int opNum)
 {
+    if(deq.size() == 0)
+    {
+        cout << "Operation: Car Paid, but queue is empty" << endl;
+        return;
+    }
+
     if(opNum == 1)
     {
         // Pay operation
-        cout << " Operation: Car Paid: ";
+        cout << "Operation: Car Paid: ";
         deq.front().print();
         deq.pop_front();
     } else if(opNum == 2)
     {
         // Join operation
-        cout << time << " Operation: Joined Lane: ";
+        cout << "Operation: Joined Lane: ";
         deq.push_back(Car());
         deq.back().print();
     } else
     {
-        cout << " Operation: Switched: ";
+        cout << "Operation: Switched: ";
         deq.back().print();
     }
 }
