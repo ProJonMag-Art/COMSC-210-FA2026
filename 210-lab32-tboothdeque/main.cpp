@@ -26,7 +26,7 @@ int randNum(int min, int max);
 int runProb(int prob1, int prob2, int prob3);
 void printDeque(deque<Car> deq);
 void initEmptyDeque(deque<Car> &deq, int size);
-void runOperation(deque<Car> &deq, int opNum);
+void runOps(array<deque<Car>, TOLLCNT> &arr, int &opNum, int laneNum);
 
 int main()
 {
@@ -60,7 +60,7 @@ int main()
             cout << "Lane: " << (i + 1) << " ";
             // Run probability, true if rolled number is less than probability, false if greater
             operation = runProb(PROB1, PROB2, PROB3);
-            runOperation(plaza[i], operation);
+            runOps(plaza, operation, TOLLCNT);
         }
 
         
@@ -131,29 +131,41 @@ void initEmptyDeque(deque<Car> &deq, int size)
     }
 }
 
-void runOperation(deque<Car> &deq, int opNum)
+void runOps(array<deque<Car>, TOLLCNT> &arr, int &opNum, int laneNum)
 {
-    if(deq.size() == 0)
+    if(arr[laneNum].size() == 0)
     {
-        cout << "Operation: Car Paid, but queue is empty" << endl;
-        return;
+        opNum = randNum(0, 100);
+        if(opNum < 50)
+        {
+            opNum = 2;
+        } else
+        {
+            cout << "Operation: N/A" << endl;
+            return;
+        }
     }
 
     if(opNum == 1)
     {
         // Pay operation
         cout << "Operation: Car Paid: ";
-        deq.front().print();
-        deq.pop_front();
+        arr[laneNum].front().print();
+        arr[laneNum].pop_front();
     } else if(opNum == 2)
     {
         // Join operation
         cout << "Operation: Joined Lane: ";
-        deq.push_back(Car());
-        deq.back().print();
+        arr[laneNum].push_back(Car());
+        arr[laneNum].back().print();
     } else
     {
+        int newLane = randNum(0, TOLLCNT);
+
+        // Switch operation
         cout << "Operation: Switched: ";
-        deq.back().print();
+        arr[laneNum].back().print();
+        arr[newLane].push_back(arr[laneNum].back());
+        arr[laneNum].pop_back();
     }
 }
