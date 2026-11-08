@@ -33,22 +33,18 @@ int main()
     srand(time(0));
     array<deque<Car>, TOLLCNT> plaza;
 
-    // Adds Car() values to deque, takes constant size as paramter to allow for different sizings if need be
-
     // Prints initial queue
     cout << "Initial Queue:" << endl;
 
     for(int i = 0; i < plaza.size(); i++)
     {
+        // Adds Car() values to deque, takes constant size as paramter to allow for different sizings if need be
         initEmptyDeque(plaza[i], INITSIZE);
         cout << "Lane: " << (i + 1) << endl;
         printDeque(plaza[i]);
     }
 
-    int operation = 0;
-    int t = 0;
-    
-    
+    int operation, t = 0;
     while(t != SIMDURATION)
     {
         t++;
@@ -58,12 +54,11 @@ int main()
         for(int i = 0; i < plaza.size(); i++)
         {
             cout << "Lane: " << (i + 1) << " ";
-            // Run probability, true if rolled number is less than probability, false if greater
-            operation = runProb(PROB1, PROB2, PROB3);
-            runOps(plaza, operation, TOLLCNT);
-        }
 
-        
+            // Run probability, returns 1, 2, or 3 for the corresponding PROB param
+            operation = runProb(PROB1, PROB2, PROB3);
+            runOps(plaza, operation, i);
+        }
 
         // Print queue
         for(int i = 0; i < plaza.size(); i++)
@@ -160,7 +155,13 @@ void runOps(array<deque<Car>, TOLLCNT> &arr, int &opNum, int laneNum)
         arr[laneNum].back().print();
     } else
     {
-        int newLane = randNum(0, TOLLCNT);
+        int newLane = 0;
+        
+        // Loops the randNum assignment on newLane to ensure the car doesn't switch to the same lane
+        do
+        {
+            newLane = randNum(0, TOLLCNT - 1);
+        } while (newLane == laneNum);
 
         // Switch operation
         cout << "Operation: Switched: ";
