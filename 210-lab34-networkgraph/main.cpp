@@ -78,8 +78,10 @@ public:
         {
             cout << "Node " << i << " (" << layerNames[i] << ") connects to:" << endl;
             for (Pair v : adjList[i])
-                cout << "    Node " << v.first << " (" << layerNames[v.first]
-                     << ") - Weight: " << v.second / 100.0 << endl;
+            {
+                cout << "    Node " << v.first << " (" << layerNames[v.first] << ") - Weight: " << v.second / 100.0 << endl;
+            }
+            cout << endl;
         }
     }
  
@@ -160,6 +162,7 @@ public:
                          << " - Weight: " << neighbor.second / 100.0 << endl;
                 }
             }
+            cout << endl;
         }
         printResult(found, target, parent, parentWeight);
         return found;
@@ -187,7 +190,9 @@ public:
         //cout << "Shortest-Route Analysis (Dijkstra) from " << label(start)
         //     << " to " << label(target) << ":" << endl;
         //cout << "Purpose: Finding the route with the lowest total weight (direction ignored)" << endl;
-        cout << "========================================================================" << endl;
+        // cout << "========================================================================" << endl;
+
+        cout << "From " << label(start) << " to " << label(target);
  
         dist[start] = 0;
         pq.push(make_pair(0, start));
@@ -299,13 +304,13 @@ private:
     // Layer name plus node number, e.g. "Input Layer (Node 0)"
     string label(int n) { return layerNames[n] + " (Node " + to_string(n) + ")"; }
  
-    bool dfsHelper(int node, int target, vector<bool> &visited,
-                   vector<int> &parent, vector<int> &parentWeight) 
+    bool dfsHelper(int node, int target, vector<bool> &visited, vector<int> &parent, vector<int> &parentWeight) 
     {
         // Updates visited vector
         visited[node] = true;
  
         // Prints node contents
+        cout << endl;
         cout << "Inspecting " << label(node) << endl;
  
         if (node == target)  
@@ -330,7 +335,7 @@ private:
                 // Remembers how we got to this neighbor so the path can be rebuilt
                 parent[neighbor.first] = node;
                 parentWeight[neighbor.first] = neighbor.second;
- 
+
                 // Recursively run dfsHelper to eventually find a target or return false
                 if (dfsHelper(neighbor.first, target, visited, parent, parentWeight)) { return true; }
             }
@@ -430,10 +435,10 @@ int main()
             {
                 do
                 {
-                    cout << "\nInput starting layer and destination layer (leave space in between choices): ";
+                    cout << "\nInput starting layer and destination layer (leave space in between choices)" << endl;
                     cout << "Choices: ";
                     cin >> src >> dest;
-                } while ((src < 0 || src > SIZE) || (dest < 0 || dest > SIZE));
+                } while ((src < 0 || src > (SIZE - 1)) || (dest < 0 || dest > (SIZE - 1) ));
                 graph.bfs(src, dest);
                 
                 break;
@@ -443,10 +448,10 @@ int main()
             {
                 do
                 {
-                    cout << "\nInput starting layer and destination layer (leave space in between choices): ";
+                    cout << "\nInput starting layer and destination layer (leave space in between choices)" << endl;
                     cout << "Choices: ";
                     cin >> src >> dest;
-                } while ((src < 0 || src > SIZE) || (dest < 0 || dest > SIZE));
+                } while ((src < 0 || src > (SIZE - 1) ) || (dest < 0 || dest > (SIZE - 1) ));
                 graph.dfs(src, dest);
 
                 break;
@@ -456,12 +461,12 @@ int main()
             {
                 do
                 {
-                    cout << "\nInput starting layer: ";
+                    cout << "\nInput starting layer" << endl;
                     cout << "Choice: ";
                     cin >> src;
                 } while ((src < 0 || src > SIZE));
 
-                cout << "Shortest-Route Analysis (Dijkstra) of " << layerNames[src];
+                cout << "Shortest-Route Analysis (Dijkstra) of " << layerNames[src] << endl;
                 for(int i = 0; i < SIZE; i++)
                 {
                     graph.shortestPath(src, i);
