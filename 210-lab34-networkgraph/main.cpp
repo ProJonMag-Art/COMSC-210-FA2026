@@ -184,8 +184,8 @@ public:
         // Min-heap of (total distance so far, node), smallest distance first
         priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
  
-        cout << "Shortest-Route Analysis (Dijkstra) from " << label(start)
-             << " to " << label(target) << ":" << endl;
+        //cout << "Shortest-Route Analysis (Dijkstra) from " << label(start)
+        //     << " to " << label(target) << ":" << endl;
         //cout << "Purpose: Finding the route with the lowest total weight (direction ignored)" << endl;
         cout << "========================================================================" << endl;
  
@@ -404,12 +404,16 @@ int main()
     {
         do
         {
-            cout << "Neural Network Analyzer" << endl;
+            cout << "\nNeural Network Analyzer" << endl;
             cout << "[1] List NN weights and connections" << endl;
             cout << "[2] Analyze layers by depth from a starting layer (BFS)" << endl;
             cout << "[3] Trace signal/gradient path through the network (DFS)" << endl;
-            cout << "[4] List cheapest paths from a starting layer to other laers" << endl;
-            cout << "[5] Find the cheapest path that goes through every layer" << endl;
+            cout << "[4] List cheapest paths from a starting layer to other layers" << endl;
+            cout << "[5] Find the cheapest path that goes through every layer (Minimum Spanning Tree)" << endl;
+            cout << "[6] Exit" << endl;
+            cout << "Choice: ";
+
+            cin >> choice;
         } while (choice < 0 || choice > 6);
         
         int src, dest = -1;
@@ -417,31 +421,58 @@ int main()
         {
             case 1:
             {
-                do
-                {
-                    /* code */
-                } while ((src < 0 || src > SIZE) || (dest < 0 || dest > SIZE));
-                
+                graph.printNetwork();
+
                 break;
             }
 
             case 2:
             {
+                do
+                {
+                    cout << "\nInput starting layer and destination layer (leave space in between choices): ";
+                    cout << "Choices: ";
+                    cin >> src >> dest;
+                } while ((src < 0 || src > SIZE) || (dest < 0 || dest > SIZE));
+                graph.bfs(src, dest);
+                
                 break;
             }
 
             case 3:
             {
+                do
+                {
+                    cout << "\nInput starting layer and destination layer (leave space in between choices): ";
+                    cout << "Choices: ";
+                    cin >> src >> dest;
+                } while ((src < 0 || src > SIZE) || (dest < 0 || dest > SIZE));
+                graph.dfs(src, dest);
+
                 break;
             }
 
             case 4:
             {
+                do
+                {
+                    cout << "\nInput starting layer: ";
+                    cout << "Choice: ";
+                    cin >> src;
+                } while ((src < 0 || src > SIZE));
+
+                cout << "Shortest-Route Analysis (Dijkstra) of " << layerNames[src];
+                for(int i = 0; i < SIZE; i++)
+                {
+                    graph.shortestPath(src, i);
+                }
+
                 break;
             }
 
             case 5:
             {
+                graph.minimumSpanningTree();
                 break;
             }
 
