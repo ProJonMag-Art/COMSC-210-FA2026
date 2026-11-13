@@ -78,7 +78,7 @@ public:
         {
             cout << "Node " << i << " (" << layerNames[i] << ") connects to:" << endl;
             for (Pair v : adjList[i])
-                cout << "Node " << v.first << " (" << layerNames[v.first]
+                cout << "    Node " << v.first << " (" << layerNames[v.first]
                      << ") - Weight: " << v.second / 100.0 << endl;
         }
     }
@@ -186,7 +186,7 @@ public:
  
         cout << "Shortest-Route Analysis (Dijkstra) from " << label(start)
              << " to " << label(target) << ":" << endl;
-        cout << "Purpose: Finding the route with the lowest total weight (direction ignored)" << endl;
+        //cout << "Purpose: Finding the route with the lowest total weight (direction ignored)" << endl;
         cout << "========================================================================" << endl;
  
         dist[start] = 0;
@@ -204,7 +204,7 @@ public:
             if (finalized[node]) { continue; }
             finalized[node] = true;
  
-            cout << "Finalizing " << label(node) << " [Distance " << d / 100.0 << "]" << endl;
+            //cout << "Finalizing " << label(node) << " [Distance " << d / 100.0 << "]" << endl;
  
             if (node == target) 
             {
@@ -225,8 +225,8 @@ public:
                     parent[next] = node;
                     parentWeight[next] = neighbor.second;
                     pq.push(make_pair(newDist, next));
-                    cout << "Cheaper route to " << label(next)
-                         << " - Distance: " << newDist / 100.0 << endl;
+                    //cout << "Cheaper route to " << label(next)
+                    //     << " - Distance: " << newDist / 100.0 << endl;
                 }
             }
         }
@@ -389,13 +389,34 @@ int main()
     cout << endl;
     graph.bfs(0, 5);
     cout << endl;
-    //for(int i = 0; i < SIZE; i++)
-    //{
-        graph.shortestPath(0, 5);
+    for(int i = 0; i < SIZE; i++)
+    {
+        graph.shortestPath(0, i);
         cout << endl;
-    //}
+    }
 
     graph.minimumSpanningTree();
+
+
+    int choice = 0;
+    do
+    {
+        do
+        {
+            cout << "Neural Network Analyzer" << endl;
+            cout << "[1] List NN weights and connections" << endl;
+            cout << "[2] Analyze layers by depth from a source node" << endl;
+        } while (choice < 0 || choice > 6);
+        
+        switch(choice)
+        {
+            case 1:
+            {
+
+            }
+        }
+    } while (choice != 6);
+    
  
     return 0;
 }
