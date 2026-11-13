@@ -10,7 +10,7 @@
 
 using namespace std;
 
-const int SIZE = 7;
+const int SIZE = 9;
 
 struct Edge {
     int src, dest, weight;
@@ -157,7 +157,7 @@ int main()
     vector<Edge> edges = 
     {
         // (x, y, w) —> edge from x to y having weight w
-        {0,1,12},{0,2,8},{0,3,21},{2,3,6},{2,6,2},{5,6,6},{4,5,9},{2,4,4},{2,5,5}
+        {0,1,12},{0,2,8},{0,3,21},{8,5,3},{4,3,8},{5,4,2},{1,4,13},{3,7,4},{4,8,19},{8,1,1},{7,6,26},{6, 4, 6}
     };
 
     // Creates graph
@@ -168,7 +168,7 @@ int main()
 
     graph.dfs(0, 5);
     graph.bfs(0, 5);
-    graph.dfs(2, 3);
+    graph.dfs(2, 8);
 
     return 0;
 }
