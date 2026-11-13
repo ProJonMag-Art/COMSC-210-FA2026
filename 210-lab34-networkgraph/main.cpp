@@ -78,7 +78,7 @@ public:
         {
             cout << "Node " << i << " (" << layerNames[i] << ") connects to:" << endl;
             for (Pair v : adjList[i])
-                cout << "  → Node " << v.first << " (" << layerNames[v.first]
+                cout << "Node " << v.first << " (" << layerNames[v.first]
                      << ") - Weight: " << v.second / 100.0 << endl;
         }
     }
@@ -156,8 +156,77 @@ public:
                     parentWeight[neighbor.first] = neighbor.second;
                     depth[neighbor.first] = depth[node] + 1;
                     q.push(neighbor.first);
-                    cout << "  → Next layer: " << label(neighbor.first)
+                    cout << "Next layer: " << label(neighbor.first)
                          << " - Weight: " << neighbor.second / 100.0 << endl;
+                }
+            }
+        }
+        printResult(found, target, parent, parentWeight);
+        return found;
+    }
+
+    // Shortest path from 'start' to 'target' using Dijkstra's algorithm.
+    // Direction is ignored (the graph is undirected) and the path with the
+    // lowest total weight is chosen. Returns true if target is reachable.
+    bool shortestPath(int start, int target) 
+    {
+        if (!validNode(start) || !validNode(target)) 
+        {
+            cout << "Invalid start or target node." << endl;
+            return false;
+        }
+ 
+        const int INF = 1000000;  // stands in for "no route found yet"
+        vector<int> dist(SIZE, INF);
+        vector<int> parent(SIZE, -1), parentWeight(SIZE, 0);
+        vector<bool> finalized(SIZE, false);
+ 
+        // Min-heap of (total distance so far, node), smallest distance first
+        priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
+ 
+        cout << "Shortest-Route Analysis (Dijkstra) from " << label(start)
+             << " to " << label(target) << ":" << endl;
+        cout << "Purpose: Finding the route with the lowest total weight (direction ignored)" << endl;
+        cout << "========================================================================" << endl;
+ 
+        dist[start] = 0;
+        pq.push(make_pair(0, start));
+        bool found = false;
+ 
+        while (!pq.empty()) 
+        {
+            Pair top = pq.top();
+            pq.pop();
+            int d = top.first;
+            int node = top.second;
+ 
+            // Skip outdated queue entries for nodes already finalized
+            if (finalized[node]) { continue; }
+            finalized[node] = true;
+ 
+            cout << "Finalizing " << label(node) << " [Distance " << d / 100.0 << "]" << endl;
+ 
+            if (node == target) 
+            {
+                cout << "  ** Target reached **" << endl;
+                found = true;
+                break;
+            }
+ 
+            // Check whether going through this node gives a cheaper route to a neighbor
+            for (Pair neighbor : adjList[node]) 
+            {
+                int next = neighbor.first;
+                int newDist = d + neighbor.second;
+ 
+                if (!finalized[next] && newDist < dist[next]) 
+                {
+                    dist[next] = newDist;
+                    parent[next] = node;
+                    parentWeight[next] = neighbor.second;
+                    pq.push(make_pair(newDist, next));
+                    cout << "Cheaper route to " << label(next)
+                         << " - Distance: " << newDist / 100.0 << endl;
                 }
             }
         }
@@ -257,11 +326,15 @@ int main()
     graph.printNetwork();
     cout << endl;
  
-    graph.dfs(0, 5);
+    graph.dfs(2, 8);
     cout << endl;
     graph.bfs(0, 5);
     cout << endl;
-    graph.dfs(2, 8);
+    for(int i = 0; i < SIZE; i++)
+    {
+        graph.shortestPath(0, i);
+        cout << endl;
+    }
  
     return 0;
 }
