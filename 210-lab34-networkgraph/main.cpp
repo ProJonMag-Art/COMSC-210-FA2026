@@ -156,7 +156,7 @@ public:
                     parentWeight[neighbor.first] = neighbor.second;
                     depth[neighbor.first] = depth[node] + 1;
                     q.push(neighbor.first);
-                    cout << "Next layer: " << label(neighbor.first)
+                    cout << "    Next layer: " << label(neighbor.first)
                          << " - Weight: " << neighbor.second / 100.0 << endl;
                 }
             }
@@ -318,7 +318,7 @@ private:
         for (Pair neighbor : adjList[node]) 
         {
             if (!visited[neighbor.first])
-                cout << "  → Signal may propagate to " << label(neighbor.first)
+                cout << "    Signal may propagate to " << label(neighbor.first)
                      << " - Weight: " << neighbor.second / 100.0 << endl;
         }
  
@@ -399,20 +399,55 @@ int main()
 
 
     int choice = 0;
+    
     do
     {
         do
         {
             cout << "Neural Network Analyzer" << endl;
             cout << "[1] List NN weights and connections" << endl;
-            cout << "[2] Analyze layers by depth from a source node" << endl;
+            cout << "[2] Analyze layers by depth from a starting layer (BFS)" << endl;
+            cout << "[3] Trace signal/gradient path through the network (DFS)" << endl;
+            cout << "[4] List cheapest paths from a starting layer to other laers" << endl;
+            cout << "[5] Find the cheapest path that goes through every layer" << endl;
         } while (choice < 0 || choice > 6);
         
+        int src, dest = -1;
         switch(choice)
         {
             case 1:
             {
+                do
+                {
+                    /* code */
+                } while ((src < 0 || src > SIZE) || (dest < 0 || dest > SIZE));
+                
+                break;
+            }
 
+            case 2:
+            {
+                break;
+            }
+
+            case 3:
+            {
+                break;
+            }
+
+            case 4:
+            {
+                break;
+            }
+
+            case 5:
+            {
+                break;
+            }
+
+            case 6:
+            {
+                break;
             }
         }
     } while (choice != 6);
