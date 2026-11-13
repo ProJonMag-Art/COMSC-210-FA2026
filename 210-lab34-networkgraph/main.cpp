@@ -18,18 +18,21 @@ struct Edge {
 
 typedef pair<int, int> Pair;  // Creates alias 'Pair' for the pair<int,int> data type
 
-class Graph {
+class Graph 
+{
 public:
     // a vector of vectors of Pairs to represent an adjacency list
     vector<vector<Pair>> adjList;
 
     // Graph Constructor
-    Graph(vector<Edge> const &edges) {
+    Graph(vector<Edge> const &edges) 
+    {
         // resize the vector to hold SIZE elements of type vector<Edge>
         adjList.resize(SIZE);
 
         // add edges to the directed graph
-        for (auto &edge: edges) {
+        for (auto &edge: edges) 
+        {
             int src = edge.src;
             int dest = edge.dest;
             int weight = edge.weight;
@@ -42,9 +45,11 @@ public:
     }
 
     // Print the graph's adjacency list
-    void printGraph() {
+    void printGraph() 
+    {
         cout << "Graph's adjacency list:" << endl;
-        for (int i = 0; i < adjList.size(); i++) {
+        for (int i = 0; i < adjList.size(); i++) 
+        {
             cout << i << " --> ";
             for (Pair v : adjList[i])
                 cout << "(" << v.first << ", " << v.second << ") ";
@@ -54,28 +59,35 @@ public:
 
     // Depth-first search from 'start' looking for 'target'.
     // Prints the order nodes are visited; returns true if target is found.
-    bool dfs(int start, int target) {
-        if (!validNode(start) || !validNode(target)) {
+    bool dfs(int start, int target) 
+    {
+        // If either inputted nodes are invalid
+        if (!validNode(start) || !validNode(target)) 
+        {
             cout << "Invalid start or target node." << endl;
             return false;
         }
+
         vector<bool> visited(SIZE, false);
         cout << "DFS visit order: ";
+
+        // Recursively prints the path of travelled nodes
         bool found = dfsHelper(start, target, visited);
         cout << endl;
-        cout << (found ? "Found " : "Did not find ") << target
-             << " starting from " << start << endl;
+        cout << (found ? "Found " : "Did not find ") << target << " starting from " << start << "\n" << endl;
         return found;
     }
  
     // Breadth-first search from 'start' looking for 'target'.
     // Prints the order nodes are visited; returns true if target is found.
-    bool bfs(int start, int target) {
-        if (!validNode(start) || !validNode(target)) {
+    bool bfs(int start, int target) 
+    {
+        if (!validNode(start) || !validNode(target)) 
+        {
             cout << "Invalid start or target node." << endl;
             return false;
         }
-        
+
         vector<bool> visited(SIZE, false);
         queue<int> q;
  
@@ -84,24 +96,32 @@ public:
  
         cout << "BFS visit order: ";
         bool found = false;
+
+        // Loop through queue
         while (!q.empty()) {
             int node = q.front();
             q.pop();
             cout << node << " ";
  
-            if (node == target) {
+            // Check if node is found
+            if (node == target) 
+            {
                 found = true;
                 break;
             }
-            for (Pair neighbor : adjList[node]) {
-                if (!visited[neighbor.first]) {
+
+            // Add unchecked neighbors to queue
+            for (Pair neighbor : adjList[node]) 
+            {
+                if (!visited[neighbor.first]) 
+                {
                     visited[neighbor.first] = true;  // mark when queued
                     q.push(neighbor.first);
                 }
             }
         }
         cout << endl;
-        cout << (found ? "Found " : "Did not find ") << target << " starting from " << start << endl;
+        cout << (found ? "Found " : "Did not find ") << target << " starting from " << start << "\n" << endl;
         return found;
     }
 
@@ -110,26 +130,32 @@ private:
  
     bool dfsHelper(int node, int target, vector<bool> &visited) 
     {
+        // Updates visited vector
         visited[node] = true;
+
+        // Prints node contents
         cout << node << " ";
  
         if (node == target)  {return true; }
  
+        // If neighbors haven't been visited yet
         for (Pair neighbor : adjList[node]) 
         {
             if (!visited[neighbor.first]) 
             {
-                if (dfsHelper(neighbor.first, target, visited))
-                    return true;
+                // Recursively run dfsHelper to eventually find a target or return false
+                if (dfsHelper(neighbor.first, target, visited)) { return true; }
             }
         }
         return false;
     }
 };
 
-int main() {
+int main() 
+{
     // Creates a vector of graph edges/weights
-    vector<Edge> edges = {
+    vector<Edge> edges = 
+    {
         // (x, y, w) —> edge from x to y having weight w
         {0,1,12},{0,2,8},{0,3,21},{2,3,6},{2,6,2},{5,6,6},{4,5,9},{2,4,4},{2,5,5}
     };
@@ -139,6 +165,10 @@ int main() {
 
     // Prints adjacency list representation of graph
     graph.printGraph();
+
+    graph.dfs(0, 5);
+    graph.bfs(0, 5);
+    graph.dfs(2, 3);
 
     return 0;
 }
