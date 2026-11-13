@@ -233,6 +233,65 @@ public:
         printResult(found, target, parent, parentWeight);
         return found;
     }
+
+    // Minimum spanning tree using Prim's algorithm.
+    // Builds the cheapest set of connections that links every layer together,
+    // then prints the whole tree (and its total weight) at once.
+    void minimumSpanningTree() 
+    {
+        vector<bool> inTree(SIZE, false);
+        vector<Edge> treeEdges;
+        int total = 0;
+ 
+        // Min-heap of (weight, (node, node we came from)), smallest weight first
+        typedef pair<int, Pair> Candidate;
+        priority_queue<Candidate, vector<Candidate>, greater<Candidate>> pq;
+ 
+        // Start growing the tree from node 0 (it has no parent, so use -1)
+        pq.push(make_pair(0, make_pair(0, -1)));
+ 
+        while (!pq.empty()) 
+        {
+            Candidate top = pq.top();
+            pq.pop();
+            int weight = top.first;
+            int node = top.second.first;
+            int from = top.second.second;
+ 
+            // Skip nodes that are already part of the tree
+            if (inTree[node]) { continue; }
+            inTree[node] = true;
+ 
+            // Every node except the starting one is added through an edge
+            if (from != -1) 
+            {
+                treeEdges.push_back({from, node, weight});
+                total += weight;
+            }
+ 
+            // Offer every connection that reaches a layer not yet in the tree
+            for (Pair neighbor : adjList[node]) 
+            {
+                if (!inTree[neighbor.first])
+                    pq.push(make_pair(neighbor.second, make_pair(neighbor.first, node)));
+            }
+        }
+ 
+        cout << "Minimum Spanning Tree (Prim's) of the Neural Network:" << endl;
+        cout << "Purpose: Finding the cheapest set of connections that links every layer" << endl;
+        cout << "===================================================================" << endl;
+        for (Edge e : treeEdges)
+            cout << "Edge from " << label(e.src) << " to " << label(e.dest)
+                 << " - Weight: " << e.weight / 100.0 << endl;
+        cout << "-------------------------------------------------------------------" << endl;
+        cout << "Total connections: " << treeEdges.size() << endl;
+        cout << "Total tree weight: " << total / 100.0 << endl;
+ 
+        // A connected graph always gives SIZE - 1 edges
+        if (treeEdges.size() != SIZE - 1)
+            cout << "Note: the network is not fully connected, so only the layers "
+                 << "reachable from Node 0 are shown." << endl;
+    }
  
 private:
     bool validNode(int n) { return n >= 0 && n < SIZE; }
@@ -330,11 +389,13 @@ int main()
     cout << endl;
     graph.bfs(0, 5);
     cout << endl;
-    for(int i = 0; i < SIZE; i++)
-    {
-        graph.shortestPath(0, i);
+    //for(int i = 0; i < SIZE; i++)
+    //{
+        graph.shortestPath(0, 5);
         cout << endl;
-    }
+    //}
+
+    graph.minimumSpanningTree();
  
     return 0;
 }
